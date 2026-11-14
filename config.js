@@ -33,7 +33,7 @@ window.EXHIBITION_CONFIG = {
   navigation: [
     { id: "opening", roman: "00", label: "Prologue", href: "#opening" },
     { id: "editorial", roman: "01", label: "The Editorial", href: "#editorial" },
-    { id: "museum", roman: "02", label: "The Museum", href: "#museum" },
+    { id: "museum", roman: "02", label: "The Museum", href: "museum.html" },
     { id: "noticing", roman: "03", label: "Little Things", href: "#noticing" },
     { id: "constellation", roman: "04", label: "3D Universe", href: "#constellation" },
     { id: "garden", roman: "05", label: "3D Garden", href: "#garden" },

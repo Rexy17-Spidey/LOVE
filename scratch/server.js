@@ -35,6 +35,6 @@ const server = http.createServer((req, res) => {
 });
 
 const PORT = 8085;
-server.listen(PORT, () => {
-  console.log(`Exhibition server running at http://localhost:${PORT}/`);
+server.listen(PORT, "127.0.0.1", () => {
+  console.log(`Exhibition server running at http://127.0.0.1:${PORT}/`);
 });

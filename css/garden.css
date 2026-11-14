@@ -410,8 +410,11 @@
 
 @media (max-width: 768px) {
   .garden-section .section-title {
-    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
-    word-break: break-word;
+    font-size: clamp(0.98rem, 4.3vw, 1.45rem) !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    max-width: 100% !important;
+    text-align: center;
   }
   .garden-3d-viewport {
     height: 390px;
@@ -452,4 +455,126 @@
   .garden-flowers-grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* Enhanced Garden Modal & Mobile Responsiveness */
+.flower-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(3, 40, 35, 0.85);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-antique);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--duration-fast) ease;
+}
+.flower-modal-close:hover {
+  background: var(--gold-antique);
+  color: #021a17;
+}
+.flower-modal-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.6rem;
+  color: var(--gold-bright);
+  margin: 6px 0 2px;
+}
+.flower-modal-variety {
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--sage-muted);
+  margin-bottom: 12px;
+}
+.flower-modal-compliment {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--ivory-warm);
+  border-top: 1px solid rgba(197, 164, 109, 0.2);
+  padding-top: 12px;
+  margin-bottom: 16px;
+}
+.flower-modal-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--gold-antique);
+  border-top: 1px solid rgba(197, 164, 109, 0.15);
+  padding-top: 12px;
+}
+.flower-modal-next-btn {
+  background: rgba(3, 40, 35, 0.75);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-champagne);
+  padding: 6px 14px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+.flower-modal-next-btn:hover {
+  background: rgba(8, 127, 120, 0.55);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+
+@media (max-width: 600px) {
+  .garden-3d-viewport {
+    height: clamp(360px, 54vh, 480px);
+    margin-bottom: var(--space-xl);
+  }
+  .garden-viewpoint-toolbar {
+    top: 10px;
+    padding: 4px 10px;
+    gap: 6px;
+  }
+  .garden-viewpoint-pill {
+    font-size: 0.65rem;
+    padding: 5px 10px;
+  }
+  .garden-flower-modal {
+    width: calc(100% - 24px);
+    padding: 16px 18px;
+    bottom: 12px;
+  }
+  .flower-modal-title {
+    font-size: 1.3rem;
+  }
+  .flower-modal-compliment {
+    font-size: 1.0rem;
+    line-height: 1.6;
+  }
+}
+
+
+/* Background Canvas & Sheen Fixes (Position Absolute prevents pushing container below fold) */
+#garden-fireflies-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.garden-moonlight-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }

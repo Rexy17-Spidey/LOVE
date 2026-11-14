@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>The Museum of Her — An Exhibition of Bhavya</title>
+  <meta name="description" content="A private, cinematic art museum experience celebrating Bhavya. Curated with love, by Rahul.">
+  <meta name="theme-color" content="#011412">
+
+  <!-- Favicon Monogram -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✦</text></svg>">
+
+  <!-- Google Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Core Tokens, Theme System & Museum Experience Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/museum-experience.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. 3D SPATIAL ATMOSPHERE (Three.js WebGL & Volumetric Lighting)
+       ========================================================================= -->
+  <canvas id="museum-3d-canvas" aria-hidden="true"></canvas>
+  <div class="museum-atmospheric-vignette" aria-hidden="true"></div>
+
+  <!-- =========================================================================
+       2. TOP NAVIGATION HEADER
+       ========================================================================= -->
+  <header class="museum-top-header" role="banner">
+    <a href="#room-00" class="header-brand-block" aria-label="The Museum of Her Home">
+      <div class="brand-monogram-shield">B</div>
+      <div class="brand-text-stack">
+        <span class="brand-main-title">THE MUSEUM OF HER</span>
+        <span class="brand-sub-tag">Curated for Bhavya</span>
+      </div>
+    </a>
+
+    <div class="header-actions-group">
+      <!-- Return to Main Website Link -->
+      <a href="index.html" class="header-btn" title="Return to The Art of Her main website">
+        <span>&larr;</span> <span class="btn-label">Main Site</span>
+      </a>
+
+      <!-- Color Palette Theme Switcher -->
+      <button class="header-btn" id="header-theme-btn" aria-label="Select museum color palette" title="Choose Museum Color Palette">
+        <span>&#127912;</span> <span class="btn-label">Palette</span>
+      </button>
+
+      <!-- Ambient Sound Controller -->
+      <button class="header-btn audio-btn" id="audio-toggle-btn" aria-label="Toggle atmospheric sound" title="Ambient Sound (Opt-in)">
+        <span>&#128266;</span> <span class="btn-label">Sound</span>
+      </button>
+
+      <!-- Floor Plan Exhibition Index Button -->
+      <button class="header-btn" id="floorplan-toggle-btn" aria-label="Open Exhibition Floor Plan" title="Exhibition Rooms Index">
+        <span>&#127963;</span> <span class="btn-label">Rooms</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       3. CINEMATIC ENTRANCE GATE SCREEN (#museum-entrance)
+       ========================================================================= -->
+  <section class="museum-entrance-screen" id="museum-entrance" role="dialog" aria-modal="true" aria-label="Museum Entrance">
+    <div class="entrance-curtain-card">
+      <div class="entrance-monogram">B</div>
+      <div class="entrance-eyebrow">A PRIVATE DIGITAL EXHIBITION</div>
+      <h1 class="entrance-main-title gold-shimmer">THE MUSEUM OF HER</h1>
+      <p class="entrance-subtitle">&ldquo;An exhibition of someone impossible to describe.&rdquo;</p>
+      <div class="entrance-curator-line">Curated with love, by Rahul</div>
+
+      <p class="entrance-intro-quote">
+        &ldquo;Some people are too beautiful to fit inside a photograph. This is my attempt to preserve the little things I notice.&rdquo;
+      </p>
+
+      <div class="entrance-actions-stack">
+        <button class="enter-grand-btn" id="enter-exhibition-btn" aria-label="Enter the exhibition">
+          ✦ ENTER THE EXHIBITION ✦
+        </button>
+
+        <div class="entrance-secondary-pills">
+          <button class="entrance-sub-btn" id="entrance-theme-btn">
+            🎨 Choose Palette
+          </button>
+          <button class="entrance-sub-btn" id="skip-intro-btn">
+            Skip to Masterpiece →
+          </button>
+          <a href="index.html" class="entrance-sub-btn">
+            ← Return to The Art of Her
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. DYNAMIC EXHIBITION GALLERIES CONTAINER (Rooms 00 to 07)
+       ========================================================================= -->
+  <main class="museum-galleries-container" id="museum-galleries-container" role="main">
+    <!-- Injected dynamically by js/museum-experience.js from js/museum-data.js -->
+  </main>
+
+  <!-- =========================================================================
+       5. BOTTOM EXHIBITION NAVIGATOR BAR
+       ========================================================================= -->
+  <nav class="museum-bottom-bar" aria-label="Exhibition Quick Navigation">
+    <button class="bottom-nav-action-btn" id="bottom-prev-room" aria-label="Go to previous exhibition room">
+      &larr; Prev
+    </button>
+
+    <div class="bottom-room-indicator" id="bottom-room-label">
+      ROOM 00 OF 07 &middot; PROLOGUE
+    </div>
+
+    <button class="bottom-nav-action-btn" id="bottom-next-room" aria-label="Go to next exhibition room">
+      Next &rarr;
+    </button>
+  </nav>
+
+  <!-- =========================================================================
+       6. FLOOR PLAN / ROOM INDEX DRAWER
+       ========================================================================= -->
+  <aside class="floorplan-drawer" id="floorplan-drawer" aria-label="Exhibition Floor Plan" aria-hidden="true">
+    <div class="floorplan-header">
+      <div class="floorplan-title">Exhibition Floor Plan</div>
+      <button class="modal-close-btn" id="floorplan-close" aria-label="Close floor plan">✕</button>
+    </div>
+
+    <div class="floorplan-rooms-list" id="floorplan-rooms-list">
+      <!-- Injected dynamically -->
+    </div>
+
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <a href="index.html" class="header-btn" style="width: 100%; justify-content: center;">
+        &larr; Return to The Art of Her
+      </a>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       7. THEME SELECTION MODAL (7 Bespoke Color Themes)
+       ========================================================================= -->
+  <div class="museum-modal-backdrop" id="theme-selector-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="museum-modal-content theme-modal-inner">
+      <button class="modal-close-btn" id="theme-modal-close" aria-label="Close theme selector">✕</button>
+      <h3 class="theme-modal-title gold-shimmer">CHOOSE YOUR MUSEUM PALETTE</h3>
+      <div class="theme-modal-sub">7 Bespoke Color Worlds &middot; Instant Preview</div>
+
+      <div class="theme-options-grid" id="theme-options-grid">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. FULLSCREEN ARTWORK LIGHTBOX MODAL
+       ========================================================================= -->
+  <div class="museum-modal-backdrop" id="museum-lightbox-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="museum-modal-content lightbox-modal-content">
+      <button class="modal-close-btn" id="lightbox-close" aria-label="Close artwork viewer">✕</button>
+
+      <div class="lightbox-image-stage">
+        <button class="lightbox-nav-arrow lightbox-prev-arrow" id="lightbox-prev" aria-label="Previous artwork">‹</button>
+        <img id="lightbox-img" src="" alt="Exhibition Artwork" />
+        <button class="lightbox-nav-arrow lightbox-next-arrow" id="lightbox-next" aria-label="Next artwork">›</button>
+      </div>
+
+      <div class="lightbox-details-stage">
+        <div class="lightbox-count-pill" id="lightbox-count-pill">EXHIBIT 01 OF 20</div>
+        <div class="lightbox-room-tag" id="lightbox-room-tag">WING I &middot; MASTERPIECE</div>
+        <h3 class="lightbox-title gold-shimmer" id="lightbox-title">Artwork Title</h3>
+        <div class="lightbox-medium" id="lightbox-medium">Archival Photographic Print</div>
+        <div class="lightbox-caption" id="lightbox-caption">Editorial Caption</div>
+        <div class="lightbox-curator-voice" id="lightbox-curator-voice">Rahul's Note</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       9. SECRET CURATOR NOTE MODAL (Discovered in Room 06)
+       ========================================================================= -->
+  <div class="museum-modal-backdrop" id="secret-note-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="museum-modal-content secret-note-content">
+      <button class="modal-close-btn" id="secret-modal-close" aria-label="Close secret note">✕</button>
+      <div class="wax-seal-stamp" style="margin: 0 auto 1.5rem auto;">
+        <span class="wax-monogram">B</span>
+      </div>
+      <h3 class="secret-note-title gold-shimmer">To Bhavya, from Rahul</h3>
+      <p class="secret-note-message">
+        &ldquo;If you're reading this, you found the hidden note. I just wanted to tell you: no matter how many museums or websites I build, the real masterpiece is simply having you in my life. You make every ordinary day feel like art. I love you, my babee. ♡&rdquo;
+      </p>
+      <div style="font-family: var(--font-mono-meta); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--museum-gold);">
+        PERMANENT INSCRIPTION &middot; 27.09.2026
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       10. SCRIPTS IN ARCHITECTURAL ORDER
+       ========================================================================= -->
+  <script src="js/three.min.js"></script>
+  <script src="js/museum-data.js"></script>
+  <script src="js/museum-3d.js"></script>
+  <script src="js/museum-experience.js"></script>
+</body>
+</html>

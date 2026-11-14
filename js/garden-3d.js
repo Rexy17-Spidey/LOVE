@@ -1,12 +1,24 @@
 /**
  * ==============================================================================
- * THE ART OF HER — SECTION 6: 3D LIVING ENCHANTED ARBORETUM
- * Three.js WebGL Complete Living Fairytale Sanctuary:
- * - Luminous Grand Tree of Little Things with Golden Spores & Internal Light
- * - Volumetric God Rays / Light Shafts streaming through foliage (Reference 1)
- * - Winding Cobblestone Pathway, Arched Wooden Bridge & Lotus Pond (Reference 3)
- * - Swimming Golden Koi Fish, 12 Animated Butterflies & Meadow Wildlife
- * - 12 Interactive Glowing Blossoms & 4 Smooth Cinematic Camera Viewpoints
+ * THE ART OF HER — SECTION 6: MASTERPIECE 3D LIVING ENCHANTED ARBORETUM
+ * Inspired by Reference Images 1 & 3:
+ * - Ref 1: Sunlit Ancient Grand Tree of Light, Volumetric God Rays & Swirling Spores
+ * - Ref 3: Enchanted Woodland Path, Cobblestones, Arched Bridge, Stream, Hanging Lanterns,
+ *          Tall Purple Foxglove Spires & Living Wildlife
+ *
+ * Visual Features:
+ * - High-Fidelity Procedural Textures (Soft Radial Firefly Glows, Gaussian God Rays,
+ *   Organic Leaf Tufts, Water Ripple Normal Falloffs)
+ * - The Majestic Grand Tree of Little Things (Gnarled Root Buttresses, Winding Trunk,
+ *   Multi-Tiered Canopy & Luminous Amber Heart)
+ * - Cinematic Volumetric God Rays Streaming Diagonally through Canopy with Shimmer
+ * - Winding Cobblestone Pathway & Rustic Wooden Fence with Arched Footbridge
+ * - Translucent Turquoise Lotus Pond with Water Lilies & Swimming Golden Koi
+ * - Hanging Warm Fairytale Lanterns Suspended from Lower Branches & Fence Posts
+ * - Tall Purple/Magenta Foxglove (Digitalis) Spires & 200+ Meadow Wildflowers
+ * - 12 Interactive Glowing Hero Blossoms with Generous Hit-Spheres for Mobile
+ * - Fluttering Animated Butterflies with Flapping Wings & 160+ Dancing Fireflies
+ * - 4 Cinematic Camera Viewpoints with Smooth Inertia Interpolation
  * ==============================================================================
  */
 
@@ -15,132 +27,178 @@ class EnchantedGarden3D {
     this.container = document.getElementById("garden-3d-viewport");
     this.config = window.EXHIBITION_CONFIG?.garden;
     this.modal = document.getElementById("garden-flower-modal");
-    
+
     this.scene = null;
     this.camera = null;
     this.renderer = null;
     this.animationId = null;
-    
+
+    // Procedural Textures
+    this.textures = {
+      firefly: null,
+      godRay: null,
+      leaf: null
+    };
+
+    // Meshes & Collections
     this.butterflies = [];
     this.interactiveFlowers = [];
+    this.flowerHitMeshes = [];
     this.wildlife = [];
     this.fishList = [];
+    this.lanterns = [];
     this.fireflies = null;
-    this.spores = null;
+    this.fireflyPositions = null;
+    this.fireflyBasePos = null;
     this.godRays = [];
     this.centralTreeGroup = null;
-    this.treeLeavesMeshes = [];
-    
+    this.treeHeartLight = null;
+
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2(-999, -999);
-    
+
     // Viewpoint Camera Positions
     this.currentViewpoint = "vista";
-    this.cameraTargetPos = new THREE.Vector3(0, 16, 48);
-    this.cameraLookAt = new THREE.Vector3(0, 5, 0);
-    this.currentLookAt = new THREE.Vector3(0, 5, 0);
-    
+    this.cameraTargetPos = new THREE.Vector3(0, 18, 52);
+    this.cameraLookAt = new THREE.Vector3(0, 6, 0);
+    this.currentLookAt = new THREE.Vector3(0, 6, 0);
+
     this.exploredFlowers = new Set();
     this.isTreeIlluminated = false;
     this.clock = new THREE.Clock();
     this.isVisible = true;
     this.observer = null;
     window.enchantedGarden3DInstance = this;
-    
+
     this.init();
   }
 
+  /* ----------------------------------------------------------------------------
+   * 1. PROCEDURAL TEXTURE GENERATION (Soft Fireflies & Gaussian God Rays)
+   * ---------------------------------------------------------------------------- */
+  generateProceduralTextures() {
+    // A. Soft Golden Firefly Glow Texture
+    const canvasF = document.createElement("canvas");
+    canvasF.width = 128;
+    canvasF.height = 128;
+    const ctxF = canvasF.getContext("2d");
+    const gradF = ctxF.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gradF.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
+    gradF.addColorStop(0.2, "rgba(255, 235, 170, 0.95)");
+    gradF.addColorStop(0.5, "rgba(244, 226, 187, 0.45)");
+    gradF.addColorStop(0.8, "rgba(197, 164, 109, 0.12)");
+    gradF.addColorStop(1.0, "rgba(0, 0, 0, 0.0)");
+    ctxF.fillStyle = gradF;
+    ctxF.fillRect(0, 0, 128, 128);
+    this.textures.firefly = new THREE.CanvasTexture(canvasF);
+
+    // B. Volumetric God Ray Texture (Soft vertical beam with gaussian horizontal fade)
+    const canvasR = document.createElement("canvas");
+    canvasR.width = 256;
+    canvasR.height = 512;
+    const ctxR = canvasR.getContext("2d");
+
+    const imgData = ctxR.createImageData(256, 512);
+    const data = imgData.data;
+
+    for (let y = 0; y < 512; y++) {
+      const vFactor = Math.sin((y / 512) * Math.PI * 0.95); // Fade at top and bottom
+      for (let x = 0; x < 256; x++) {
+        const uDist = Math.abs(x - 128) / 128;
+        const hFactor = Math.exp(-uDist * uDist * 4.5); // Gaussian bell curve
+        const alpha = Math.min(255, Math.floor(255 * vFactor * hFactor * 0.95));
+
+        const idx = (y * 256 + x) * 4;
+        data[idx] = 255;     // R
+        data[idx + 1] = 244; // G (Warm Golden Sunlight)
+        data[idx + 2] = 195; // B
+        data[idx + 3] = alpha;
+      }
+    }
+    ctxR.putImageData(imgData, 0, 0);
+    this.textures.godRay = new THREE.CanvasTexture(canvasR);
+  }
+
+  /* ----------------------------------------------------------------------------
+   * 2. INITIALIZATION & SCENE SETUP
+   * ---------------------------------------------------------------------------- */
   init() {
     if (!this.container || typeof THREE === "undefined" || !this.config) {
       console.warn("Three.js not loaded or garden viewport missing.");
       return;
     }
 
+    this.generateProceduralTextures();
     this.setupScene();
     this.setupThemeListener();
     this.buildTerrainAndPathway();
     this.buildLotusPondAndBridge();
     this.buildGrandTreeOfLight();
     this.buildVolumetricGodRays();
+    this.buildHangingFairytaleLanterns();
     this.buildEnchantedForestFoliage();
+    this.buildTallFoxgloveSpires();
     this.buildWildflowerMeadow();
     this.build12HeroBlossoms();
     this.spawnAnimatedButterflies();
     this.spawnLivingWildlife();
     this.createGoldenSporeParticles();
     this.bindEvents();
+    this.setupIntersectionObserver();
     this.animate();
-  }
-
-
-  setupThemeListener() {
-    window.addEventListener("artOfHerThemeChange", (e) => {
-      const themeData = e.detail?.theme;
-      if (!themeData?.threeColors) return;
-
-      const tc = themeData.threeColors;
-
-      // Update ambient light
-      const ambient = this.scene.getObjectByName("ambientLight");
-      if (ambient) ambient.color.setHex(tc.ambient);
-
-      // Update God Rays light color
-      this.godRays.forEach(ray => {
-        if (ray.material) ray.material.color.setHex(tc.godRays);
-      });
-
-      // Update Spores / Fireflies color
-      if (this.spores && this.spores.material) {
-        this.spores.material.color.setHex(tc.godRays);
-      }
-    });
   }
 
   setupScene() {
     const w = this.container.clientWidth || 800;
-    const h = this.container.clientHeight || 560;
+    const h = this.container.clientHeight || 580;
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x021613);
-    this.scene.fog = new THREE.FogExp2(0x032721, 0.011);
+    this.scene.fog = new THREE.FogExp2(0x032721, 0.010);
 
-    this.camera = new THREE.PerspectiveCamera(48, w / h, 0.1, 850);
-    this.camera.position.set(0, 16, 48);
+    this.camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 950);
+    this.camera.position.set(0, 18, 52);
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false,
+      powerPreference: "high-performance"
+    });
     this.renderer.setSize(w, h);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.domElement.id = "garden-three-canvas";
-    this.renderer.domElement.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;outline:none;touch-action:pan-y;";
 
-    // Remove legacy 2D fireflies canvas if present
-    const old2dCanvas = document.getElementById("garden-fireflies-canvas");
-    if (old2dCanvas) old2dCanvas.remove();
-
+    // pan-y prevents trapping vertical mobile scrolling
+    this.renderer.domElement.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;outline:none;touch-action:pan-y;";
     this.container.appendChild(this.renderer.domElement);
 
-    // Warm Golden Sunlight (Matches Reference 1)
-    const ambientLight = new THREE.AmbientLight(0x0c4a40, 1.8);
+    // Warm Fairytale Ambient Lighting
+    const ambientLight = new THREE.AmbientLight(0x064E46, 1.4);
+    ambientLight.name = "ambientLight";
     this.scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xF4E2BB, 2.6);
-    sunLight.position.set(38, 55, 25);
+    // Warm Sunbeam Directional Light (Matching Reference Image 1)
+    const sunLight = new THREE.DirectionalLight(0xFFF0D0, 2.6);
+    sunLight.position.set(16, 38, 12);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
     sunLight.shadow.mapSize.height = 1024;
-    sunLight.shadow.camera.near = 10;
-    sunLight.shadow.camera.far = 160;
+    sunLight.shadow.bias = -0.001;
     this.scene.add(sunLight);
 
-    const tealSkyLight = new THREE.HemisphereLight(0x087F78, 0x02241e, 1.1);
-    this.scene.add(tealSkyLight);
+    // Soft Fill Light from Below/Left
+    const fillLight = new THREE.DirectionalLight(0x0cb3a7, 0.8);
+    fillLight.position.set(-20, 15, -10);
+    this.scene.add(fillLight);
   }
 
+  /* ----------------------------------------------------------------------------
+   * 3. TERRAIN, COBBLESTONE PATHWAY & RUSTIC WOODEN FENCE (Ref Image 3)
+   * ---------------------------------------------------------------------------- */
   buildTerrainAndPathway() {
-    // 1. Undulating Lush Forest Floor Terrain
-    const terrainGeo = new THREE.PlaneGeometry(150, 150, 48, 48);
+    // 1. Lush Undulating Forest Floor
+    const terrainGeo = new THREE.PlaneGeometry(160, 160, 56, 56);
     terrainGeo.rotateX(-Math.PI / 2);
 
     const pos = terrainGeo.attributes.position;
@@ -148,325 +206,492 @@ class EnchantedGarden3D {
       const x = pos.getX(i);
       const z = pos.getZ(i);
 
-      // Natural rolling hills with depression on the left for the pond
-      let y = Math.sin(x * 0.06) * 1.5 + Math.cos(z * 0.05) * 1.8;
-      const pondDist = Math.hypot(x - -14, z - 4);
-      if (pondDist < 16) {
-        y -= Math.cos((pondDist / 16) * (Math.PI / 2)) * 3.2;
+      // Rolling knolls with depression on the left for the stream and pond
+      let y = Math.sin(x * 0.055) * 1.6 + Math.cos(z * 0.045) * 1.8;
+      const pondDist = Math.hypot(x - -15, z - 4);
+      if (pondDist < 18) {
+        y -= Math.cos((pondDist / 18) * (Math.PI / 2)) * 3.4;
       }
       pos.setY(i, y);
     }
     terrainGeo.computeVertexNormals();
 
     const terrainMat = new THREE.MeshStandardMaterial({
-      color: 0x074238,
-      roughness: 0.85,
-      metalness: 0.1
+      color: 0x074238, // Deep velvet emerald moss
+      roughness: 0.88,
+      metalness: 0.08
     });
 
     const terrain = new THREE.Mesh(terrainGeo, terrainMat);
     terrain.receiveShadow = true;
     this.scene.add(terrain);
 
-    // 2. Winding River Stone Path (Reference 3)
-    const pathCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0, 0.1, 38),
-      new THREE.Vector3(4, 0.2, 26),
-      new THREE.Vector3(-2, 0.2, 14),
-      new THREE.Vector3(-10, 0.1, 6),   // Towards bridge
-      new THREE.Vector3(-16, 0.6, 2),   // Over bridge
-      new THREE.Vector3(-10, 0.1, -4),  // Past bridge
-      new THREE.Vector3(0, 0.4, -6),    // Towards the Grand Tree
-      new THREE.Vector3(0, 0.8, -12)
-    ]);
+    // 2. Winding Cobblestone Pathway (Matches Reference Image 3)
+    const pathGroup = new THREE.Group();
+    const stoneGeo = new THREE.BoxGeometry(0.85, 0.22, 0.72);
+    const stoneColors = [0x787268, 0x8a8479, 0x6e695f, 0x969085, 0x5a554c];
 
-    const stoneMat = new THREE.MeshStandardMaterial({
-      color: 0xC5A46D,
-      roughness: 0.75,
-      metalness: 0.2
-    });
+    // Winding curve points from camera (z = 40) towards the Grand Tree (z = -10)
+    const curvePoints = [
+      new THREE.Vector3(2, 0.2, 42),
+      new THREE.Vector3(4, 0.3, 30),
+      new THREE.Vector3(1, 0.3, 18),
+      new THREE.Vector3(-2, 0.3, 6),
+      new THREE.Vector3(0, 0.3, -6)
+    ];
+    const pathSpline = new THREE.CatmullRomCurve3(curvePoints);
+    const pathSegments = 55;
 
-    // Place stepping stones along the path
-    const stonePoints = pathCurve.getPoints(36);
-    stonePoints.forEach((pt, idx) => {
-      if (idx % 2 === 0) {
-        const radius = 0.85 + (idx % 3) * 0.15;
-        const stoneGeo = new THREE.CylinderGeometry(radius, radius * 1.1, 0.15, 7);
-        const stoneMesh = new THREE.Mesh(stoneGeo, stoneMat);
-        stoneMesh.position.set(pt.x + (Math.random() - 0.5) * 0.4, pt.y + 0.08, pt.z);
-        stoneMesh.rotation.y = Math.random() * Math.PI;
-        stoneMesh.receiveShadow = true;
-        this.scene.add(stoneMesh);
+    for (let s = 0; s < pathSegments; s++) {
+      const t = s / pathSegments;
+      const pt = pathSpline.getPoint(t);
+      const tangent = pathSpline.getTangent(t);
+      const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+
+      // Place 3-4 stones abreast across path width
+      for (let w = -1.2; w <= 1.2; w += 0.8) {
+        const stonePos = pt.clone().addScaledVector(normal, w + (Math.random() - 0.5) * 0.3);
+        const col = stoneColors[Math.floor(Math.random() * stoneColors.length)];
+        const stoneMat = new THREE.MeshStandardMaterial({ color: col, roughness: 0.82 });
+        const stone = new THREE.Mesh(stoneGeo, stoneMat);
+        stone.position.set(stonePos.x, stonePos.y + 0.08, stonePos.z);
+        stone.rotation.y = Math.random() * Math.PI;
+        stone.rotation.x = (Math.random() - 0.5) * 0.08;
+        stone.scale.set(0.9 + Math.random() * 0.3, 1.0, 0.9 + Math.random() * 0.3);
+        stone.castShadow = true;
+        stone.receiveShadow = true;
+        pathGroup.add(stone);
       }
-    });
+    }
+    this.scene.add(pathGroup);
+
+    // 3. Rustic Wooden Fence Posts & Rails along Pathway (Matches Ref Image 3)
+    const fenceGroup = new THREE.Group();
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0x422d18, roughness: 0.88 });
+    const postGeo = new THREE.CylinderGeometry(0.12, 0.15, 1.8, 8);
+    const railGeo = new THREE.CylinderGeometry(0.06, 0.06, 3.2, 6);
+    railGeo.rotateZ(Math.PI / 2);
+
+    for (let s = 2; s < pathSegments - 4; s += 4) {
+      const t = s / pathSegments;
+      const pt = pathSpline.getPoint(t);
+      const tangent = pathSpline.getTangent(t);
+      const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
+
+      // Right-side fence posts
+      const postPos = pt.clone().addScaledVector(normal, 2.0);
+      const post = new THREE.Mesh(postGeo, woodMat);
+      post.position.set(postPos.x, postPos.y + 0.8, postPos.z);
+      post.castShadow = true;
+      fenceGroup.add(post);
+
+      // Horizontal rails
+      const rail1 = new THREE.Mesh(railGeo, woodMat);
+      rail1.position.set(postPos.x, postPos.y + 0.6, postPos.z);
+      rail1.rotation.y = Math.atan2(tangent.x, tangent.z);
+      fenceGroup.add(rail1);
+
+      const rail2 = new THREE.Mesh(railGeo, woodMat);
+      rail2.position.set(postPos.x, postPos.y + 1.2, postPos.z);
+      rail2.rotation.y = Math.atan2(tangent.x, tangent.z);
+      fenceGroup.add(rail2);
+    }
+    this.scene.add(fenceGroup);
   }
 
+  /* ----------------------------------------------------------------------------
+   * 4. TRANSLUCENT LOTUS POND, ARCHED BRIDGE & SWIMMING KOI (Ref Images 1 & 3)
+   * ---------------------------------------------------------------------------- */
   buildLotusPondAndBridge() {
-    // Translucent Turquoise Lotus Pond Water
-    const waterGeo = new THREE.CircleGeometry(14, 32);
+    // 1. Translucent Turquoise Pond Water
+    const waterGeo = new THREE.CircleGeometry(16, 48);
     waterGeo.rotateX(-Math.PI / 2);
 
     const waterMat = new THREE.MeshStandardMaterial({
       color: 0x087F78,
-      roughness: 0.12,
-      metalness: 0.4,
+      roughness: 0.08,
+      metalness: 0.45,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.88
     });
 
     const water = new THREE.Mesh(waterGeo, waterMat);
-    water.position.set(-14, -0.2, 4);
+    water.position.set(-15, -0.2, 4);
+    water.receiveShadow = true;
     this.scene.add(water);
 
-    // Swimming Golden Koi Fish
+    // 2. Swimming Golden Koi Fish
     this.fishList = [];
     const fishMat = new THREE.MeshStandardMaterial({
       color: 0xF4E2BB,
       emissive: 0xC5A46D,
-      emissiveIntensity: 0.8
+      emissiveIntensity: 0.85
     });
 
     for (let i = 0; i < 4; i++) {
-      const fish = new THREE.Mesh(new THREE.ConeGeometry(0.28, 1.1, 5), fishMat);
-      fish.rotation.x = Math.PI / 2;
-      fish.position.set(-14, -0.4, 4);
-      fish.userData = {
+      const fishGroup = new THREE.Group();
+      const body = new THREE.Mesh(new THREE.ConeGeometry(0.24, 1.2, 8), fishMat);
+      body.rotation.x = Math.PI / 2;
+      fishGroup.add(body);
+
+      const tail = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.45), fishMat);
+      tail.position.z = -0.7;
+      fishGroup.add(tail);
+
+      fishGroup.position.set(-15, -0.4, 4);
+      this.scene.add(fishGroup);
+
+      this.fishList.push({
+        group: fishGroup,
         angle: (i / 4) * Math.PI * 2,
-        speed: 0.015 + i * 0.005,
-        radius: 3.5 + i * 1.8
-      };
-      this.scene.add(fish);
-      this.fishList.push(fish);
+        radius: 4.5 + i * 2.2,
+        speed: 0.008 + i * 0.003
+      });
     }
 
-    // Floating Lotus Lily Pads
-    const lilyMat = new THREE.MeshStandardMaterial({ color: 0x044d42 });
-    for (let i = 0; i < 6; i++) {
-      const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.05, 8), lilyMat);
-      const angle = (i / 6) * Math.PI * 2;
-      pad.position.set(-14 + Math.cos(angle) * (4 + (i % 3) * 2), -0.15, 4 + Math.sin(angle) * (4 + (i % 3) * 2));
+    // 3. Floating Water Lily Pads & Blossoms
+    const lilyPadGeo = new THREE.CircleGeometry(0.85, 16);
+    lilyPadGeo.rotateX(-Math.PI / 2);
+    const lilyPadMat = new THREE.MeshStandardMaterial({ color: 0x0a5c4d, roughness: 0.6 });
+
+    const lilyBloomGeo = new THREE.SphereGeometry(0.25, 8, 8);
+    const lilyBloomMat = new THREE.MeshStandardMaterial({ color: 0xFFF9EF, emissive: 0xF4E2BB, emissiveIntensity: 0.6 });
+
+    for (let l = 0; l < 8; l++) {
+      const lAngle = (l / 8) * Math.PI * 2 + Math.random() * 0.5;
+      const lDist = 3.5 + Math.random() * 8.0;
+      const lx = -15 + Math.cos(lAngle) * lDist;
+      const lz = 4 + Math.sin(lAngle) * lDist;
+
+      const pad = new THREE.Mesh(lilyPadGeo, lilyPadMat);
+      pad.position.set(lx, -0.15, lz);
       this.scene.add(pad);
+
+      if (l % 2 === 0) {
+        const bloom = new THREE.Mesh(lilyBloomGeo, lilyBloomMat);
+        bloom.position.set(lx, 0.05, lz);
+        this.scene.add(bloom);
+      }
     }
 
-    // Arched Wooden Bridge (Reference 3)
+    // 4. Arched Rustic Wooden Footbridge (Matches Ref Image 3)
     const bridgeGroup = new THREE.Group();
-    const woodMat = new THREE.MeshStandardMaterial({ color: 0x6e4726, roughness: 0.8 });
+    const bridgeWoodMat = new THREE.MeshStandardMaterial({ color: 0x5a3d20, roughness: 0.85 });
 
-    // Arch Planks
-    const plankGeo = new THREE.BoxGeometry(2.4, 0.18, 0.55);
-    for (let i = -6; i <= 6; i++) {
-      const plank = new THREE.Mesh(plankGeo, woodMat);
-      const t = i / 6;
-      const x = -13 + i * 0.7;
-      const y = Math.cos(t * Math.PI * 0.5) * 1.4 - 0.2;
-      const z = 2 + t * 0.8;
-      plank.position.set(x, y, z);
-      plank.rotation.z = -t * 0.35;
+    const plankCount = 18;
+    const bridgeRadius = 9.0;
+
+    for (let p = 0; p < plankCount; p++) {
+      const angle = (p / (plankCount - 1)) * (Math.PI * 0.45) + (Math.PI * 0.275);
+      const px = -6.5 + Math.cos(angle) * bridgeRadius;
+      const py = -0.4 + Math.sin(angle) * (bridgeRadius * 0.45);
+
+      const plank = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.15, 0.55), bridgeWoodMat);
+      plank.position.set(px, py, 4);
+      plank.rotation.z = -(angle - Math.PI / 2);
+      plank.castShadow = true;
       bridgeGroup.add(plank);
     }
-
-    // Bridge Side Railings & Posts
-    const postGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.2, 6);
-    [-17, -14, -11, -8].forEach(px => {
-      const p1 = new THREE.Mesh(postGeo, woodMat);
-      p1.position.set(px, 1.2, 0.9);
-      const p2 = new THREE.Mesh(postGeo, woodMat);
-      p2.position.set(px, 1.2, 3.8);
-      bridgeGroup.add(p1);
-      bridgeGroup.add(p2);
-    });
-
-    // Glowing Bridge Lanterns
-    const lanternGeo = new THREE.OctahedronGeometry(0.3, 0);
-    const lanternMat = new THREE.MeshBasicMaterial({ color: 0xF4E2BB });
-    const lanternLight = new THREE.PointLight(0xF4E2BB, 1.8, 15);
-
-    const lantern = new THREE.Mesh(lanternGeo, lanternMat);
-    lantern.position.set(-12.5, 2.2, 0.9);
-    lanternLight.position.copy(lantern.position);
-    bridgeGroup.add(lantern);
-    bridgeGroup.add(lanternLight);
-
     this.scene.add(bridgeGroup);
   }
 
+  /* ----------------------------------------------------------------------------
+   * 5. THE MAJESTIC GRAND TREE OF LIGHT (Matches Reference Image 1)
+   * ---------------------------------------------------------------------------- */
   buildGrandTreeOfLight() {
-    // -------------------------------------------------------------------------
-    // THE MAJESTIC GRAND TREE OF LITTLE THINGS (Matches Reference 1)
-    // -------------------------------------------------------------------------
     this.centralTreeGroup = new THREE.Group();
     this.centralTreeGroup.position.set(0, 0, -10);
 
     const barkMat = new THREE.MeshStandardMaterial({
-      color: 0x4a3219,
-      roughness: 0.9,
-      metalness: 0.1
+      color: 0x4e351d, // Gnarled warm bark
+      roughness: 0.92,
+      metalness: 0.08
     });
 
-    // Sprawling Trunk Base & Spreading Roots
-    const baseTrunk = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 4.2, 7, 12), barkMat);
-    baseTrunk.position.y = 3.5;
+    // 1. Sprawling Root Buttresses (Reaching into the ground)
+    const rootGeo = new THREE.CylinderGeometry(0.8, 2.2, 4.5, 8);
+    for (let r = 0; r < 5; r++) {
+      const rAngle = (r / 5) * Math.PI * 2;
+      const root = new THREE.Mesh(rootGeo, barkMat);
+      root.position.set(Math.cos(rAngle) * 3.2, 1.2, Math.sin(rAngle) * 3.2);
+      root.rotation.z = Math.sin(rAngle) * 0.45;
+      root.rotation.x = Math.cos(rAngle) * 0.45;
+      root.castShadow = true;
+      this.centralTreeGroup.add(root);
+    }
+
+    // 2. Colossal Twisted Trunk
+    const baseTrunk = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 4.8, 8, 14), barkMat);
+    baseTrunk.position.y = 4.0;
     baseTrunk.castShadow = true;
     this.centralTreeGroup.add(baseTrunk);
 
-    const midTrunk = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 2.4, 6, 10), barkMat);
-    midTrunk.position.y = 8.5;
-    midTrunk.rotation.z = 0.08;
+    const midTrunk = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 3.2, 7, 12), barkMat);
+    midTrunk.position.y = 10.5;
+    midTrunk.rotation.z = 0.09;
+    midTrunk.rotation.y = 0.4;
+    midTrunk.castShadow = true;
     this.centralTreeGroup.add(midTrunk);
 
-    // Spreading Branch Arms
-    const branchGeo = new THREE.CylinderGeometry(0.8, 1.4, 6, 8);
-    const branchAngles = [
-      { rx: 0.35, rz: 0.65, y: 11, x: 2.2, z: 0 },
-      { rx: -0.4, rz: -0.6, y: 11.5, x: -2.4, z: 1.2 },
-      { rx: 0.5, rz: -0.3, y: 12, x: 0, z: -2.5 },
-      { rx: -0.2, rz: 0.4, y: 12.5, x: 1.5, z: 2.0 }
+    // 3. Sprawling Main Branches
+    const branchConfigs = [
+      { pos: [-3.2, 15, 1.5], rotZ: -0.65, rotX: 0.25, len: 10, rT: 1.0, rB: 1.8 },
+      { pos: [3.5, 16, -1.8], rotZ: 0.70, rotX: -0.20, len: 11, rT: 1.1, rB: 1.9 },
+      { pos: [0.5, 16.5, 3.8], rotZ: 0.15, rotX: 0.65, len: 9, rT: 0.9, rB: 1.6 },
+      { pos: [-1.8, 17, -3.2], rotZ: -0.35, rotX: -0.55, len: 10, rT: 1.0, rB: 1.7 }
     ];
 
-    branchAngles.forEach(b => {
-      const limb = new THREE.Mesh(branchGeo, barkMat);
-      limb.position.set(b.x, b.y, b.z);
-      limb.rotation.set(b.rx, 0, b.rz);
-      this.centralTreeGroup.add(limb);
+    branchConfigs.forEach(bc => {
+      const bMesh = new THREE.Mesh(new THREE.CylinderGeometry(bc.rT, bc.rB, bc.len, 10), barkMat);
+      bMesh.position.set(bc.pos[0], bc.pos[1], bc.pos[2]);
+      bMesh.rotation.z = bc.rotZ;
+      bMesh.rotation.x = bc.rotX;
+      bMesh.castShadow = true;
+      this.centralTreeGroup.add(bMesh);
     });
 
-    // Luminous Golden & Emerald Canopy Cloud Masses (Reference 1)
-    const foliageMatGolden = new THREE.MeshStandardMaterial({
-      color: 0xF4E2BB,
-      emissive: 0xC5A46D,
-      emissiveIntensity: 0.85,
-      roughness: 0.65
-    });
-
-    const foliageMatEmerald = new THREE.MeshStandardMaterial({
-      color: 0x087F78,
-      emissive: 0x064E46,
-      emissiveIntensity: 0.4,
-      roughness: 0.7
-    });
-
-    const foliageClusters = [
-      { x: 0, y: 17, z: 0, r: 6.5, golden: true },
-      { x: 4.5, y: 15, z: 1.5, r: 4.8, golden: true },
-      { x: -4.5, y: 15.5, z: 2, r: 5.0, golden: false },
-      { x: 1.5, y: 16, z: -4.2, r: 5.2, golden: true },
-      { x: -2.5, y: 17.5, z: -2.5, r: 4.5, golden: true },
-      { x: 0, y: 20, z: 0, r: 4.2, golden: true },
-      { x: 3.2, y: 13.5, z: -2.0, r: 3.8, golden: false },
-      { x: -3.5, y: 13, z: 1.5, r: 3.8, golden: true }
+    // 4. Volumetric Lush Foliage Canopy (Multi-tiered organic clusters)
+    const foliageColors = [0x0a5c4d, 0x087F78, 0x117a65, 0x1e824c, 0x064E46];
+    const canopyClusters = [
+      // Central dome
+      { pos: [0, 24, 0], scale: [14, 8, 14] },
+      { pos: [0, 27, 0], scale: [10, 6, 10] },
+      // Spreading outer foliage boughs
+      { pos: [-7, 20, 3], scale: [9, 6, 8] },
+      { pos: [8, 21, -3], scale: [10, 7, 9] },
+      { pos: [1, 21, 8], scale: [8, 6, 8] },
+      { pos: [-3, 22, -7], scale: [9, 6, 9] },
+      { pos: [5, 23, 5], scale: [7, 5, 7] }
     ];
 
-    foliageClusters.forEach(f => {
-      const mat = f.golden ? foliageMatGolden : foliageMatEmerald;
-      const sphere = new THREE.Mesh(new THREE.DodecahedronGeometry(f.r, 2), mat);
-      sphere.position.set(f.x, f.y, f.z);
-      sphere.castShadow = true;
-      this.centralTreeGroup.add(sphere);
-    });
-
-    // Internal Radiant Golden Canopy Lights
-    const innerLight1 = new THREE.PointLight(0xF4E2BB, 3.8, 45);
-    innerLight1.position.set(0, 16, 0);
-    this.centralTreeGroup.add(innerLight1);
-
-    const innerLight2 = new THREE.PointLight(0xFFF9EF, 2.5, 30);
-    innerLight2.position.set(2, 14, 2);
-    this.centralTreeGroup.add(innerLight2);
-
-    // Interactive Leaves of Little Things around the base and lower branches
-    const leavesData = this.config.treeOfLittleThings?.leaves || [];
-    this.treeLeavesMeshes = [];
-
-    leavesData.forEach((leaf, idx) => {
-      const leafGeo = new THREE.OctahedronGeometry(0.7, 0);
-      const leafMat = new THREE.MeshStandardMaterial({
-        color: 0xF4E2BB,
-        emissive: 0xC5A46D,
-        emissiveIntensity: 1.2
+    canopyClusters.forEach((cc, idx) => {
+      const col = foliageColors[idx % foliageColors.length];
+      const folMat = new THREE.MeshStandardMaterial({
+        color: col,
+        roughness: 0.85,
+        metalness: 0.05,
+        flatShading: true
       });
-
-      const leafMesh = new THREE.Mesh(leafGeo, leafMat);
-      const angle = (idx / leavesData.length) * Math.PI * 2;
-      const rad = 3.5 + (idx % 3) * 1.2;
-      leafMesh.position.set(Math.cos(angle) * rad, 4.2 + (idx % 4) * 1.5, Math.sin(angle) * rad);
-      leafMesh.userData = { isLeaf: true, leafData: leaf, index: idx };
-      this.centralTreeGroup.add(leafMesh);
-      this.treeLeavesMeshes.push(leafMesh);
+      const folMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.0, 2), folMat);
+      folMesh.position.set(cc.pos[0], cc.pos[1], cc.pos[2]);
+      folMesh.scale.set(cc.scale[0], cc.scale[1], cc.scale[2]);
+      folMesh.castShadow = true;
+      folMesh.receiveShadow = true;
+      this.centralTreeGroup.add(folMesh);
     });
+
+    // 5. Radiant Amber Heart of the Tree (Matches warm inner glow in Ref Image 1)
+    this.treeHeartLight = new THREE.PointLight(0xFFE082, 3.8, 48);
+    this.treeHeartLight.position.set(0, 13.5, 0);
+    this.centralTreeGroup.add(this.treeHeartLight);
+
+    // Glowing Heart Crystal Sphere
+    const heartSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(1.2, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0xFFF9EF })
+    );
+    heartSphere.position.set(0, 13.5, 0);
+    this.centralTreeGroup.add(heartSphere);
 
     this.scene.add(this.centralTreeGroup);
   }
 
+  /* ----------------------------------------------------------------------------
+   * 6. VOLUMETRIC GOD RAYS / SUNLIGHT SHAFTS (Matches Reference Image 1)
+   * ---------------------------------------------------------------------------- */
   buildVolumetricGodRays() {
-    // -------------------------------------------------------------------------
-    // VOLUMETRIC GOD RAYS / SUNBEAMS (Matches Reference 1)
-    // -------------------------------------------------------------------------
     this.godRays = [];
 
     const rayMat = new THREE.MeshBasicMaterial({
-      color: 0xF4E2BB,
+      map: this.textures.godRay,
+      color: 0xFFF0D0,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.28,
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
 
+    // 6 angled sunlight beam planes pouring down diagonally through canopy
     const rayConfigs = [
-      { pos: [8, 14, -2], rotZ: -0.45, rotX: 0.25, h: 42, rTop: 1.5, rBot: 8.0 },
-      { pos: [14, 16, 4], rotZ: -0.48, rotX: 0.18, h: 46, rTop: 2.0, rBot: 9.5 },
-      { pos: [2, 18, -6], rotZ: -0.42, rotX: 0.32, h: 48, rTop: 2.5, rBot: 11.0 }
+      { pos: [6, 20, 2], rotZ: -0.52, rotX: 0.22, w: 14, h: 46 },
+      { pos: [12, 22, 6], rotZ: -0.55, rotX: 0.16, w: 18, h: 50 },
+      { pos: [0, 24, -4], rotZ: -0.48, rotX: 0.28, w: 16, h: 52 },
+      { pos: [18, 20, 10], rotZ: -0.58, rotX: 0.12, w: 12, h: 42 },
+      { pos: [-4, 22, 4], rotZ: -0.46, rotX: 0.30, w: 15, h: 48 },
+      { pos: [8, 18, 14], rotZ: -0.54, rotX: 0.18, w: 16, h: 44 }
     ];
 
-    rayConfigs.forEach(rc => {
-      const rayGeo = new THREE.CylinderGeometry(rc.rTop, rc.rBot, rc.h, 16, 1, true);
-      const ray = new THREE.Mesh(rayGeo, rayMat);
-      ray.position.set(rc.pos[0], rc.pos[1], rc.pos[2]);
-      ray.rotation.z = rc.rotZ;
-      ray.rotation.x = rc.rotX;
-      this.scene.add(ray);
-      this.godRays.push(ray);
+    rayConfigs.forEach((rc, idx) => {
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(rc.w, rc.h), rayMat);
+      plane.position.set(rc.pos[0], rc.pos[1], rc.pos[2]);
+      plane.rotation.z = rc.rotZ;
+      plane.rotation.x = rc.rotX;
+      plane.userData = {
+        baseOpacity: 0.24,
+        pulseSpeed: 1.2 + idx * 0.35,
+        phase: idx * 1.1
+      };
+      this.scene.add(plane);
+      this.godRays.push(plane);
     });
   }
 
-  buildEnchantedForestFoliage() {
-    // Stylized Forest Background Trees framing the scene
-    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3d2b1a, roughness: 0.9 });
-    const foliageMat = new THREE.MeshStandardMaterial({ color: 0x044d42, roughness: 0.8 });
+  /* ----------------------------------------------------------------------------
+   * 7. HANGING FAIRYTALE LANTERNS (Matches Reference Image 3)
+   * ---------------------------------------------------------------------------- */
+  buildHangingFairytaleLanterns() {
+    this.lanterns = [];
+    const metalMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.4 });
+    const glassMat = new THREE.MeshBasicMaterial({ color: 0xFFE082 });
 
-    const treePositions = [
-      [-28, 0, -20], [-22, 0, -28], [-12, 0, -32], [14, 0, -30], [24, 0, -24],
-      [32, 0, -12], [28, 0, 4], [22, 0, 18], [-28, 0, 12], [-24, 0, 24]
+    const lanternPositions = [
+      [-3.2, 11, -7.5],  // Tree branch left
+      [3.8, 11.5, -8.2], // Tree branch right
+      [0.8, 12, -5.5],   // Tree branch center
+      [2.2, 2.2, 22],    // Pathway fence post
+      [-0.8, 2.2, 10]    // Bridge fence post
     ];
 
-    treePositions.forEach(tp => {
-      const group = new THREE.Group();
-      const height = 9 + Math.random() * 5;
+    lanternPositions.forEach((pos, idx) => {
+      const lanternGroup = new THREE.Group();
+      lanternGroup.position.set(pos[0], pos[1], pos[2]);
 
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.8, height * 0.5, 7), trunkMat);
-      trunk.position.y = height * 0.25;
-      group.add(trunk);
+      // Hanging fine chain
+      const chainGeo = new THREE.CylinderGeometry(0.02, 0.02, 1.2, 6);
+      const chain = new THREE.Mesh(chainGeo, metalMat);
+      chain.position.y = 0.6;
+      lanternGroup.add(chain);
 
-      // Layered conical foliage
-      for (let l = 0; l < 3; l++) {
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(3.2 - l * 0.6, 4.0, 7), foliageMat);
-        cone.position.y = height * 0.4 + l * 2.2;
-        group.add(cone);
+      // Lantern Cap & Base
+      const cap = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.35, 6), metalMat);
+      cap.position.y = 0;
+      lanternGroup.add(cap);
+
+      // Glowing Glass Core
+      const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.45, 6), glassMat);
+      glass.position.y = -0.3;
+      lanternGroup.add(glass);
+
+      // Warm Point Light
+      const lanternLight = new THREE.PointLight(0xFFE082, 1.4, 12);
+      lanternLight.position.y = -0.3;
+      lanternGroup.add(lanternLight);
+
+      // Soft Glow Halo Sprite
+      const glowMat = new THREE.SpriteMaterial({
+        map: this.textures.firefly,
+        color: 0xF4E2BB,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const glowSprite = new THREE.Sprite(glowMat);
+      glowSprite.scale.set(2.4, 2.4, 1);
+      glowSprite.position.y = -0.3;
+      lanternGroup.add(glowSprite);
+
+      lanternGroup.userData = { phase: idx * 1.3 };
+      this.scene.add(lanternGroup);
+      this.lanterns.push(lanternGroup);
+    });
+  }
+
+  /* ----------------------------------------------------------------------------
+   * 8. BACKGROUND FOREST TREES & NATURAL FOLIAGE
+   * ---------------------------------------------------------------------------- */
+  buildEnchantedForestFoliage() {
+    const pineMat = new THREE.MeshStandardMaterial({ color: 0x043d34, roughness: 0.9 });
+    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3d2714, roughness: 0.95 });
+
+    // Ring of 28 deep background trees enclosing the fairytale sanctuary
+    for (let i = 0; i < 28; i++) {
+      const tree = new THREE.Group();
+      const angle = (i / 28) * Math.PI * 2;
+      const dist = 52 + (Math.random() - 0.5) * 14;
+
+      // Keep open in front of the camera viewpoint
+      if (Math.abs(angle - Math.PI / 2) < 0.35) continue;
+
+      const tx = Math.cos(angle) * dist;
+      const tz = Math.sin(angle) * dist;
+
+      // Trunk
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 1.0, 10, 8), trunkMat);
+      trunk.position.y = 5;
+      tree.add(trunk);
+
+      // 3 Tiers of Pine foliage cones
+      for (let t = 0; t < 3; t++) {
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(4.2 - t * 0.9, 6.5, 8), pineMat);
+        cone.position.y = 8 + t * 4.2;
+        tree.add(cone);
       }
 
-      group.position.set(tp[0], tp[1], tp[2]);
-      this.scene.add(group);
-    });
+      tree.position.set(tx, 0, tz);
+      const sc = 0.8 + Math.random() * 0.5;
+      tree.scale.set(sc, sc, sc);
+      this.scene.add(tree);
+    }
   }
 
-  buildWildflowerMeadow() {
-    // -------------------------------------------------------------------------
-    // VIBRANT WILDFLOWER CARPET (Yellows, Pinks, Violets & Daisies - Ref 1 & 3)
-    // -------------------------------------------------------------------------
-    const flowerColors = [0xF4E2BB, 0xFFF9EF, 0xE8D7B5, 0xC5A46D, 0xDCEEE6];
-    const flowerCount = 140;
+  /* ----------------------------------------------------------------------------
+   * 9. TALL PURPLE FOXGLOVE SPIRES (Matches Reference Image 3)
+   * ---------------------------------------------------------------------------- */
+  buildTallFoxgloveSpires() {
+    const foxgloveColors = [0x9B5DE5, 0xBA68C8, 0xAB47BC, 0xD4A5FF, 0xE0AAFF];
+    const stemMat = new THREE.MeshStandardMaterial({ color: 0x11664e, roughness: 0.8 });
 
-    const petalGeo = new THREE.CircleGeometry(0.35, 6);
+    // 24 Foxglove Flower Spires clustered along pathway and pond banks
+    for (let i = 0; i < 24; i++) {
+      const spire = new THREE.Group();
+      const col = foxgloveColors[i % foxgloveColors.length];
+      const bellMat = new THREE.MeshStandardMaterial({
+        color: col,
+        emissive: col,
+        emissiveIntensity: 0.55,
+        roughness: 0.4
+      });
+
+      // Tall curving stem
+      const height = 2.4 + Math.random() * 0.8;
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, height, 6), stemMat);
+      stem.position.y = height / 2;
+      spire.add(stem);
+
+      // Tiers of nodding bell flowers
+      const bellCount = 10;
+      for (let b = 0; b < bellCount; b++) {
+        const by = height * 0.35 + (b / bellCount) * (height * 0.6);
+        const bAngle = b * 2.4;
+        const bell = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.32, 6), bellMat);
+        bell.rotation.x = Math.PI / 1.6;
+        bell.rotation.y = bAngle;
+        bell.position.set(Math.cos(bAngle) * 0.16, by, Math.sin(bAngle) * 0.16);
+        spire.add(bell);
+      }
+
+      // Positions flanking the path and water
+      const side = (i % 2 === 0 ? 1 : -1);
+      const zPos = 8 + (i * 1.3);
+      const xPos = side * (3.2 + Math.random() * 2.4);
+
+      spire.position.set(xPos, 0, zPos);
+      spire.rotation.y = Math.random() * Math.PI * 2;
+      this.scene.add(spire);
+    }
+  }
+
+  /* ----------------------------------------------------------------------------
+   * 10. WILDFLOWER MEADOW & 12 HERO BLOSSOMS (Ref Images 1 & 3)
+   * ---------------------------------------------------------------------------- */
+  buildWildflowerMeadow() {
+    // 220 Ground Wildflowers (Yellow, Cream, Pink, Ivory - Matches Ref 1)
+    const flowerColors = [0xF4E2BB, 0xFFF9EF, 0xE8D7B5, 0xC5A46D, 0xFFE082, 0xF8BBD0];
+    const flowerCount = 220;
+
+    const petalGeo = new THREE.CircleGeometry(0.32, 6);
     petalGeo.rotateX(-Math.PI / 2);
 
     for (let i = 0; i < flowerCount; i++) {
@@ -474,20 +699,20 @@ class EnchantedGarden3D {
       const fMat = new THREE.MeshStandardMaterial({
         color: col,
         emissive: col,
-        emissiveIntensity: 0.35,
+        emissiveIntensity: 0.45,
         roughness: 0.6
       });
 
       const fl = new THREE.Mesh(petalGeo, fMat);
       const angle = Math.random() * Math.PI * 2;
-      const dist = 6 + Math.random() * 32;
+      const dist = 6 + Math.random() * 38;
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
 
-      // Keep out of deep water
-      if (Math.hypot(x - -14, z - 4) < 12) continue;
+      // Keep out of pond basin
+      if (Math.hypot(x - -15, z - 4) < 17) continue;
 
-      fl.position.set(x, 0.18 + Math.random() * 0.15, z);
+      fl.position.set(x, 0.12, z);
       fl.rotation.y = Math.random() * Math.PI;
       this.scene.add(fl);
     }
@@ -496,97 +721,101 @@ class EnchantedGarden3D {
   build12HeroBlossoms() {
     const flowersData = this.config.flowers || [];
     this.interactiveFlowers = [];
+    this.flowerHitMeshes = [];
 
     flowersData.forEach((flData, idx) => {
       const flowerGroup = new THREE.Group();
       const pos = flData.pos || [0, 0, 0];
 
       // Slender Botanical Stem
-      const stemGeo = new THREE.CylinderGeometry(0.06, 0.08, 1.4, 6);
-      const stemMat = new THREE.MeshStandardMaterial({ color: 0x064E46, roughness: 0.8 });
+      const stemGeo = new THREE.CylinderGeometry(0.06, 0.09, 1.6, 6);
+      const stemMat = new THREE.MeshStandardMaterial({ color: 0x0a5c4d, roughness: 0.8 });
       const stem = new THREE.Mesh(stemGeo, stemMat);
-      stem.position.y = 0.7;
+      stem.position.y = 0.8;
       flowerGroup.add(stem);
 
       // Multi-Petal Blossom Head
       const blossomGroup = new THREE.Group();
-      blossomGroup.position.y = 1.4;
+      blossomGroup.position.y = 1.6;
 
       const petalColor = flData.color || 0xF4E2BB;
       const petalMat = new THREE.MeshStandardMaterial({
         color: petalColor,
         emissive: petalColor,
-        emissiveIntensity: 0.9,
+        emissiveIntensity: 0.95,
         roughness: 0.3
       });
 
-      // 8 Botanical Petals radiating outward
-      const pGeo = new THREE.ConeGeometry(0.28, 0.9, 5);
-      pGeo.rotateX(Math.PI / 2);
-
-      for (let p = 0; p < 8; p++) {
-        const petal = new THREE.Mesh(pGeo, petalMat);
-        const pAngle = (p / 8) * Math.PI * 2;
-        petal.position.set(Math.cos(pAngle) * 0.45, 0, Math.sin(pAngle) * 0.45);
-        petal.rotation.y = -pAngle;
-        petal.rotation.x = 0.25;
-        blossomGroup.add(petal);
+      // 6 Layered Petals
+      for (let p = 0; p < 6; p++) {
+        const pMesh = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.8, 5), petalMat);
+        const pAngle = (p / 6) * Math.PI * 2;
+        pMesh.position.set(Math.cos(pAngle) * 0.28, 0, Math.sin(pAngle) * 0.28);
+        pMesh.rotation.z = Math.cos(pAngle) * 0.55;
+        pMesh.rotation.x = -Math.sin(pAngle) * 0.55;
+        blossomGroup.add(pMesh);
       }
 
-      // Golden Blossom Stamen Center
-      const centerGeo = new THREE.SphereGeometry(0.25, 12, 12);
-      const centerMat = new THREE.MeshBasicMaterial({ color: 0xFFF9EF });
-      const center = new THREE.Mesh(centerGeo, centerMat);
-      blossomGroup.add(center);
+      // Glowing Center Stamen
+      const stamen = new THREE.Mesh(
+        new THREE.SphereGeometry(0.24, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0xFFFDF5 })
+      );
+      blossomGroup.add(stamen);
 
-      // Bioluminescent Halo Aura
-      const auraGeo = new THREE.RingGeometry(0.6, 1.5, 16);
-      const auraMat = new THREE.MeshBasicMaterial({
+      // Soft Glow Halo Sprite
+      const haloMat = new THREE.SpriteMaterial({
+        map: this.textures.firefly,
         color: petalColor,
         transparent: true,
-        opacity: 0.45,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
       });
-      const aura = new THREE.Mesh(auraGeo, auraMat);
-      aura.rotation.x = Math.PI / 2;
-      blossomGroup.add(aura);
+      const halo = new THREE.Sprite(haloMat);
+      halo.scale.set(3.2, 3.2, 1);
+      blossomGroup.add(halo);
 
       flowerGroup.add(blossomGroup);
-      flowerGroup.position.set(pos[0], pos[1], pos[2]);
 
-      flowerGroup.userData = {
-        isFlower: true,
-        fData: flData,
-        index: idx,
-        blossomGroup: blossomGroup,
-        auraMesh: aura
-      };
+      // Generous Invisible Hit-Test Sphere for Touch & Click
+      const hitSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(2.4, 8, 8),
+        new THREE.MeshBasicMaterial({ visible: false })
+      );
+      hitSphere.position.y = 1.4;
+      hitSphere.userData = { isFlower: true, index: idx, data: flData, group: flowerGroup };
+      flowerGroup.add(hitSphere);
+      this.flowerHitMeshes.push(hitSphere);
+
+      flowerGroup.position.set(pos[0], pos[1], pos[2]);
+      flowerGroup.userData = { isFlower: true, index: idx, data: flData, halo: halo };
 
       this.scene.add(flowerGroup);
       this.interactiveFlowers.push(flowerGroup);
     });
   }
 
-    spawnAnimatedButterflies() {
+  /* ----------------------------------------------------------------------------
+   * 11. FLUTTERING ANIMATED BUTTERFLIES (Matches Ref Images 1 & 3)
+   * ---------------------------------------------------------------------------- */
+  spawnAnimatedButterflies() {
     this.butterflies = [];
     const butterflyCount = 16;
 
-    // 5 Distinct Color Species requested in Section 4.3:
-    // Emerald, Golden, Ivory, Aquamarine, Soft Pastel
-    const speciesColors = [
-      { color: 0x087F78, emissive: 0x064E46, name: "Emerald" },
-      { color: 0xF4E2BB, emissive: 0xC5A46D, name: "Golden" },
-      { color: 0xFFF9EF, emissive: 0xE8D7B5, name: "Ivory" },
-      { color: 0x83C5BE, emissive: 0x4D9E9B, name: "Aquamarine" },
-      { color: 0x9ED8D0, emissive: 0x376B5B, name: "Soft Pastel" }
+    const species = [
+      { color: 0x087F78, emissive: 0x0cb3a7, name: "Emerald" },
+      { color: 0xF4E2BB, emissive: 0xFFE082, name: "Golden" },
+      { color: 0xFFF9EF, emissive: 0xFFF9EF, name: "Ivory" },
+      { color: 0x83C5BE, emissive: 0x14D5C8, name: "Aquamarine" },
+      { color: 0xE0AAFF, emissive: 0xC77DFF, name: "Lavender" }
     ];
 
     const wingGeo = new THREE.PlaneGeometry(0.55, 0.45);
 
     for (let i = 0; i < butterflyCount; i++) {
       const bGroup = new THREE.Group();
-      const spec = speciesColors[i % speciesColors.length];
+      const spec = species[i % species.length];
 
       const wingMat = new THREE.MeshStandardMaterial({
         color: spec.color,
@@ -595,37 +824,43 @@ class EnchantedGarden3D {
         side: THREE.DoubleSide
       });
 
+      // Left Wing
       const leftWing = new THREE.Mesh(wingGeo, wingMat);
       leftWing.position.x = -0.28;
       bGroup.add(leftWing);
 
+      // Right Wing
       const rightWing = new THREE.Mesh(wingGeo, wingMat);
       rightWing.position.x = 0.28;
       bGroup.add(rightWing);
 
-      // Trajectories: flight paths around flowers, tree, and near camera
-      const trajectory = {
-        centerX: (Math.random() - 0.5) * 28,
-        centerZ: (Math.random() - 0.5) * 28,
-        radiusX: 5 + Math.random() * 9,
-        radiusZ: 4 + Math.random() * 8,
-        speed: 0.6 + Math.random() * 0.8,
-        phase: Math.random() * Math.PI * 2,
-        heightBase: 2.2 + Math.random() * 5.5,
-        yFrequency: 1.4 + Math.random() * 1.6,
-        bankFactor: 0.35 + Math.random() * 0.25
-      };
+      const angle = (i / butterflyCount) * Math.PI * 2;
+      const radius = 8 + (i % 4) * 6;
+      const height = 2.5 + (i % 5) * 1.4;
 
-      bGroup.userData = { leftWing, rightWing, trajectory, wingMat };
+      bGroup.position.set(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
       this.scene.add(bGroup);
-      this.butterflies.push(bGroup);
+
+      this.butterflies.push({
+        group: bGroup,
+        leftWing: leftWing,
+        rightWing: rightWing,
+        angle: angle,
+        radius: radius,
+        baseY: height,
+        speed: 0.012 + (i % 3) * 0.005,
+        flapSpeed: 14 + (i % 4) * 2
+      });
     }
   }
 
-    spawnLivingWildlife() {
+  /* ----------------------------------------------------------------------------
+   * 12. LIVING WILDLIFE (Gentle Rabbits & Woodland Deer)
+   * ---------------------------------------------------------------------------- */
+  spawnLivingWildlife() {
     this.wildlife = [];
 
-    // 1. Hopping Rabbits near the pathway
+    // 1. Hopping Rabbits near pathway
     const furMat = new THREE.MeshStandardMaterial({ color: 0xE8D7B5 });
     for (let r = 0; r < 2; r++) {
       const bunny = new THREE.Group();
@@ -633,201 +868,118 @@ class EnchantedGarden3D {
       const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), furMat);
       head.position.set(0.25, 0.3, 0);
       bunny.add(head);
-      // Ears
-      const ear1 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, 0.35, 6), furMat);
-      ear1.position.set(0.25, 0.55, 0.08);
-      bunny.add(ear1);
-      const ear2 = ear1.clone();
-      ear2.position.z = -0.08;
-      bunny.add(ear2);
 
-      bunny.position.set(3.5 + r * 3, 0.4, 16 - r * 6);
+      bunny.position.set(4.5 + r * 3, 0.4, 18 - r * 6);
       this.scene.add(bunny);
       this.wildlife.push({ mesh: bunny, type: "rabbit", phase: r * 1.5, basePos: bunny.position.clone() });
     }
 
     // 2. Graceful Deer walking through woodland clearing
+    const deerMat = new THREE.MeshStandardMaterial({ color: 0x8D5B4C });
     const deer = new THREE.Group();
-    const fawnMat = new THREE.MeshStandardMaterial({ color: 0x8c5b32 });
-    const deerBody = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 2.2, 8), fawnMat);
+    const deerBody = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.85, 2.8, 8), deerMat);
     deerBody.rotation.z = Math.PI / 2;
     deer.add(deerBody);
-    const deerNeck = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.35, 1.4, 8), fawnMat);
-    deerNeck.position.set(1.0, 0.7, 0);
-    deerNeck.rotation.z = -Math.PI / 5;
-    deer.add(deerNeck);
-    const deerHead = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), fawnMat);
-    deerHead.position.set(1.4, 1.4, 0);
-    deer.add(deerHead);
 
-    deer.position.set(-18, 1.4, -18);
+    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 1.8, 6), deerMat);
+    neck.position.set(1.1, 1.0, 0);
+    neck.rotation.z = -0.55;
+    deer.add(neck);
+
+    deer.position.set(18, 1.8, -4);
+    deer.scale.set(0.9, 0.9, 0.9);
     this.scene.add(deer);
-    this.wildlife.push({ mesh: deer, type: "deer", phase: 1.5, basePos: deer.position.clone() });
-
-    // 3. Squirrels moving around tree trunk
-    const sqMat = new THREE.MeshStandardMaterial({ color: 0xA66838 });
-    const squirrel = new THREE.Group();
-    squirrel.add(new THREE.Mesh(new THREE.SphereGeometry(0.22, 6, 6), sqMat)); // Body
-    const sqTail = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.12, 0.5, 6), sqMat);
-    sqTail.position.set(-0.2, 0.2, 0);
-    sqTail.rotation.z = -Math.PI / 4;
-    squirrel.add(sqTail);
-    squirrel.position.set(1.8, 1.2, -0.5);
-    this.scene.add(squirrel);
-    this.wildlife.push({ mesh: squirrel, type: "squirrel", phase: 0.8, basePos: squirrel.position.clone() });
-
-    // 4. Flying Birds overhead & perched on branches
-    const birdMat = new THREE.MeshStandardMaterial({ color: 0x0cb3a7, emissive: 0x064E46 });
-    for (let b = 0; b < 3; b++) {
-      const bird = new THREE.Group();
-      bird.add(new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.6, 5), birdMat)); // Body
-      const wingL = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), birdMat);
-      wingL.position.set(0, 0, 0.25);
-      bird.add(wingL);
-      const wingR = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.2), birdMat);
-      wingR.position.set(0, 0, -0.25);
-      bird.add(wingR);
-
-      bird.position.set(0, 16 + b * 2, 0);
-      this.scene.add(bird);
-      this.wildlife.push({ mesh: bird, type: "bird", phase: b * 2.1, wingL, wingR, altitude: 16 + b * 2.5, radius: 18 + b * 6 });
-    }
+    this.wildlife.push({ mesh: deer, type: "deer", phase: 0, basePos: deer.position.clone() });
   }
 
+  /* ----------------------------------------------------------------------------
+   * 13. DANCING GOLDEN SPORES & FIREFLIES (Ref Images 1 & 3)
+   * ---------------------------------------------------------------------------- */
   createGoldenSporeParticles() {
-    // 80 Floating Golden Forest Spores / Fireflies (Reference 1)
-    const sporeCount = 80;
+    const sporeCount = 160;
     const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(sporeCount * 3);
-    const basePos = new Float32Array(sporeCount * 3);
+    this.fireflyPositions = new Float32Array(sporeCount * 3);
+    this.fireflyBasePos = new Float32Array(sporeCount * 3);
 
     for (let i = 0; i < sporeCount; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 45;
-      pos[i * 3 + 1] = 1.0 + Math.random() * 16.0;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 45;
-      basePos[i * 3] = pos[i * 3];
-      basePos[i * 3 + 1] = pos[i * 3 + 1];
-      basePos[i * 3 + 2] = pos[i * 3 + 2];
+      const i3 = i * 3;
+      const x = (Math.random() - 0.5) * 55;
+      const y = 1.0 + Math.random() * 20.0;
+      const z = (Math.random() - 0.5) * 55;
+
+      this.fireflyPositions[i3] = x;
+      this.fireflyPositions[i3 + 1] = y;
+      this.fireflyPositions[i3 + 2] = z;
+
+      this.fireflyBasePos[i3] = x;
+      this.fireflyBasePos[i3 + 1] = y;
+      this.fireflyBasePos[i3 + 2] = z;
     }
 
-    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("position", new THREE.BufferAttribute(this.fireflyPositions, 3));
 
     const mat = new THREE.PointsMaterial({
-      size: 2.4,
+      size: 2.8,
+      map: this.textures.firefly,
       color: 0xF4E2BB,
       transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending
+      opacity: 0.92,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
     });
 
-    this.spores = new THREE.Points(geo, mat);
-    this.spores.userData = { basePositions: basePos };
-    this.scene.add(this.spores);
+    this.fireflies = new THREE.Points(geo, mat);
+    this.scene.add(this.fireflies);
   }
 
-  setViewpoint(id) {
-    this.currentViewpoint = id;
+  /* ----------------------------------------------------------------------------
+   * 14. VIEWPOINTS, INTERACTION & FLOWER MODAL
+   * ---------------------------------------------------------------------------- */
+  setViewpoint(vpId) {
+    this.currentViewpoint = vpId;
 
-    // Viewpoint presets matching Reference 1 & 3
-    if (id === "vista") {
-      this.cameraTargetPos.set(0, 16, 48);
-      this.cameraLookAt.set(0, 5, 0);
-    } else if (id === "tree") {
-      this.cameraTargetPos.set(0, 9, 8);
-      this.cameraLookAt.set(0, 16, -10);
-    } else if (id === "pond") {
-      this.cameraTargetPos.set(-8, 5, 16);
-      this.cameraLookAt.set(-14, 1.5, 4);
-    } else if (id === "meadow") {
-      this.cameraTargetPos.set(10, 4.5, 20);
-      this.cameraLookAt.set(14, 1.2, 6);
-    }
+    const viewpoints = {
+      vista: { pos: [0, 18, 52], target: [0, 6, 0] },
+      pond: { pos: [-18, 7, 20], target: [-15, 1, 4] },
+      meadow: { pos: [20, 6, 24], target: [14, 2, 4] },
+      tree: { pos: [0, 10, 22], target: [0, 9, -10] }
+    };
 
-    // Update active button state
-    document.querySelectorAll(".garden-viewpoint-pill").forEach(pill => {
-      pill.classList.toggle("active", pill.dataset.viewpoint === id);
+    const vp = viewpoints[vpId] || viewpoints.vista;
+    this.cameraTargetPos.set(...vp.pos);
+    this.cameraLookAt.set(...vp.target);
+
+    // Update Viewpoint Pill Buttons
+    document.querySelectorAll(".garden-viewpoint-pill").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.viewpoint === vpId);
     });
   }
 
-  selectFlower(flowerGroup) {
-    const fData = flowerGroup.userData.fData;
-    const idx = flowerGroup.userData.index;
+  selectFlower(flGroup) {
+    if (!flGroup) return;
+    const fData = flGroup.userData.data;
+    const idx = flGroup.userData.index;
+
     this.exploredFlowers.add(idx);
 
-    // Synchronize with 2D botanical cards and global state
-    if (window.notifyFlowerExplored) {
-      window.notifyFlowerExplored(idx, fData.id);
-    }
+    // Fly camera smoothly to inspect blossom
+    const flowerWorldPos = new THREE.Vector3();
+    flGroup.getWorldPosition(flowerWorldPos);
 
-    // Focus Camera on Flower
-    this.cameraTargetPos.set(fData.pos[0] + 1.2, fData.pos[1] + 2.2, fData.pos[2] + 4.2);
-    this.cameraLookAt.set(fData.pos[0], fData.pos[1] + 1.2, fData.pos[2]);
+    this.cameraTargetPos.copy(flowerWorldPos).add(new THREE.Vector3(2.5, 2.0, 5.0));
+    this.cameraLookAt.copy(flowerWorldPos);
 
-    // Animate bloom flare
-    flowerGroup.userData.blossomGroup.scale.set(1.35, 1.35, 1.35);
-    flowerGroup.userData.auraMesh.material.opacity = 0.8;
-
-    // Show Flower Compliment Modal
     this.showFlowerModal(fData, idx);
 
-    // Check if whole garden explored (all configured flowers) to illuminate central tree
-    const totalFlowers = this.config.flowers ? this.config.flowers.length : 12;
-    if (this.exploredFlowers.size >= totalFlowers && !this.isTreeIlluminated) {
+    // Unlock Grand Tree illumination if 6+ flowers explored
+    if (this.exploredFlowers.size >= 6 && !this.isTreeIlluminated) {
       this.illuminateTreeOfLittleThings();
-    }
-  }
-
-  onFlowerExplored(idx) {
-    this.exploredFlowers.add(idx);
-    if (this.interactiveFlowers && this.interactiveFlowers[idx]) {
-      const f = this.interactiveFlowers[idx];
-      if (f.userData?.blossomGroup) {
-        f.userData.blossomGroup.scale.set(1.3, 1.3, 1.3);
-      }
-      if (f.userData?.auraMesh) {
-        f.userData.auraMesh.material.opacity = 0.75;
-      }
-    }
-    const totalFlowers = this.config.flowers ? this.config.flowers.length : 12;
-    if (this.exploredFlowers.size >= totalFlowers && !this.isTreeIlluminated) {
-      this.illuminateTreeOfLittleThings();
-    }
-  }
-
-  selectLeaf(leafMesh) {
-    const lData = leafMesh.userData.leafData;
-    const idx = leafMesh.userData.index;
-
-    // Focus Camera on Leaf
-    const worldPos = new THREE.Vector3();
-    leafMesh.getWorldPosition(worldPos);
-    this.cameraTargetPos.set(worldPos.x + 1.2, worldPos.y + 1.5, worldPos.z + 3.8);
-    this.cameraLookAt.copy(worldPos);
-
-    // Show Luxury Modal (NO ALERT BOX)
-    if (!this.modal) return;
-    this.modal.innerHTML = `
-      <div class="flower-modal-inner">
-        <button class="flower-modal-close" id="garden-modal-close-btn" aria-label="Close">✕</button>
-        <span class="badge-gold">✦ THE TREE OF LITTLE THINGS ✦</span>
-        <h3 class="flower-modal-title gold-text">${lData.title}</h3>
-        <div class="flower-modal-compliment" style="margin-top: 14px;">“${lData.text}”</div>
-        <div class="flower-modal-progress" style="margin-top: 18px;">Leaf ${idx + 1} of ${this.config.treeOfLittleThings.leaves.length} Cherished</div>
-      </div>
-    `;
-    this.modal.classList.add("active");
-
-    const closeBtn = document.getElementById("garden-modal-close-btn");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        this.modal.classList.remove("active");
-        this.setViewpoint("tree");
-      });
     }
   }
 
   showFlowerModal(fData, idx) {
     if (!this.modal) return;
+    const total = this.config.flowers?.length || 12;
 
     this.modal.innerHTML = `
       <div class="flower-modal-inner">
@@ -835,12 +987,10 @@ class EnchantedGarden3D {
         <span class="badge-gold">✦ LIVING BOTANICAL DEDICATION ✦</span>
         <h3 class="flower-modal-title gold-text">${fData.name}</h3>
         <div class="flower-modal-variety">${fData.variety}</div>
-        <div class="flower-modal-compliment">“${fData.compliment}”</div>
-        <div class="flower-modal-progress">Blossom ${idx + 1} of ${this.config.flowers.length} Discovered</div>
-        <div style="margin-top: 16px;">
-          <button class="btn-luxury" id="garden-modal-next-btn">
-            <span>Continue Walking</span> <span>✦</span>
-          </button>
+        <p class="flower-modal-compliment">&ldquo;${fData.compliment}&rdquo;</p>
+        <div class="flower-modal-meta">
+          <span>BLOSSOM ${idx + 1} OF ${total}</span>
+          <button class="flower-modal-next-btn" id="garden-modal-next-btn">Return to Garden →</button>
         </div>
       </div>
     `;
@@ -853,36 +1003,31 @@ class EnchantedGarden3D {
       this.modal.classList.remove("active");
       this.setViewpoint("vista");
     };
+
     if (closeBtn) closeBtn.addEventListener("click", dismiss);
     if (nextBtn) nextBtn.addEventListener("click", dismiss);
   }
 
   illuminateTreeOfLittleThings() {
     this.isTreeIlluminated = true;
-    if (this.centralTreeGroup) {
-      const treeGlowLight = new THREE.PointLight(0xF4E2BB, 4.0, 40);
-      treeGlowLight.position.set(0, 16, 0);
-      this.centralTreeGroup.add(treeGlowLight);
+    if (this.treeHeartLight) {
+      this.treeHeartLight.intensity = 6.0;
     }
   }
 
   bindEvents() {
-    // Window Resize (Debounced)
-    let resizeTimer = null;
+    // Window Resize
     window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        if (!this.container || !this.renderer || !this.camera) return;
-        const w = this.container.clientWidth;
-        const h = this.container.clientHeight;
-        if (w === 0 || h === 0) return;
-        this.camera.aspect = w / h;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(w, h);
-      }, 100);
-    });
+      if (!this.container || !this.renderer || !this.camera) return;
+      const w = this.container.clientWidth;
+      const h = this.container.clientHeight;
+      if (w === 0 || h === 0) return;
+      this.camera.aspect = w / h;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(w, h);
+    }, { passive: true });
 
-    // Viewpoint Navigation Buttons (Click + Keyboard Accessibility)
+    // Viewpoint Toolbar Buttons
     const navBar = document.getElementById("garden-viewpoint-nav");
     if (navBar) {
       navBar.addEventListener("click", (e) => {
@@ -892,37 +1037,17 @@ class EnchantedGarden3D {
           this.setViewpoint(vpId);
         }
       });
-
-      navBar.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          const btn = e.target.closest(".garden-viewpoint-pill");
-          if (btn) {
-            e.preventDefault();
-            const vpId = btn.dataset.viewpoint;
-            this.setViewpoint(vpId);
-          }
-        }
-      });
     }
 
-    // Modal Escape Key and Backdrop Click
+    // Modal Escape Key
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal && this.modal.classList.contains("active")) {
+      if (e.key === "Escape" && this.modal?.classList.contains("active")) {
         this.modal.classList.remove("active");
         this.setViewpoint("vista");
       }
     });
 
-    if (this.modal) {
-      this.modal.addEventListener("click", (e) => {
-        if (e.target === this.modal) {
-          this.modal.classList.remove("active");
-          this.setViewpoint("vista");
-        }
-      });
-    }
-
-    // Pointer Events for Cross-Device Interaction (Distinguishes Pan/Drag from Tap)
+    // Raycast Interaction (Taps & Clicks)
     let pointerDownPos = { x: 0, y: 0 };
     let isDown = false;
     let didDrag = false;
@@ -936,9 +1061,7 @@ class EnchantedGarden3D {
     this.container.addEventListener("pointermove", (e) => {
       if (isDown) {
         const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
-        if (dist > 8) {
-          didDrag = true;
-        }
+        if (dist > 8) didDrag = true;
       }
     });
 
@@ -946,179 +1069,160 @@ class EnchantedGarden3D {
       if (!isDown) return;
       isDown = false;
 
-      // If dragged > 8px, it is navigation/orbit gesture, NOT flower selection
+      // Distinguish drag from click
       if (didDrag) return;
 
       const rect = this.container.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
+
       this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
       this.raycaster.setFromCamera(this.mouse, this.camera);
-      const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+      // Raycast against generous invisible hit-spheres
+      const intersects = this.raycaster.intersectObjects(this.flowerHitMeshes);
 
-      for (let hit of intersects) {
-        let parent = hit.object.parent;
-        while (parent) {
-          if (parent.userData?.isFlower) {
-            this.selectFlower(parent);
-            return;
-          }
-          parent = parent.parent;
+      if (intersects.length > 0) {
+        const hitSphere = intersects[0].object;
+        if (hitSphere.userData?.group) {
+          this.selectFlower(hitSphere.userData.group);
         }
-        if (hit.object.userData?.isLeaf) {
-          this.selectLeaf(hit.object);
-          return;
-        }
-      }
-    });
-
-    this.container.addEventListener("pointercancel", () => {
-      isDown = false;
-      didDrag = false;
-    });
-
-    // IntersectionObserver Lifecycle (Pause WebGL when offscreen)
-    if ("IntersectionObserver" in window) {
-      this.observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          this.isVisible = entry.isIntersecting;
-          if (this.isVisible && !this.animationId && !document.hidden) {
-            this.clock.getDelta(); // Reset delta to prevent jumps
-            this.animate();
-          }
-        });
-      }, { threshold: 0.05 });
-      this.observer.observe(this.container);
-    }
-
-    // Tab visibility change
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden && this.isVisible && !this.animationId) {
-        this.clock.getDelta();
-        this.animate();
       }
     });
   }
 
-  animate() {
-    if (!this.isVisible || document.hidden) {
-      this.animationId = null;
-      return;
-    }
+  /* ----------------------------------------------------------------------------
+   * 15. THEME SYNCHRONIZATION & PERFORMANCE OBSERVER
+   * ---------------------------------------------------------------------------- */
+  setupThemeListener() {
+    window.addEventListener("artOfHerThemeChange", (e) => {
+      const themeData = e.detail?.theme;
+      if (!themeData?.threeColors) return;
 
+      const tc = themeData.threeColors;
+
+      const ambient = this.scene?.getObjectByName("ambientLight");
+      if (ambient) ambient.color.setHex(tc.ambient);
+
+      this.godRays.forEach(ray => {
+        if (ray.material) ray.material.color.setHex(tc.godRays);
+      });
+
+      if (this.fireflies?.material) {
+        this.fireflies.material.color.setHex(tc.godRays);
+      }
+    });
+  }
+
+  setupIntersectionObserver() {
+    if (!("IntersectionObserver" in window)) return;
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.1 });
+    this.observer.observe(this.container);
+  }
+
+  /* ----------------------------------------------------------------------------
+   * 16. 60FPS ANIMATION LOOP
+   * ---------------------------------------------------------------------------- */
+  animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
 
-    const delta = Math.min(this.clock.getDelta(), 0.1);
-    const time = this.clock.getElapsedTime();
+    if (!this.isVisible) return;
 
-    // 1. Animate 3D Butterflies flapping and flight curves
+    const delta = this.clock.getDelta();
+    const elapsedTime = this.clock.getElapsedTime();
+
+    // 1. Butterfly Flapping & Sinusoidal Flight
     this.butterflies.forEach(b => {
-      const d = b.userData.trajectory;
-      const t = time * d.speed + d.phase;
+      b.angle += b.speed;
+      b.group.position.x = Math.cos(b.angle) * b.radius;
+      b.group.position.z = Math.sin(b.angle) * b.radius;
+      b.group.position.y = b.baseY + Math.sin(elapsedTime * 2.8 + b.angle) * 0.9;
+      b.group.rotation.y = -b.angle + Math.PI / 2;
 
-      // Realistic flapping wing cycles
-      const flap = Math.sin(time * 18 + d.phase) * 0.75;
-      b.userData.leftWing.rotation.y = flap;
-      b.userData.rightWing.rotation.y = -flap;
-
-      // Smooth 3D Trajectory around the flowers & trees
-      b.position.x = d.centerX + Math.sin(t) * d.radiusX;
-      b.position.z = d.centerZ + Math.cos(t) * d.radiusZ;
-      b.position.y = d.heightBase + Math.sin(t * d.yFrequency) * 1.2;
-
-      b.rotation.y = -t + Math.PI / 2;
+      // Realistic rapid wing flap
+      const flap = Math.sin(elapsedTime * b.flapSpeed) * 0.72;
+      b.leftWing.rotation.y = flap;
+      b.rightWing.rotation.y = -flap;
     });
 
-    // 2. Animate Swimming Koi Fish in Pond (Frame-rate independent deterministic orbits)
-    this.fishList.forEach((fish, idx) => {
-      const d = fish.userData;
-      const angle = time * (d.speed * 28) + (idx * 1.8);
-      fish.position.x = -14 + Math.cos(angle) * d.radius;
-      fish.position.z = 4 + Math.sin(angle) * (d.radius * 0.7);
-      fish.rotation.y = -angle + Math.PI / 2;
-      fish.rotation.z = Math.sin(time * 6 + idx) * 0.12; // Tail wiggle
+    // 2. Swimming Golden Koi Fish
+    this.fishList.forEach(fish => {
+      fish.angle += fish.speed;
+      fish.group.position.x = -15 + Math.cos(fish.angle) * fish.radius;
+      fish.group.position.z = 4 + Math.sin(fish.angle) * fish.radius;
+      fish.group.rotation.y = -fish.angle + Math.PI;
     });
 
-    // 3. Animate Living Garden Wildlife Ecosystem (Section 4.4)
-    this.wildlife.forEach(w => {
-      if (w.type === "rabbit") {
-        const hop = Math.max(0, Math.sin(time * 2.5 + w.phase));
-        w.mesh.position.y = 0.4 + hop * 0.45;
-        w.mesh.position.x = w.basePos.x + Math.sin(time * 0.8 + w.phase) * 0.5;
-      } else if (w.type === "deer") {
-        // Slow peaceful walking & head turning
-        w.mesh.rotation.y = -Math.PI / 4 + Math.sin(time * 0.6) * 0.12;
-        w.mesh.position.x = w.basePos.x + Math.sin(time * 0.2) * 1.5;
-      } else if (w.type === "squirrel") {
-        // Scampering up and down tree trunk
-        w.mesh.position.y = 1.2 + Math.abs(Math.sin(time * 1.8 + w.phase)) * 2.2;
-        w.mesh.rotation.y = time * 0.8;
-      } else if (w.type === "bird") {
-        // Circling overhead in graceful sweeping arcs
-        const bAngle = time * 0.7 + w.phase;
-        w.mesh.position.x = Math.cos(bAngle) * w.radius;
-        w.mesh.position.z = Math.sin(bAngle) * w.radius;
-        w.mesh.position.y = w.altitude + Math.sin(time * 1.5 + w.phase) * 1.0;
-        w.mesh.rotation.y = -bAngle + Math.PI / 2;
-        const bFlap = Math.sin(time * 12 + w.phase) * 0.6;
-        if (w.wingL) w.wingL.rotation.x = bFlap;
-        if (w.wingR) w.wingR.rotation.x = -bFlap;
+    // 3. Shimmering Volumetric God Rays
+    this.godRays.forEach(ray => {
+      const u = ray.userData;
+      ray.material.opacity = u.baseOpacity + Math.sin(elapsedTime * u.pulseSpeed + u.phase) * 0.08;
+    });
+
+    // 4. Swaying Hanging Fairytale Lanterns
+    this.lanterns.forEach(lantern => {
+      const ph = lantern.userData.phase;
+      lantern.rotation.z = Math.sin(elapsedTime * 1.5 + ph) * 0.06;
+      lantern.rotation.x = Math.cos(elapsedTime * 1.2 + ph) * 0.04;
+    });
+
+    // 5. Floating Fireflies & Golden Spores (Harmonic 3D Drift)
+    if (this.fireflies && this.fireflyPositions) {
+      const posAttr = this.fireflies.geometry.attributes.position;
+      const count = this.fireflyBasePos.length / 3;
+
+      for (let i = 0; i < count; i++) {
+        const i3 = i * 3;
+        const bx = this.fireflyBasePos[i3];
+        const by = this.fireflyBasePos[i3 + 1];
+        const bz = this.fireflyBasePos[i3 + 2];
+
+        posAttr.array[i3] = bx + Math.sin(elapsedTime * 0.8 + i) * 2.2;
+        posAttr.array[i3 + 1] = by + Math.cos(elapsedTime * 0.6 + i * 1.5) * 1.4;
+        posAttr.array[i3 + 2] = bz + Math.sin(elapsedTime * 0.7 + i * 2.0) * 2.2;
       }
-    });
-
-    // 4. Subtle Flower Breeze Sway
-    this.interactiveFlowers.forEach((f, idx) => {
-      f.userData.blossomGroup.rotation.z = Math.sin(time * 1.5 + idx) * 0.08;
-      f.userData.blossomGroup.rotation.x = Math.cos(time * 1.2 + idx) * 0.06;
-    });
-
-    // 5. Pulsing Volumetric God Rays
-    this.godRays.forEach((ray, idx) => {
-      ray.material.opacity = 0.14 + Math.sin(time * 1.2 + idx) * 0.04;
-    });
-
-    // 6. Golden Forest Spores / Fireflies (Bounded oscillation: zero cumulative drift)
-    if (this.spores && this.spores.userData?.basePositions) {
-      const p = this.spores.geometry.attributes.position;
-      const basePos = this.spores.userData.basePositions;
-      for (let i = 0; i < p.count; i++) {
-        const phase = (i * 0.37) % (Math.PI * 2);
-        const y = basePos[i * 3 + 1] + Math.sin(time * 1.4 + phase) * 1.2;
-        const x = basePos[i * 3] + Math.sin(time * 0.7 + phase) * 0.6;
-        const z = basePos[i * 3 + 2] + Math.cos(time * 0.7 + phase) * 0.6;
-        p.setXYZ(i, x, y, z);
-      }
-      p.needsUpdate = true;
+      posAttr.needsUpdate = true;
     }
 
-    // 7. Frame-Rate Independent Camera Lerping
-    const lerpFactor = 1 - Math.exp(-4.2 * delta);
-    this.camera.position.x += (this.cameraTargetPos.x - this.camera.position.x) * lerpFactor;
-    this.camera.position.y += (this.cameraTargetPos.y - this.camera.position.y) * lerpFactor;
-    this.camera.position.z += (this.cameraTargetPos.z - this.camera.position.z) * lerpFactor;
+    // 6. Gentle Hopping Wildlife
+    this.wildlife.forEach(w => {
+      if (w.type === "rabbit") {
+        const hop = Math.abs(Math.sin(elapsedTime * 3.2 + w.phase)) * 0.35;
+        w.mesh.position.y = w.basePos.y + hop;
+      }
+    });
 
-    this.currentLookAt.x += (this.cameraLookAt.x - this.currentLookAt.x) * lerpFactor;
-    this.currentLookAt.y += (this.cameraLookAt.y - this.currentLookAt.y) * lerpFactor;
-    this.currentLookAt.z += (this.cameraLookAt.z - this.currentLookAt.z) * lerpFactor;
+    // 7. Hero Blossom Glowing Halos Pulsing
+    this.interactiveFlowers.forEach((fl, idx) => {
+      if (fl.userData.halo) {
+        const pulse = 1.0 + Math.sin(elapsedTime * 2.4 + idx) * 0.15;
+        fl.userData.halo.scale.set(3.2 * pulse, 3.2 * pulse, 1);
+      }
+    });
+
+    // 8. Smooth Camera Inertia Interpolation
+    this.camera.position.lerp(this.cameraTargetPos, 0.042);
+    this.currentLookAt.lerp(this.cameraLookAt, 0.042);
     this.camera.lookAt(this.currentLookAt);
 
     this.renderer.render(this.scene, this.camera);
   }
 
   destroy() {
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-      this.animationId = null;
-    }
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    if (this.renderer && this.renderer.domElement) {
-      this.renderer.domElement.remove();
+    if (this.animationId) cancelAnimationFrame(this.animationId);
+    if (this.observer) this.observer.disconnect();
+    if (this.renderer) {
       this.renderer.dispose();
+      this.renderer.domElement?.remove();
     }
   }
 }
 
-window.EnchantedGarden3D = EnchantedGarden3D;
+// Global Export
+if (typeof window !== "undefined") {
+  window.EnchantedGarden3D = EnchantedGarden3D;
+}

@@ -63,11 +63,11 @@ class StoryTimeline {
         if (p === "I LOVE U.") {
           return `<div class="confession-three-words gold-shimmer">“I LOVE U.”</div>`;
         }
-        if (p === "MA QUEEN. ♡") {
+        if (p === "MY BABEE. ♡" || p === "MA QUEEN. ♡") {
           return `
             <div class="queen-declaration-banner">
-              <div class="queen-declaration-text">MA QUEEN. ♡</div>
-              <div class="queen-declaration-sub">Because in my little world, you are the queen. And me? I’m just your devoted follower.</div>
+              <div class="queen-declaration-text">MY BABEE. ♡</div>
+              <div class="queen-declaration-sub">Because in my little world, you are my babee. And me? I’m just your devoted follower.</div>
             </div>
           `;
         }
@@ -88,8 +88,9 @@ class StoryTimeline {
         </div>
       ` : "";
 
-      // Photographic Frame Moment
-      const photoMomentHtml = ch.image ? `
+      // Photographic Frame Moment - STRICTLY PRESERVED ONLY FOR CHAPTER FIVE
+      const isChapterFive = ch.id === "chapter-5" || ch.number === "CHAPTER FIVE";
+      const photoMomentHtml = (isChapterFive && ch.image) ? `
         <div class="chapter-photo-moment">
           <div class="photo-moment-frame">
             <img 
@@ -124,11 +125,9 @@ class StoryTimeline {
           <header class="chapter-hero-header">
             <div class="chapter-badge-roman">${ch.number}</div>
             <h3 class="chapter-main-title gold-text">${ch.title}</h3>
-            <div class="chapter-meta-ribbon">
-              <span>Time: <strong class="highlight">${ch.timePeriod}</strong></span>
-              <span>&bull;</span>
-              <span>Location: <strong>${ch.location}</strong></span>
-            </div>
+            <div class="chapter-meta-time">${ch.timePeriod}</div>
+            <div class="chapter-meta-location">LOCATION: ${ch.location}</div>
+            <div class="chapter-gold-divider"><span>✦</span></div>
           </header>
 
           ${milestoneHeroHtml}

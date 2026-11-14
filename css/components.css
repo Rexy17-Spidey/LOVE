@@ -588,3 +588,38 @@ button,
   min-height: 44px;
   touch-action: manipulation;
 }
+
+
+/* Prevent Header from forcing mobile page width expansion beyond 390px */
+@media (max-width: 600px) {
+  .site-header {
+    height: 56px;
+    padding: 0 12px;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .brand-sub {
+    display: none !important;
+  }
+  .header-brand {
+    gap: 10px;
+    min-width: 0;
+  }
+  .brand-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+  .header-actions {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .audio-toggle-btn,
+  .theme-picker-btn,
+  .mobile-nav-toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    padding: 0 !important;
+  }
+}

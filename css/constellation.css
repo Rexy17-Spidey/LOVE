@@ -18,10 +18,7 @@
 .starchart-grid-lines {
   position: absolute;
   inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(197, 164, 109, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(197, 164, 109, 0.04) 1px, transparent 1px);
-  background-size: 80px 80px;
+  background: radial-gradient(circle at 50% 50%, rgba(12, 179, 167, 0.08) 0%, rgba(2, 26, 23, 0) 70%);
   pointer-events: none;
   z-index: 1;
 }
@@ -290,8 +287,11 @@
 /* Responsive Constellation */
 @media (max-width: 768px) {
   .constellation-section .section-title {
-    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
-    word-break: break-word;
+    font-size: clamp(0.90rem, 3.8vw, 1.35rem) !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    max-width: 100% !important;
+    text-align: center;
   }
   .constellation-viewport {
     height: 380px;
@@ -452,5 +452,154 @@
   }
   .counter-progress-bar {
     width: 36px;
+  }
+}
+
+
+/* Enhanced Constellation Card Modal & Quick Nav Pills */
+.card-modal-content {
+  position: relative;
+}
+.card-modal-close {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: rgba(3, 40, 35, 0.85);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-antique);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--duration-fast) ease;
+}
+.card-modal-close:hover {
+  background: var(--gold-antique);
+  color: #021a17;
+}
+.card-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.card-modal-badge {
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: var(--gold-bright);
+}
+.card-modal-category {
+  font-family: var(--font-serif-body);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--sage-muted);
+}
+.card-modal-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.55rem;
+  margin: 4px 0 12px;
+}
+.card-modal-tribute {
+  font-family: var(--font-serif-body);
+  font-size: 1.12rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--ivory-warm);
+  border-top: 1px solid rgba(197, 164, 109, 0.2);
+  padding-top: 12px;
+  margin-bottom: 16px;
+}
+.card-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(197, 164, 109, 0.15);
+  padding-top: 12px;
+}
+.card-modal-nav-btn {
+  background: rgba(3, 40, 35, 0.75);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-champagne);
+  padding: 6px 14px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+.card-modal-nav-btn:hover {
+  background: rgba(8, 127, 120, 0.55);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+.star-quick-nav-pill,
+.quick-star-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(2, 26, 23, 0.88);
+  border: 1px solid var(--border-gold-subtle);
+  padding: 7px 15px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--mint-soft);
+  cursor: pointer;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  transition: all var(--duration-fast) ease;
+  white-space: nowrap;
+}
+.star-quick-nav-pill:hover,
+.star-quick-nav-pill.active {
+  background: rgba(8, 127, 120, 0.55);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  box-shadow: 0 0 16px rgba(197, 164, 109, 0.35);
+}
+.star-quick-nav-pill.explored .pill-dot {
+  background: var(--gold-bright);
+  box-shadow: 0 0 8px var(--gold-bright);
+}
+.pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint-soft);
+  display: inline-block;
+  transition: all var(--duration-fast) ease;
+}
+
+@media (max-width: 600px) {
+  .constellation-viewport {
+    height: clamp(340px, 52vh, 460px);
+  }
+  .constellation-quick-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 0 12px 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .constellation-quick-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .constellation-card-modal {
+    width: calc(100% - 24px);
+    padding: 16px 18px;
+    bottom: 12px;
+  }
+  .card-modal-title {
+    font-size: 1.25rem;
+  }
+  .card-modal-tribute {
+    font-size: 0.98rem;
+    line-height: 1.6;
   }
 }

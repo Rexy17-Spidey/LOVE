@@ -1,0 +1,456 @@
+/**
+ * ==============================================================================
+ * THE ART OF HER — SECTION 5: 3D CONSTELLATION UNIVERSE
+ * Visual Style: Swirling Emerald & Gold Spiral Galaxy Vortex
+ * ==============================================================================
+ */
+
+.constellation-section {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #032d27 0%, #021a16 50%, #000c0a 100%);
+  overflow: hidden;
+  min-height: 100vh;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+/* Starchart Coordinate Grid Lines */
+.starchart-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(197, 164, 109, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(197, 164, 109, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 3D Celestial Viewport Container (Mobile-Optimized & Non-trapping) */
+.constellation-viewport {
+  position: relative;
+  width: 100%;
+  height: clamp(380px, 60vh, 660px);
+  max-width: 1140px;
+  margin: 0 auto;
+  border: 1px solid var(--border-gold-accent);
+  background: radial-gradient(circle at 50% 50%, rgba(8, 127, 120, 0.25) 0%, rgba(2, 22, 19, 0.95) 70%, rgba(1, 14, 12, 1) 100%);
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.9), 0 25px 70px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  z-index: 3;
+  border-radius: 8px;
+  touch-action: pan-y;
+}
+
+/* Controls Overlay in 3D Viewport */
+.constellation-controls-bar {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 20;
+  display: flex;
+  gap: 10px;
+}
+
+.constellation-ctrl-btn {
+  background: rgba(2, 26, 23, 0.9);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-champagne);
+  padding: 6px 14px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  transition: all var(--duration-fast) ease;
+}
+
+.constellation-ctrl-btn:hover {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  background: rgba(8, 127, 120, 0.45);
+}
+
+.constellation-drag-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-antique);
+  background: rgba(1, 16, 14, 0.88);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border: 1px solid var(--border-gold-subtle);
+  border-radius: 20px;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Floating Constellation Dedication Card Modal */
+.constellation-card-modal {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: calc(100% - 40px);
+  max-width: 580px;
+  background: rgba(2, 26, 23, 0.96);
+  border: 1px solid var(--gold-bright);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(197, 164, 109, 0.35);
+  backdrop-filter: blur(16px);
+  padding: 22px 24px;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 8px;
+  transition: all var(--duration-normal) var(--ease-cinematic);
+}
+
+.constellation-card-modal.active,
+.constellation-card-modal.revealed {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.star-card-inner {
+  position: relative;
+}
+
+.star-card-close {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: none;
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-antique);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--duration-fast) ease;
+}
+
+.star-card-close:hover {
+  background: var(--gold-antique);
+  color: #021a17;
+}
+
+.star-category-badge {
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-antique);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.star-card-category {
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--sage-muted);
+}
+
+.star-card-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.55rem;
+  color: var(--gold-bright);
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.star-tribute-body {
+  border-top: 1px solid rgba(197, 164, 109, 0.2);
+  padding-top: 12px;
+  margin-bottom: 16px;
+}
+
+.star-tribute-text {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--ivory-warm);
+  margin: 0;
+}
+
+.star-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(197, 164, 109, 0.15);
+}
+
+.star-progress-indicator {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-antique);
+}
+
+/* Celebration Toast when explored */
+.constellation-celebration-toast {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(2, 26, 23, 0.95);
+  border: 1px solid var(--gold-bright);
+  color: #FFF9EF;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-align: center;
+  z-index: 30;
+  box-shadow: 0 0 30px rgba(244, 226, 187, 0.5);
+  max-width: 90%;
+}
+
+.celebration-badge {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-bright);
+  margin-bottom: 4px;
+}
+
+.celebration-text {
+  font-family: var(--font-serif-body);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ivory-warm);
+}
+
+/* Quick Star Selector Strip below Viewport */
+.constellation-quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 1000px;
+  margin: 20px auto 0;
+  position: relative;
+  z-index: 3;
+}
+
+.quick-star-pill {
+  background: rgba(3, 40, 35, 0.65);
+  border: 1px solid var(--border-gold-subtle);
+  padding: 6px 14px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--mint-soft);
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all var(--duration-fast) ease;
+}
+
+.quick-star-pill:hover,
+.quick-star-pill.active {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  background: rgba(8, 127, 120, 0.45);
+  box-shadow: 0 0 15px rgba(197, 164, 109, 0.3);
+}
+
+/* Celestial to Garden Transition Bridge */
+.celestial-garden-transition-bridge {
+  max-width: 720px;
+  margin: var(--space-2xl) auto 0;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  padding: 24px;
+  background: radial-gradient(circle, rgba(8, 127, 120, 0.2) 0%, transparent 70%);
+}
+
+.portal-hint-text {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--gold-champagne);
+  margin-bottom: 16px;
+}
+
+/* Responsive Constellation */
+@media (max-width: 768px) {
+  .constellation-section .section-title {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    word-break: break-word;
+  }
+  .constellation-viewport {
+    height: 380px;
+  }
+  .constellation-controls-bar {
+    top: 10px;
+    right: 10px;
+  }
+  .constellation-ctrl-btn {
+    padding: 4px 10px;
+    font-size: 0.65rem;
+  }
+  .constellation-drag-hint {
+    bottom: 10px;
+    font-size: 0.65rem;
+    padding: 4px 12px;
+  }
+  .constellation-card-modal {
+    width: calc(100% - 24px);
+    bottom: 10px;
+    padding: 16px 18px;
+  }
+  .star-card-title {
+    font-size: 1.3rem;
+  }
+  .star-tribute-text {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .constellation-viewport {
+    height: 340px;
+  }
+  .quick-star-pill {
+    padding: 4px 10px;
+    font-size: 0.62rem;
+  }
+  .star-card-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+
+/* ==========================================================================
+   CONSTELLATION PROGRESS COUNTER & EXPLORATION PILL
+   ========================================================================== */
+.constellation-counter-pill {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  z-index: 25;
+  background: rgba(2, 26, 23, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(197, 164, 109, 0.45);
+  border-radius: 24px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 164, 109, 0.15);
+}
+
+.counter-star-icon {
+  color: var(--gold-bright);
+  font-size: 0.9rem;
+  animation: counterStarSpin 6s infinite linear;
+}
+
+@keyframes counterStarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.counter-text {
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+}
+
+.counter-progress-bar {
+  width: 50px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.counter-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-rich), var(--gold-bright));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.star-quick-nav-pill {
+  background: rgba(3, 40, 35, 0.65);
+  border: 1px solid var(--border-gold-subtle);
+  padding: 6px 14px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--mint-soft);
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all var(--duration-fast) ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star-quick-nav-pill .pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(197, 164, 109, 0.4);
+}
+
+.star-quick-nav-pill:hover {
+  background: var(--teal-rich);
+  border-color: var(--gold-antique);
+  color: var(--gold-bright);
+  transform: translateY(-2px);
+}
+
+.star-quick-nav-pill.active {
+  background: linear-gradient(135deg, var(--emerald-deep), var(--teal-rich));
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  box-shadow: 0 0 12px rgba(244, 226, 187, 0.35);
+}
+
+.star-quick-nav-pill.explored .pill-dot {
+  background: #00d28d;
+  box-shadow: 0 0 6px #00d28d;
+}
+
+.celebration-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.25rem;
+  color: var(--gold-bright);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 768px) {
+  .constellation-counter-pill {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+  }
+  .counter-text {
+    font-size: 0.65rem;
+  }
+  .counter-progress-bar {
+    width: 36px;
+  }
+}

@@ -1,0 +1,2156 @@
+/**
+ * ==============================================================================
+ * THE MUSEUM OF HER — EXHIBITION DESIGN SYSTEM & STYLESHEET
+ * Dedicated, Self-Contained Stylesheet for museum.html
+ * Visual Identity: Contemporary Luxury Art Museum & Private Cinematic Archive
+ * ==============================================================================
+ */
+
+/* ----------------------------------------------------------------------------
+ * 1. DESIGN TOKENS & DEFAULT THEME (Emerald Royale)
+ * ---------------------------------------------------------------------------- */
+:root {
+  --museum-bg: #011412;
+  --museum-bg-alt: #032F2A;
+  --museum-bg-surface: rgba(4, 38, 33, 0.85);
+  --museum-bg-card: rgba(6, 78, 70, 0.35);
+  --museum-border: rgba(197, 164, 109, 0.28);
+  --museum-border-accent: rgba(197, 164, 109, 0.7);
+  --museum-gold: #C5A46D;
+  --museum-gold-bright: #F4E2BB;
+  --museum-text-title: #FFF9EF;
+  --museum-text-body: #DCEEE6;
+  --museum-text-muted: #95B0A6;
+  --museum-accent-glow: rgba(197, 164, 109, 0.25);
+  --museum-spotlight: rgba(8, 127, 120, 0.18);
+
+  /* Fonts */
+  --font-serif-title: 'Playfair Display', Georgia, serif;
+  --font-serif-body: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono-meta: 'Cinzel', 'Playfair Display', serif;
+  --font-script: 'Pinyon Script', cursive;
+
+  /* Header & Navigator Heights */
+  --header-height: 68px;
+  --bottom-bar-height: 60px;
+}
+
+/* Base Reset for museum.html */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--museum-bg);
+  color: var(--museum-text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--museum-bg);
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  padding-bottom: calc(var(--bottom-bar-height) + 40px);
+}
+
+body.theme-transitioning * {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease !important;
+}
+
+/* ----------------------------------------------------------------------------
+ * 2. 3D CANVAS & ATMOSPHERIC LIGHTING
+ * ---------------------------------------------------------------------------- */
+#museum-3d-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.museum-atmospheric-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 30%, transparent 40%, rgba(0, 0, 0, 0.65) 100%),
+              radial-gradient(ellipse at 50% 0%, var(--museum-spotlight) 0%, transparent 65%);
+}
+
+/* ----------------------------------------------------------------------------
+ * 3. TOP NAVIGATION HEADER
+ * ---------------------------------------------------------------------------- */
+.museum-top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background: rgba(1, 20, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--museum-border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.header-brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-monogram-shield {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--museum-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono-meta);
+  font-size: 1.15rem;
+  color: var(--museum-gold-bright);
+  background: var(--museum-bg-surface);
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--museum-accent-glow);
+}
+
+.brand-text-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-main-title {
+  font-family: var(--font-mono-meta);
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  letter-spacing: 0.22em;
+  color: var(--museum-text-title);
+  font-weight: 600;
+}
+
+.brand-sub-tag {
+  font-family: var(--font-mono-meta);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+}
+
+.header-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-btn {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-text-title);
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.header-btn:hover {
+  border-color: var(--museum-gold-bright);
+  color: var(--museum-gold-bright);
+  box-shadow: 0 0 10px var(--museum-accent-glow);
+  transform: translateY(-1px);
+}
+
+.audio-btn.playing {
+  border-color: var(--museum-gold-bright);
+  color: var(--museum-gold-bright);
+  animation: audioPulse 2s infinite ease-in-out;
+}
+
+@keyframes audioPulse {
+  0%, 100% { box-shadow: 0 0 6px var(--museum-accent-glow); }
+  50% { box-shadow: 0 0 16px var(--museum-accent-glow); }
+}
+
+/* ----------------------------------------------------------------------------
+ * 4. OPENING GATE SCREEN (#museum-entrance)
+ * ---------------------------------------------------------------------------- */
+.museum-entrance-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, #032a24 0%, #01110e 60%, #000806 100%);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.museum-entrance-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.museum-entrance-screen.hidden {
+  display: none !important;
+}
+
+.entrance-curtain-card {
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+  background: rgba(3, 38, 33, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--museum-border-accent);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 0 40px rgba(197, 164, 109, 0.1);
+  border-radius: 4px;
+}
+
+.entrance-monogram {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1.5rem auto;
+  border: 1px solid var(--museum-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono-meta);
+  font-size: 1.6rem;
+  color: var(--museum-gold-bright);
+  box-shadow: 0 0 25px var(--museum-accent-glow);
+}
+
+.entrance-eyebrow {
+  font-family: var(--font-mono-meta);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.entrance-main-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  color: var(--museum-text-title);
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+}
+
+.entrance-subtitle {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-style: italic;
+  color: var(--museum-gold-bright);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.entrance-curator-line {
+  font-family: var(--font-mono-meta);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--museum-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.entrance-intro-quote {
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--museum-text-body);
+  font-style: italic;
+  max-width: 520px;
+  margin: 0 auto 2.2rem auto;
+  padding: 0 1rem;
+}
+
+.entrance-actions-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.enter-grand-btn {
+  background: linear-gradient(135deg, rgba(197, 164, 109, 0.9) 0%, rgba(140, 115, 72, 0.9) 100%);
+  color: #011412;
+  font-family: var(--font-mono-meta);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 14px 34px;
+  border: 1px solid var(--museum-gold-bright);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--museum-accent-glow);
+}
+
+.enter-grand-btn:hover {
+  transform: translateY(-2px);
+  background: var(--museum-gold-bright);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--museum-gold-bright);
+}
+
+.entrance-secondary-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.entrance-sub-btn {
+  background: rgba(1, 20, 18, 0.6);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-text-muted);
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  padding: 6px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.entrance-sub-btn:hover,
+.entrance-sub-btn.suggested {
+  border-color: var(--museum-gold);
+  color: var(--museum-gold);
+}
+
+/* ----------------------------------------------------------------------------
+ * 5. MUSEUM GALLERIES CONTAINER & SHARED ROOM STYLES
+ * ---------------------------------------------------------------------------- */
+.museum-galleries-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: calc(var(--header-height) + 2rem) clamp(1rem, 4vw, 2.5rem) 2rem clamp(1rem, 4vw, 2.5rem);
+}
+
+.museum-room-section {
+  position: relative;
+  min-height: calc(100vh - var(--header-height) - var(--bottom-bar-height));
+  margin-bottom: clamp(5rem, 12vw, 9rem);
+  scroll-margin-top: calc(var(--header-height) + 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.museum-room-inner {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* Room Editorial Header */
+.room-editorial-header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  position: relative;
+}
+
+.room-number-badge {
+  display: inline-block;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  padding: 5px 14px;
+  border-radius: 2px;
+}
+
+.room-number-badge.monochrome-badge {
+  color: #c5d0d8;
+  border-color: rgba(200, 210, 220, 0.4);
+}
+
+.room-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  color: var(--museum-text-title);
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.room-subtitle {
+  font-family: var(--font-mono-meta);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  color: var(--museum-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.museum-gold-divider,
+.museum-silver-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.museum-gold-divider::before,
+.museum-gold-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--museum-gold), transparent);
+}
+
+.museum-gold-divider span {
+  padding: 0 10px;
+  color: var(--museum-gold);
+  font-size: 0.85rem;
+}
+
+.museum-silver-divider::before,
+.museum-silver-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c5d0d8, transparent);
+}
+
+.museum-silver-divider span {
+  padding: 0 10px;
+  color: #e0e5ec;
+  font-size: 0.85rem;
+}
+
+.room-editorial-intro {
+  max-width: 720px;
+  margin: -1.5rem auto clamp(2rem, 5vw, 3.5rem) auto;
+  text-align: center;
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.8;
+  color: var(--museum-text-body);
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------------------------
+ * 6. ROOM 00: THE INTRODUCTION
+ * ---------------------------------------------------------------------------- */
+.intro-curator-prologue {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.prologue-text-block {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  padding: clamp(2rem, 4vw, 3.2rem);
+  border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.prologue-paragraph {
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  line-height: 1.9;
+  color: var(--museum-text-body);
+  margin-bottom: 1.5rem;
+}
+
+.prologue-paragraph:first-of-type::first-letter {
+  font-family: var(--font-serif-title);
+  font-size: 3.5rem;
+  float: left;
+  line-height: 0.85;
+  padding-right: 12px;
+  color: var(--museum-gold-bright);
+}
+
+.prologue-signature {
+  font-family: var(--font-mono-meta);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-top: 2rem;
+  border-top: 1px dashed var(--museum-border);
+  padding-top: 1rem;
+}
+
+.intro-hero-frame-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* ----------------------------------------------------------------------------
+ * 7. INTERACTIVE MUSEUM FRAMES & PLAQUES
+ * ---------------------------------------------------------------------------- */
+.interactive-frame {
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  position: relative;
+  outline: none;
+}
+
+.interactive-frame:hover {
+  transform: translateY(-6px);
+}
+
+.interactive-frame:focus-visible {
+  box-shadow: 0 0 0 3px var(--museum-gold-bright);
+}
+
+.frame-expand-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(1, 20, 18, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-gold-bright);
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.interactive-frame:hover .frame-expand-pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.frame-lighting-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%, transparent 60%, rgba(197, 164, 109, 0.06) 100%);
+  pointer-events: none;
+}
+
+/* Gilded Frame */
+.gilded-museum-frame {
+  background: #021a16;
+  border: 10px solid #032e27;
+  outline: 1px solid var(--museum-gold);
+  border-radius: 4px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px var(--museum-accent-glow);
+  max-width: 420px;
+  width: 100%;
+}
+
+.frame-art-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #000;
+}
+
+.frame-art-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gilded-museum-frame:hover .frame-art-box img {
+  transform: scale(1.035);
+}
+
+.frame-museum-plaque {
+  padding: 1.2rem 1.4rem;
+  background: var(--museum-bg-surface);
+  border-top: 1px solid var(--museum-border);
+}
+
+.plaque-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.15rem;
+  color: var(--museum-text-title);
+  margin-bottom: 4px;
+}
+
+.plaque-medium {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  color: var(--museum-gold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.plaque-caption {
+  font-size: 0.88rem;
+  color: var(--museum-text-muted);
+  line-height: 1.5;
+}
+
+/* ----------------------------------------------------------------------------
+ * 8. ROOM 01: THE MASTERPIECE
+ * ---------------------------------------------------------------------------- */
+.masterpiece-monument-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.masterpiece-spotlight-halo {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 90vw);
+  height: 450px;
+  background: radial-gradient(ellipse at center, var(--museum-accent-glow) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.grand-gold-frame {
+  max-width: 580px;
+  width: 100%;
+  background: #021a16;
+  border: 14px solid #032b24;
+  outline: 2px solid var(--museum-gold-bright);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8), 0 0 50px var(--museum-accent-glow);
+  position: relative;
+  border-radius: 4px;
+}
+
+.grand-art-box {
+  width: 100%;
+  aspect-ratio: 4 / 5.2;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.grand-art-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grand-gold-frame:hover .grand-art-box img {
+  transform: scale(1.03);
+}
+
+.masterpiece-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.masterpiece-brass-plaque {
+  max-width: 580px;
+  width: 100%;
+  margin-top: 2rem;
+  background: linear-gradient(135deg, rgba(6, 78, 70, 0.5) 0%, rgba(3, 47, 42, 0.9) 100%);
+  border: 1px solid var(--museum-border-accent);
+  padding: 2rem 2.5rem;
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.brass-monogram {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--museum-gold);
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono-meta);
+  font-size: 1rem;
+  color: var(--museum-gold-bright);
+}
+
+.brass-inscription {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.brass-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+  color: var(--museum-text-title);
+  margin-bottom: 10px;
+}
+
+.brass-quote {
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-style: italic;
+  color: var(--museum-gold-bright);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.brass-meta {
+  font-family: var(--font-mono-meta);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--museum-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.brass-curator-voice {
+  border-top: 1px dashed var(--museum-border);
+  padding-top: 12px;
+  font-family: var(--font-serif-body);
+  font-size: 0.95rem;
+  color: var(--museum-text-body);
+  line-height: 1.6;
+}
+
+.brass-curator-voice strong {
+  color: var(--museum-gold);
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ----------------------------------------------------------------------------
+ * 9. ROOM 02: THE DETAILS
+ * ---------------------------------------------------------------------------- */
+.details-mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.detail-study-card {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-study-card:hover {
+  border-color: var(--museum-gold);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px var(--museum-accent-glow);
+}
+
+.study-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3.8;
+  overflow: hidden;
+  background: #000;
+}
+
+.study-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-study-card:hover .study-image-wrapper img {
+  transform: scale(1.04);
+}
+
+.study-tag-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(1, 20, 18, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-gold);
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.study-card-content {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.study-card-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.25rem;
+  color: var(--museum-text-title);
+  margin-bottom: 8px;
+}
+
+.study-card-caption {
+  font-family: var(--font-serif-body);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--museum-gold-bright);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.study-curator-note {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--museum-border);
+  font-size: 0.85rem;
+  color: var(--museum-text-muted);
+  line-height: 1.5;
+}
+
+/* ----------------------------------------------------------------------------
+ * 10. ROOM 03: THE MANY MOODS
+ * ---------------------------------------------------------------------------- */
+.moods-editorial-spreads {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+
+.mood-group-spread {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  padding: clamp(1.8rem, 4vw, 3rem);
+  border-radius: 4px;
+}
+
+.mood-group-spread.reversed-spread {
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.mood-group-spread.reversed-spread .mood-group-meta {
+  order: 2;
+}
+
+.mood-group-spread.reversed-spread .mood-group-frames-duo {
+  order: 1;
+}
+
+.mood-group-index {
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.mood-group-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  color: var(--museum-text-title);
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.mood-group-tagline {
+  font-size: 0.95rem;
+  color: var(--museum-text-muted);
+  line-height: 1.6;
+}
+
+.mood-group-frames-duo {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.mood-primary-frame,
+.mood-secondary-frame {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--museum-border);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.mood-primary-frame {
+  aspect-ratio: 4 / 4.8;
+}
+
+.mood-secondary-frame {
+  aspect-ratio: 4 / 5.2;
+}
+
+.mood-primary-frame img,
+.mood-secondary-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mood-primary-frame:hover img,
+.mood-secondary-frame:hover img {
+  transform: scale(1.035);
+}
+
+.mood-frame-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, transparent 0%, rgba(1, 20, 18, 0.95) 100%);
+  font-size: 0.78rem;
+  color: var(--museum-text-body);
+  line-height: 1.4;
+}
+
+/* ----------------------------------------------------------------------------
+ * 11. ROOM 04: THE MONOCHROME ROOM
+ * ---------------------------------------------------------------------------- */
+.room-monochrome-section {
+  background: radial-gradient(circle at 50% 30%, #0d1210 0%, #060a08 80%);
+  border: 1px solid rgba(200, 215, 225, 0.15);
+  border-radius: 6px;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem);
+}
+
+.monochrome-salon-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+.monochrome-primary-frame {
+  background: #060908;
+  border: 10px solid #141a18;
+  outline: 1px solid rgba(220, 230, 240, 0.4);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+}
+
+.monochrome-art-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.8;
+  overflow: hidden;
+  background: #000;
+}
+
+.monochrome-art-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.05) grayscale(100%);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.monochrome-primary-frame:hover .monochrome-art-container img {
+  transform: scale(1.025);
+}
+
+.monochrome-film-grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+
+.monochrome-plaque {
+  padding: 1.6rem 2rem;
+  background: #090e0c;
+  border-top: 1px solid rgba(220, 230, 240, 0.15);
+}
+
+.monochrome-inscription {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  color: #a5b4c0;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.monochrome-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  color: #f0f4f8;
+  margin-bottom: 8px;
+}
+
+.monochrome-caption {
+  font-family: var(--font-serif-body);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #d0d8e0;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.monochrome-curator-note {
+  border-top: 1px dashed rgba(220, 230, 240, 0.2);
+  padding-top: 10px;
+  font-size: 0.86rem;
+  color: #8c9ba6;
+  line-height: 1.5;
+}
+
+.monochrome-companions-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.monochrome-companion-card {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  align-items: center;
+  background: #080d0b;
+  border: 1px solid rgba(220, 230, 240, 0.15);
+  padding: 12px;
+  border-radius: 3px;
+}
+
+.companion-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.companion-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
+
+.companion-info h4 {
+  font-family: var(--font-serif-title);
+  font-size: 1rem;
+  color: #f0f4f8;
+  margin-bottom: 4px;
+}
+
+.companion-info p {
+  font-size: 0.82rem;
+  color: #8c9ba6;
+  line-height: 1.45;
+}
+
+/* ----------------------------------------------------------------------------
+ * 12. ROOM 05: THE LITTLE ARCHIVE
+ * ---------------------------------------------------------------------------- */
+.archive-filter-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 2.5rem;
+}
+
+.archive-filter-pill {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-text-muted);
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+.archive-filter-pill:hover,
+.archive-filter-pill.active {
+  background: var(--museum-gold);
+  color: #011412;
+  border-color: var(--museum-gold-bright);
+  font-weight: 600;
+  box-shadow: 0 0 14px var(--museum-accent-glow);
+}
+
+.archive-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.archive-item-card {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.archive-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.5;
+  overflow: hidden;
+  background: #000;
+}
+
+.archive-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.archive-item-card:hover .archive-card-media img {
+  transform: scale(1.04);
+}
+
+.archive-number-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(1, 20, 18, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-gold);
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+.archive-card-details {
+  padding: 1.1rem;
+}
+
+.archive-date-tag {
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.archive-item-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.05rem;
+  color: var(--museum-text-title);
+  margin-bottom: 6px;
+}
+
+.archive-item-caption {
+  font-size: 0.82rem;
+  color: var(--museum-text-muted);
+  line-height: 1.45;
+}
+
+/* ----------------------------------------------------------------------------
+ * 13. ROOM 06: THE CURATOR'S NOTES
+ * ---------------------------------------------------------------------------- */
+.curator-notes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.8rem;
+}
+
+.curator-paper-note {
+  background: linear-gradient(135deg, rgba(250, 245, 235, 0.08) 0%, rgba(240, 230, 215, 0.03) 100%);
+  border: 1px solid var(--museum-border);
+  border-left: 3px solid var(--museum-gold);
+  padding: 1.8rem 1.6rem;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.paper-pin {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: var(--museum-gold);
+  font-size: 0.85rem;
+}
+
+.note-card-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.note-card-heading {
+  font-family: var(--font-serif-title);
+  font-size: 1.25rem;
+  color: var(--museum-text-title);
+  margin-bottom: 10px;
+}
+
+.note-card-body {
+  font-family: var(--font-serif-body);
+  font-size: 1.12rem;
+  font-style: italic;
+  color: var(--museum-gold-bright);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.note-card-signature {
+  font-family: var(--font-mono-meta);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--museum-text-muted);
+  text-transform: uppercase;
+  border-top: 1px dashed var(--museum-border);
+  padding-top: 8px;
+}
+
+/* Wax Seal Discovery Card */
+.curator-secret-wax-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(140, 30, 30, 0.3) 0%, rgba(6, 78, 70, 0.45) 100%);
+  border: 1px dashed var(--museum-gold);
+  border-radius: 6px;
+  padding: 1.6rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.curator-secret-wax-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--museum-gold-bright);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--museum-accent-glow);
+}
+
+.wax-seal-stamp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b52a2a 0%, #701010 100%);
+  border: 2px solid #e06060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.wax-monogram {
+  font-family: var(--font-mono-meta);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff0f0;
+}
+
+.wax-seal-info {
+  flex: 1;
+}
+
+.wax-seal-badge {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--museum-gold-bright);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.wax-seal-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.25rem;
+  color: #fff9ef;
+  margin-bottom: 4px;
+}
+
+.wax-seal-teaser {
+  font-size: 0.88rem;
+  color: var(--museum-text-muted);
+}
+
+.wax-seal-arrow {
+  font-size: 1.5rem;
+  color: var(--museum-gold-bright);
+  transition: transform 0.25s ease;
+}
+
+.curator-secret-wax-card:hover .wax-seal-arrow {
+  transform: translateX(4px);
+}
+
+/* ----------------------------------------------------------------------------
+ * 14. ROOM 07: THE FINAL EXHIBIT
+ * ---------------------------------------------------------------------------- */
+.final-monument-wrapper {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.final-couple-frame {
+  background: #021a16;
+  border: 12px solid #04362d;
+  outline: 2px solid var(--museum-gold);
+  border-radius: 4px;
+  box-shadow: 0 30px 75px rgba(0, 0, 0, 0.75), 0 0 35px var(--museum-accent-glow);
+}
+
+.couple-art-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #000;
+}
+
+.couple-art-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.final-couple-frame:hover .couple-art-box img {
+  transform: scale(1.025);
+}
+
+.couple-monument-plaque {
+  padding: 1.4rem 1.6rem;
+  background: var(--museum-bg-surface);
+  border-top: 1px solid var(--museum-border);
+}
+
+.monument-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.35rem;
+  color: var(--museum-text-title);
+  margin-bottom: 4px;
+}
+
+.monument-medium {
+  font-family: var(--font-mono-meta);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.monument-caption {
+  font-size: 0.92rem;
+  color: var(--museum-text-muted);
+  line-height: 1.5;
+}
+
+.final-curator-vows-card {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border-accent);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+.vows-monogram-ring {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--museum-gold);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono-meta);
+  font-size: 1.15rem;
+  color: var(--museum-gold-bright);
+}
+
+.vows-paragraph {
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.85;
+  color: var(--museum-text-body);
+  margin-bottom: 1.2rem;
+}
+
+.final-museum-declaration {
+  font-family: var(--font-mono-meta);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  letter-spacing: 0.22em;
+  color: var(--museum-gold-bright);
+  text-transform: uppercase;
+  margin: 2rem 0;
+  padding: 1rem;
+  border-top: 1px solid var(--museum-border);
+  border-bottom: 1px solid var(--museum-border);
+}
+
+.final-navigation-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.final-action-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  width: 100%;
+  max-width: 380px;
+}
+
+.primary-gold-btn {
+  background: linear-gradient(135deg, var(--museum-gold-bright) 0%, var(--museum-gold) 100%);
+  color: #011412;
+  font-weight: 700;
+  border: 1px solid var(--museum-gold-bright);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.primary-gold-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px var(--museum-accent-glow);
+}
+
+.secondary-ghost-btn {
+  background: transparent;
+  color: var(--museum-text-muted);
+  border: 1px solid var(--museum-border);
+}
+
+.secondary-ghost-btn:hover {
+  border-color: var(--museum-gold);
+  color: var(--museum-gold-bright);
+  transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------------------------------
+ * 15. BOTTOM EXHIBITION NAVIGATOR BAR
+ * ---------------------------------------------------------------------------- */
+.museum-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bottom-bar-height);
+  background: rgba(1, 17, 15, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--museum-border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(0.75rem, 3vw, 2.5rem);
+}
+
+.bottom-nav-action-btn {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-text-title);
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 8px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.bottom-nav-action-btn:hover {
+  border-color: var(--museum-gold-bright);
+  color: var(--museum-gold-bright);
+}
+
+.bottom-room-indicator {
+  font-family: var(--font-mono-meta);
+  font-size: clamp(0.68rem, 1.8vw, 0.8rem);
+  letter-spacing: 0.22em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+/* ----------------------------------------------------------------------------
+ * 16. MODALS: LIGHTBOX, FLOOR PLAN, THEMES & SECRET NOTE
+ * ---------------------------------------------------------------------------- */
+.museum-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(1, 10, 8, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.museum-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.museum-modal-content {
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border-accent);
+  border-radius: 4px;
+  position: relative;
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(1, 20, 18, 0.8);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-gold-bright);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 20;
+}
+
+.modal-close-btn:hover {
+  background: var(--museum-gold);
+  color: #011412;
+}
+
+/* Lightbox Specifics */
+.lightbox-modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1040px;
+  overflow: hidden;
+}
+
+.lightbox-image-stage {
+  position: relative;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+}
+
+.lightbox-image-stage img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(1, 20, 18, 0.7);
+  border: 1px solid var(--museum-border);
+  color: var(--museum-gold-bright);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-nav-arrow:hover {
+  background: var(--museum-gold);
+  color: #011412;
+}
+
+.lightbox-prev-arrow { left: 12px; }
+.lightbox-next-arrow { right: 12px; }
+
+.lightbox-details-stage {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lightbox-count-pill {
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.lightbox-room-tag {
+  font-family: var(--font-mono-meta);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--museum-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.lightbox-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  color: var(--museum-text-title);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.lightbox-medium {
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.lightbox-caption {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--museum-gold-bright);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.lightbox-curator-voice {
+  border-top: 1px dashed var(--museum-border);
+  padding-top: 14px;
+  font-size: 0.92rem;
+  color: var(--museum-text-body);
+  line-height: 1.6;
+}
+
+.lightbox-curator-voice strong {
+  color: var(--museum-gold);
+  display: block;
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Floor Plan Drawer */
+.floorplan-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: min(400px, 92vw);
+  height: 100vh;
+  background: rgba(1, 20, 18, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid var(--museum-border-accent);
+  z-index: 1400;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+}
+
+.floorplan-drawer.active {
+  right: 0;
+}
+
+.floorplan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--museum-border);
+  padding-bottom: 1rem;
+}
+
+.floorplan-title {
+  font-family: var(--font-mono-meta);
+  font-size: 1.05rem;
+  letter-spacing: 0.2em;
+  color: var(--museum-gold-bright);
+  text-transform: uppercase;
+}
+
+.floorplan-rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.floorplan-room-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.floorplan-room-item:hover,
+.floorplan-room-item.active {
+  border-color: var(--museum-gold-bright);
+  background: rgba(6, 78, 70, 0.6);
+  transform: translateX(4px);
+}
+
+.floorplan-room-num {
+  font-family: var(--font-mono-meta);
+  font-size: 0.75rem;
+  color: var(--museum-gold);
+  font-weight: 700;
+}
+
+.floorplan-room-text {
+  flex: 1;
+}
+
+.floorplan-room-title {
+  font-family: var(--font-serif-title);
+  font-size: 0.95rem;
+  color: var(--museum-text-title);
+  line-height: 1.25;
+}
+
+.floorplan-room-sub {
+  font-family: var(--font-mono-meta);
+  font-size: 0.62rem;
+  color: var(--museum-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.floorplan-room-arrow {
+  color: var(--museum-gold);
+}
+
+/* Theme Options Grid in Modal */
+.theme-modal-inner {
+  padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.theme-modal-title {
+  font-family: var(--font-serif-title);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--museum-text-title);
+  margin-bottom: 6px;
+}
+
+.theme-modal-sub {
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--museum-gold);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.theme-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  text-align: left;
+}
+
+.theme-card-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--museum-bg-surface);
+  border: 1px solid var(--museum-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: inherit;
+}
+
+.theme-card-option:hover,
+.theme-card-option.active {
+  border-color: var(--museum-gold-bright);
+  box-shadow: 0 0 16px var(--museum-accent-glow);
+}
+
+.theme-preview-palette {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--museum-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.preview-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.theme-option-info {
+  flex: 1;
+}
+
+.theme-option-name {
+  font-family: var(--font-serif-title);
+  font-size: 1rem;
+  color: var(--museum-text-title);
+  margin-bottom: 2px;
+}
+
+.theme-option-tagline {
+  font-size: 0.72rem;
+  color: var(--museum-text-muted);
+  line-height: 1.35;
+}
+
+.theme-check-icon {
+  font-size: 1rem;
+  color: var(--museum-gold-bright);
+  opacity: 0;
+}
+
+.theme-card-option.active .theme-check-icon {
+  opacity: 1;
+}
+
+/* Secret Note Modal */
+.secret-note-content {
+  max-width: 540px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(6, 78, 70, 0.95) 0%, rgba(2, 28, 24, 0.98) 100%);
+}
+
+.secret-note-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.8rem;
+  color: #fff9ef;
+  margin-bottom: 1.2rem;
+}
+
+.secret-note-message {
+  font-family: var(--font-serif-body);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #f4e2bb;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+/* Shimmer utility */
+.gold-shimmer {
+  background: linear-gradient(135deg, #fff9ef 0%, #f4e2bb 40%, #c5a46d 70%, #fff9ef 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.silver-shimmer {
+  background: linear-gradient(135deg, #ffffff 0%, #e0e5ec 40%, #a5b4c0 70%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ----------------------------------------------------------------------------
+ * 17. MOBILE-FIRST RESPONSIVE BREAKPOINTS
+ * ---------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .intro-curator-prologue,
+  .monochrome-salon-layout,
+  .final-monument-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .mood-group-spread,
+  .mood-group-spread.reversed-spread {
+    grid-template-columns: 1fr;
+  }
+
+  .mood-group-spread.reversed-spread .mood-group-meta,
+  .mood-group-spread.reversed-spread .mood-group-frames-duo {
+    order: initial;
+  }
+
+  .lightbox-modal-content {
+    grid-template-columns: 1fr;
+    max-height: 85vh;
+  }
+
+  .lightbox-image-stage {
+    min-height: 280px;
+  }
+
+  .lightbox-details-stage {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --header-height: 54px;
+    --bottom-bar-height: 52px;
+  }
+
+  .museum-top-header {
+    padding: 0 0.5rem;
+  }
+
+  .header-brand-block {
+    gap: 6px;
+  }
+
+  .brand-monogram-shield {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .brand-main-title {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .brand-sub-tag {
+    display: none;
+  }
+
+  .header-actions-group {
+    gap: 4px;
+  }
+
+  .header-btn {
+    padding: 4px 6px;
+    font-size: 0.62rem;
+    gap: 3px;
+  }
+
+  .header-btn span.btn-label {
+    display: none;
+  }
+
+  .museum-galleries-container {
+    padding: calc(var(--header-height) + 1rem) 0.5rem 2rem 0.5rem;
+  }
+
+  .museum-room-inner {
+    padding: 0 2px;
+  }
+
+  .room-title {
+    font-size: clamp(1.35rem, 5.5vw, 1.95rem);
+    letter-spacing: 0.01em;
+    word-break: normal;
+    overflow-wrap: normal;
+    line-height: 1.25;
+    padding: 0 4px;
+  }
+
+  .room-subtitle {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 0 4px;
+  }
+
+  .room-editorial-intro {
+    font-size: 1rem;
+    line-height: 1.6;
+    padding: 0 6px;
+  }
+
+  .grand-gold-frame {
+    border-width: 6px;
+    outline-width: 1px;
+  }
+
+  .masterpiece-brass-plaque {
+    padding: 1.2rem 1rem;
+  }
+
+  .details-mosaic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mood-group-spread {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .mood-group-frames-duo {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .curator-notes-container {
+    grid-template-columns: 1fr;
+  }
+
+  .curator-secret-wax-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.2rem 1rem;
+  }
+
+  .wax-seal-arrow {
+    display: none;
+  }
+
+  .bottom-nav-action-btn {
+    padding: 6px 10px;
+    font-size: 0.65rem;
+  }
+
+  .bottom-room-indicator {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 380px) {
+  .archive-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #museum-3d-canvas {
+    display: none !important;
+  }
+}
