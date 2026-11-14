@@ -162,14 +162,14 @@
 
     <nav class="header-nav" aria-label="Exhibition Galleries">
       <a href="#opening" class="nav-link active"><span class="roman">00</span>Prologue</a>
-      <a href="#editorial" class="nav-link"><span class="roman">01</span>The Editorial</a>
-      <a href="museum.html" class="nav-link"><span class="roman">02</span>The Museum</a>
-      <a href="#noticing" class="nav-link"><span class="roman">03</span>Little Things</a>
+      <a href="#editorial" class="nav-link"><span class="roman">01</span>Editorial</a>
+      <a href="museum.html" class="nav-link"><span class="roman">02</span>Museum</a>
+      <a href="#noticing" class="nav-link"><span class="roman">03</span>Noticing</a>
       <a href="#constellation" class="nav-link"><span class="roman">04</span>Constellation</a>
-      <a href="#garden" class="nav-link"><span class="roman">05</span>The Garden</a>
-      <a href="#timeline" class="nav-link"><span class="roman">06</span>Story of Us</a>
-      <a href="#calls" class="nav-link"><span class="roman">07</span>Our Little Calls</a>
-      <a href="#letter" class="nav-link"><span class="roman">08</span>My Promise</a>
+      <a href="#garden" class="nav-link"><span class="roman">05</span>Garden</a>
+      <a href="#timeline" class="nav-link"><span class="roman">06</span>Story</a>
+      <a href="#calls" class="nav-link"><span class="roman">07</span>Calls</a>
+      <a href="#letter" class="nav-link"><span class="roman">08</span>Promise</a>
     </nav>
 
     <div class="header-actions">
@@ -767,5 +767,25 @@
   <script src="js/calls.js"></script>
   <script src="js/themes.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const culprits = [];
+        document.querySelectorAll('*').forEach(el => {
+          if (el.offsetWidth > 390 || el.scrollWidth > 390) {
+            culprits.push({
+              tag: el.tagName,
+              id: el.id,
+              cls: (el.className || '').toString().slice(0, 30),
+              ow: el.offsetWidth,
+              sw: el.scrollWidth
+            });
+          }
+        });
+        console.log("WINDOW_INFO: innerWidth=" + window.innerWidth + " outerWidth=" + window.outerWidth + " screenWidth=" + screen.width);
+        console.log('CULPRITS_DATA: ' + JSON.stringify(culprits));
+      }, 300);
+    });
+  </script>
 </body>
 </html>

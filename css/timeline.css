@@ -121,21 +121,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.75rem;
   letter-spacing: 0.35em;
   color: var(--gold-bright);
   text-transform: uppercase;
   margin-bottom: 14px;
-  background: rgba(3, 47, 42, 0.5);
+  background: rgba(6, 37, 31, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-gold-subtle);
   padding: 6px 16px;
   border-radius: 2px;
 }
 
 .chapter-main-title {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.85rem, 3.8vw, 2.9rem);
+  font-weight: 500;
   color: var(--ivory-warm);
   line-height: 1.25;
   margin: 0 0 14px 0;
@@ -145,7 +148,7 @@
 }
 
 .chapter-meta-time {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.25em;
   color: var(--gold-antique);
@@ -155,7 +158,7 @@
 }
 
 .chapter-meta-location {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.68rem;
   letter-spacing: 0.18em;
   color: var(--sage-muted);
@@ -190,7 +193,7 @@
   color: var(--gold-bright);
   font-size: 0.8rem;
   line-height: 1;
-  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.6));
+  filter: drop-shadow(0 0 4px rgba(198, 168, 117, 0.6));
 }
 
 .chapter-meta-ribbon {
@@ -198,7 +201,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   color: var(--sage-muted);
@@ -215,46 +218,55 @@
 }
 
 .story-paragraph {
-  font-family: var(--font-serif-body);
-  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
-  line-height: 1.95;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.82;
   color: var(--mint-soft);
   margin-bottom: 24px;
-  font-weight: 300;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  letter-spacing: 0;
+  max-width: 68ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Elegant Drop Cap on First Paragraph */
 .story-paragraph:first-of-type::first-letter {
-  font-family: var(--font-serif-title);
-  font-size: 3.4rem;
+  font-family: var(--font-editorial-heading);
+  font-size: 3.2rem;
   float: left;
   line-height: 0.85;
-  padding-right: 14px;
+  padding-right: 12px;
   padding-top: 4px;
   color: var(--gold-bright);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* High-Impact Pull Quotes */
 .story-pullquote {
-  margin: var(--space-lg) 0;
+  margin: var(--space-lg) auto;
+  max-width: 72ch;
   padding: 24px 28px;
-  background: rgba(2, 28, 24, 0.75);
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-left: 3px solid var(--gold-bright);
   border-right: 1px solid var(--border-gold-subtle);
-  font-family: var(--font-serif-title);
+  border-top: 1px solid var(--border-gold-subtle);
+  border-bottom: 1px solid var(--border-gold-subtle);
+  border-radius: 4px;
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.25rem, 2.2vw, 1.65rem);
   font-style: italic;
   color: var(--gold-champagne);
   line-height: 1.6;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .story-pullquote::before {
   content: "“";
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: 3rem;
   color: var(--gold-antique);
   position: absolute;
@@ -265,15 +277,16 @@
 
 /* Conversational Handwritten Annotation (Rahul's Note) */
 .rahul-note-card {
-  margin: var(--space-lg) 0;
-  background: linear-gradient(135deg, rgba(8, 127, 120, 0.15) 0%, rgba(2, 26, 23, 0.85) 100%);
+  margin: var(--space-lg) auto;
+  max-width: 72ch;
+  background: linear-gradient(135deg, rgba(19, 132, 119, 0.15) 0%, rgba(6, 37, 31, 0.88) 100%);
   border: 1px solid var(--border-gold-accent);
   padding: 18px 24px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  border-radius: 2px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
 }
 
 .rahul-note-icon {
@@ -287,7 +300,7 @@
 }
 
 .rahul-note-heading {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.25em;
   color: var(--gold-bright);
@@ -296,17 +309,18 @@
 }
 
 .rahul-note-text {
-  font-family: var(--font-serif-body);
-  font-size: 1.15rem;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
   font-style: italic;
   color: var(--ivory-warm);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
 }
 
-/* Full-Width Archival Photographic Moments */
+/* Full-Width Archival Photographic Moments (Museum-grade framing) */
 .chapter-photo-moment {
-  margin: var(--space-xl) 0;
+  margin: var(--space-xl) auto;
+  max-width: 820px;
   position: relative;
 }
 
@@ -315,9 +329,10 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--border-gold-accent);
-  background: #021a17;
+  background: var(--bg-deepest);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(8, 127, 120, 0.2);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(19, 132, 119, 0.15), inset 0 0 0 1px rgba(198, 168, 117, 0.25);
 }
 
 .photo-moment-frame img {
@@ -334,7 +349,7 @@
 .photo-moment-caption {
   margin-top: 12px;
   text-align: center;
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   color: var(--sage-muted);
@@ -345,12 +360,14 @@
  * 3. SPECIAL MILESTONE: CHAPTER THREE (27 September · 11:11 PM Confession)
  * ---------------------------------------------------------------------------- */
 .confession-milestone-hero {
-  background: radial-gradient(circle at 50% 40%, rgba(8, 127, 120, 0.35) 0%, rgba(2, 26, 23, 0.96) 75%);
-  border: 2px solid var(--gold-bright);
+  background: radial-gradient(circle at 50% 40%, rgba(19, 132, 119, 0.35) 0%, rgba(4, 23, 19, 0.96) 75%);
+  border: 1px solid var(--gold-bright);
   padding: clamp(36px, 6vw, 68px);
-  margin: var(--space-2xl) 0;
+  margin: var(--space-2xl) auto;
+  max-width: 860px;
+  border-radius: 6px;
   text-align: center;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 60px rgba(197, 164, 109, 0.35);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 60px rgba(198, 168, 117, 0.3);
   position: relative;
 }
 
@@ -362,18 +379,18 @@
 }
 
 .confession-digital-clock {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: clamp(3.6rem, 8vw, 6rem);
   letter-spacing: 0.15em;
   color: var(--gold-bright);
   line-height: 1;
   font-weight: 700;
-  text-shadow: 0 0 35px rgba(244, 226, 187, 0.8), 0 0 70px rgba(197, 164, 109, 0.5);
+  text-shadow: 0 0 35px rgba(247, 231, 205, 0.8), 0 0 70px rgba(198, 168, 117, 0.45);
   animation: glow-pulse 3s infinite alternate ease-in-out;
 }
 
 .confession-date-stamp {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: clamp(0.95rem, 1.8vw, 1.35rem);
   letter-spacing: 0.45em;
   color: var(--gold-antique);
@@ -382,11 +399,11 @@
 }
 
 .confession-three-words {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(2.4rem, 5vw, 4.2rem);
   color: var(--ivory-warm);
-  letter-spacing: 0.12em;
-  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-weight: 600;
   margin: 28px 0;
   text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
 }
@@ -395,24 +412,26 @@
  * 4. SPECIAL CALLOUT: MA QUEEN. ♡ (Chapter 5)
  * ---------------------------------------------------------------------------- */
 .queen-declaration-banner {
-  margin: var(--space-xl) 0;
+  margin: var(--space-xl) auto;
+  max-width: 820px;
   padding: 36px 24px;
-  background: radial-gradient(circle, rgba(197, 164, 109, 0.15) 0%, rgba(3, 38, 33, 0.8) 100%);
+  background: radial-gradient(circle, rgba(198, 168, 117, 0.15) 0%, rgba(6, 37, 31, 0.85) 100%);
   border: 1px solid var(--border-gold-accent);
+  border-radius: 4px;
   text-align: center;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
 }
 
 .queen-declaration-text {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(2rem, 4.2vw, 3.2rem);
   color: var(--gold-bright);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   margin-bottom: 8px;
 }
 
 .queen-declaration-sub {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
   font-size: 1.25rem;
   font-style: italic;
   color: var(--mint-soft);
@@ -424,15 +443,16 @@
 .story-grand-finale-shrine {
   margin-top: var(--space-3xl);
   padding: clamp(40px, 7vw, 80px) 30px;
-  background: radial-gradient(circle at 50% 40%, rgba(8, 127, 120, 0.3) 0%, rgba(1, 16, 14, 0.98) 75%);
-  border: 2px solid var(--gold-bright);
+  background: radial-gradient(circle at 50% 40%, rgba(19, 132, 119, 0.28) 0%, rgba(4, 23, 19, 0.98) 75%);
+  border: 1px solid var(--gold-bright);
+  border-radius: 6px;
   text-align: center;
-  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.95), 0 0 60px rgba(197, 164, 109, 0.35);
+  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.95), 0 0 60px rgba(198, 168, 117, 0.3);
   position: relative;
 }
 
 .finale-date-monument {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: clamp(1.4rem, 2.5vw, 2rem);
   letter-spacing: 0.3em;
   color: var(--gold-bright);
@@ -440,15 +460,15 @@
 }
 
 .finale-anniversary-line {
-  font-family: var(--font-serif-body);
-  font-size: 1.15rem;
+  font-family: var(--font-body);
+  font-size: 1.12rem;
   font-style: italic;
   color: var(--sage-muted);
   margin-bottom: 32px;
 }
 
 .finale-dedication {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: clamp(1rem, 2vw, 1.4rem);
   letter-spacing: 0.4em;
   color: var(--gold-antique);
@@ -457,16 +477,16 @@
 }
 
 .finale-promise {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.8rem, 3.8vw, 2.8rem);
   color: var(--ivory-warm);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   line-height: 1.3;
   margin-bottom: 24px;
 }
 
 .finale-closing-sentiment {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.2rem, 2.2vw, 1.6rem);
   font-style: italic;
   color: var(--gold-champagne);
@@ -476,7 +496,7 @@
 }
 
 .finale-infinity-mark {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(2.5rem, 5vw, 4rem);
   color: var(--gold-bright);
   letter-spacing: 0.2em;
@@ -484,6 +504,10 @@
 
 /* Responsive Timeline & Reading Flow */
 @media (max-width: 768px) {
+  .timeline-section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
   .story-editorial-container {
     padding-left: 0;
     padding-right: 0;

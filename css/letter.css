@@ -21,12 +21,13 @@
 
 /* Gilded Ivory Parchment Letter Card */
 .ivory-letter-card {
-  background: #FFFDF9;
+  background: linear-gradient(180deg, #FFFDF8 0%, #FAF5EB 100%);
   color: #12211e;
   padding: clamp(32px, 6vw, 68px);
   position: relative;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 45px rgba(197, 164, 109, 0.2);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 45px rgba(198, 168, 117, 0.2);
   border: 1px solid var(--gold-antique);
+  border-radius: 4px;
 }
 
 /* Double hairline border on parchment */
@@ -34,7 +35,8 @@
   content: "";
   position: absolute;
   inset: 12px;
-  border: 1px solid rgba(197, 164, 109, 0.45);
+  border: 1px solid rgba(198, 168, 117, 0.45);
+  border-radius: 2px;
   pointer-events: none;
 }
 
@@ -46,21 +48,21 @@
   transform: translateX(-50%);
   width: 60px;
   height: 60px;
-  background: radial-gradient(circle, #C5A46D 0%, #8C7348 100%);
+  background: radial-gradient(circle, #C6A875 0%, #8E774E 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #FFF9EF;
+  border: 2px solid #FFF8EC;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.4);
   z-index: 10;
 }
 
 .wax-seal-monogram span {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: 1.6rem;
   font-weight: 700;
-  color: #021a17;
+  color: #041713;
 }
 
 /* Letter Header & Date */
@@ -68,33 +70,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(197, 164, 109, 0.3);
+  border-bottom: 1px solid rgba(198, 168, 117, 0.3);
   padding-bottom: 16px;
   margin-top: 12px;
   margin-bottom: 32px;
 }
 
 .letter-curator-mark {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.25em;
-  color: #8C7348;
+  color: #8E774E;
   text-transform: uppercase;
 }
 
 .letter-date-stamp {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  color: #8C7348;
+  color: #8E774E;
   text-transform: uppercase;
 }
 
 /* Salutation & Paragraphs */
 .letter-salutation {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  color: #053b34;
+  font-weight: 500;
+  color: #073A31;
   margin-bottom: 24px;
 }
 
@@ -105,9 +108,9 @@
 }
 
 .letter-paragraph {
-  font-family: var(--font-serif-body);
-  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
-  line-height: 1.85;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.82;
   color: #1a2e2b;
   font-weight: 400;
 }
@@ -116,7 +119,7 @@
 .letter-handwritten-highlight {
   font-family: var(--font-script);
   font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-  color: #085a51;
+  color: #075747;
   line-height: 1.4;
   margin: 16px 0;
   text-align: center;
@@ -127,15 +130,15 @@
 .letter-signoff-block {
   margin-top: 36px;
   padding-top: 24px;
-  border-top: 1px solid rgba(197, 164, 109, 0.25);
+  border-top: 1px solid rgba(198, 168, 117, 0.25);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
 
 .letter-closing-phrase {
-  font-family: var(--font-serif-body);
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
   font-style: italic;
   color: #4a5d59;
   margin-bottom: 8px;
@@ -144,17 +147,17 @@
 .letter-signature {
   font-family: var(--font-script);
   font-size: clamp(2.4rem, 4.5vw, 3.4rem);
-  color: #064E46;
+  color: #075747;
   line-height: 1;
 }
 
 .letter-postscript {
   margin-top: 30px;
-  font-family: var(--font-serif-body);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: 1.02rem;
   font-style: italic;
-  color: #637772;
-  border-top: 1px dashed rgba(197, 164, 109, 0.3);
+  color: #455a55;
+  border-top: 1px dashed rgba(198, 168, 117, 0.3);
   padding-top: 14px;
 }
 
@@ -163,20 +166,20 @@
   text-align: center;
   margin-top: var(--space-3xl);
   padding-top: var(--space-xl);
-  border-top: 1px solid rgba(197, 164, 109, 0.15);
+  border-top: 1px solid rgba(198, 168, 117, 0.15);
   position: relative;
   z-index: 5;
 }
 
 .footer-monogram {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: 1.8rem;
   color: var(--gold-bright);
   margin-bottom: 8px;
 }
 
 .footer-title {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.85rem;
   letter-spacing: 0.3em;
   color: var(--ivory-warm);
@@ -185,7 +188,7 @@
 }
 
 .footer-sub {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-style: italic;
   color: var(--gold-champagne);

@@ -10,26 +10,32 @@
  * 1. DESIGN TOKENS & DEFAULT THEME (Emerald Royale)
  * ---------------------------------------------------------------------------- */
 :root {
-  --museum-bg: #011412;
-  --museum-bg-alt: #032F2A;
-  --museum-bg-surface: rgba(4, 38, 33, 0.85);
-  --museum-bg-card: rgba(6, 78, 70, 0.35);
-  --museum-border: rgba(197, 164, 109, 0.28);
-  --museum-border-accent: rgba(197, 164, 109, 0.7);
-  --museum-gold: #C5A46D;
-  --museum-gold-bright: #F4E2BB;
-  --museum-text-title: #FFF9EF;
-  --museum-text-body: #DCEEE6;
-  --museum-text-muted: #95B0A6;
-  --museum-accent-glow: rgba(197, 164, 109, 0.25);
-  --museum-spotlight: rgba(8, 127, 120, 0.18);
+  --museum-bg: #041713;
+  --museum-bg-alt: #06251F;
+  --museum-bg-surface: rgba(6, 37, 31, 0.85);
+  --museum-bg-card: rgba(7, 58, 49, 0.45);
+  --museum-border: rgba(198, 168, 117, 0.22);
+  --museum-border-accent: rgba(198, 168, 117, 0.65);
+  --museum-gold: #C6A875;
+  --museum-gold-bright: #F7E7CD;
+  --museum-text-title: #FFF8EC;
+  --museum-text-body: #B8D8CC;
+  --museum-text-muted: #8AAEA1;
+  --museum-accent-glow: rgba(198, 168, 117, 0.28);
+  --museum-spotlight: rgba(19, 132, 119, 0.22);
 
-  /* Fonts */
-  --font-serif-title: 'Playfair Display', Georgia, serif;
-  --font-serif-body: 'Cormorant Garamond', 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono-meta: 'Cinzel', 'Playfair Display', serif;
+  /* Refined 4-Tier Typography Hierarchy */
+  --font-editorial-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-display-hero: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-script: 'Pinyon Script', cursive;
+  --font-meta-label: 'Cinzel', serif;
+
+  /* Aliases */
+  --font-serif-title: var(--font-editorial-heading);
+  --font-serif-body: var(--font-body);
+  --font-sans: var(--font-body);
+  --font-mono-meta: var(--font-meta-label);
 
   /* Header & Navigator Heights */
   --header-height: 68px;

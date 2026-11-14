@@ -539,11 +539,22 @@
   }
   .garden-viewpoint-toolbar {
     top: 10px;
-    padding: 4px 10px;
+    padding: 5px 8px;
     gap: 6px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: calc(100% - 24px);
+    justify-content: flex-start;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 20px;
+  }
+  .garden-viewpoint-toolbar::-webkit-scrollbar {
+    display: none;
   }
   .garden-viewpoint-pill {
-    font-size: 0.65rem;
+    flex-shrink: 0;
+    font-size: 0.62rem;
     padding: 5px 10px;
   }
   .garden-flower-modal {

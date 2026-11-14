@@ -194,7 +194,19 @@ class EnchantedGarden3D {
   }
 
   /* ----------------------------------------------------------------------------
-   * 3. TERRAIN, COBBLESTONE PATHWAY & RUSTIC WOODEN FENCE (Ref Image 3)
+   * 3. TERRAIN ELEVATION HELPER & PROCEDURAL MOSS FLOOR
+   * ---------------------------------------------------------------------------- */
+  getTerrainHeight(x, z) {
+    let y = Math.sin(x * 0.055) * 1.6 + Math.cos(z * 0.045) * 1.8;
+    const pondDist = Math.hypot(x - -15, z - 4);
+    if (pondDist < 18) {
+      y -= Math.cos((pondDist / 18) * (Math.PI / 2)) * 3.4;
+    }
+    return y;
+  }
+
+  /* ----------------------------------------------------------------------------
+   * 4. TERRAIN, COBBLESTONE PATHWAY & RUSTIC WOODEN FENCE (Ref Image 3)
    * ---------------------------------------------------------------------------- */
   buildTerrainAndPathway() {
     // 1. Lush Undulating Forest Floor
@@ -205,14 +217,7 @@ class EnchantedGarden3D {
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
-
-      // Rolling knolls with depression on the left for the stream and pond
-      let y = Math.sin(x * 0.055) * 1.6 + Math.cos(z * 0.045) * 1.8;
-      const pondDist = Math.hypot(x - -15, z - 4);
-      if (pondDist < 18) {
-        y -= Math.cos((pondDist / 18) * (Math.PI / 2)) * 3.4;
-      }
-      pos.setY(i, y);
+      pos.setY(i, this.getTerrainHeight(x, z));
     }
     terrainGeo.computeVertexNormals();
 
@@ -228,19 +233,19 @@ class EnchantedGarden3D {
 
     // 2. Winding Cobblestone Pathway (Matches Reference Image 3)
     const pathGroup = new THREE.Group();
-    const stoneGeo = new THREE.BoxGeometry(0.85, 0.22, 0.72);
-    const stoneColors = [0x787268, 0x8a8479, 0x6e695f, 0x969085, 0x5a554c];
+    const stoneGeo = new THREE.CylinderGeometry(0.38, 0.44, 0.16, 7);
+    const stoneColors = [0x8b8579, 0xa09a8d, 0x6e685f, 0xb8b0a2, 0x7a746a, 0x948e83];
 
-    // Winding curve points from camera (z = 40) towards the Grand Tree (z = -10)
+    // Winding curve points from foreground camera (z = 46) towards the Grand Tree (z = -6)
     const curvePoints = [
-      new THREE.Vector3(2, 0.2, 42),
-      new THREE.Vector3(4, 0.3, 30),
-      new THREE.Vector3(1, 0.3, 18),
-      new THREE.Vector3(-2, 0.3, 6),
-      new THREE.Vector3(0, 0.3, -6)
+      new THREE.Vector3(2.5, 0, 46),
+      new THREE.Vector3(4.8, 0, 32),
+      new THREE.Vector3(2.2, 0, 18),
+      new THREE.Vector3(-1.8, 0, 6),
+      new THREE.Vector3(0, 0, -6)
     ];
     const pathSpline = new THREE.CatmullRomCurve3(curvePoints);
-    const pathSegments = 55;
+    const pathSegments = 65;
 
     for (let s = 0; s < pathSegments; s++) {
       const t = s / pathSegments;
@@ -248,16 +253,23 @@ class EnchantedGarden3D {
       const tangent = pathSpline.getTangent(t);
       const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
 
-      // Place 3-4 stones abreast across path width
-      for (let w = -1.2; w <= 1.2; w += 0.8) {
-        const stonePos = pt.clone().addScaledVector(normal, w + (Math.random() - 0.5) * 0.3);
+      // Place 4-5 cobblestones abreast across path width (-1.6 to +1.6)
+      for (let w = -1.6; w <= 1.6; w += 0.7) {
+        const stonePos = pt.clone().addScaledVector(normal, w + (Math.random() - 0.5) * 0.25);
         const col = stoneColors[Math.floor(Math.random() * stoneColors.length)];
-        const stoneMat = new THREE.MeshStandardMaterial({ color: col, roughness: 0.82 });
+        const stoneMat = new THREE.MeshStandardMaterial({
+          color: col,
+          roughness: 0.85,
+          metalness: 0.05
+        });
         const stone = new THREE.Mesh(stoneGeo, stoneMat);
-        stone.position.set(stonePos.x, stonePos.y + 0.08, stonePos.z);
+        const ty = this.getTerrainHeight(stonePos.x, stonePos.z);
+        stone.position.set(stonePos.x, ty + 0.12, stonePos.z);
         stone.rotation.y = Math.random() * Math.PI;
-        stone.rotation.x = (Math.random() - 0.5) * 0.08;
-        stone.scale.set(0.9 + Math.random() * 0.3, 1.0, 0.9 + Math.random() * 0.3);
+        stone.rotation.x = (Math.random() - 0.5) * 0.12;
+        stone.rotation.z = (Math.random() - 0.5) * 0.12;
+        const sc = 0.85 + Math.random() * 0.35;
+        stone.scale.set(sc, 1.0, sc);
         stone.castShadow = true;
         stone.receiveShadow = true;
         pathGroup.add(stone);
@@ -267,34 +279,51 @@ class EnchantedGarden3D {
 
     // 3. Rustic Wooden Fence Posts & Rails along Pathway (Matches Ref Image 3)
     const fenceGroup = new THREE.Group();
-    const woodMat = new THREE.MeshStandardMaterial({ color: 0x422d18, roughness: 0.88 });
-    const postGeo = new THREE.CylinderGeometry(0.12, 0.15, 1.8, 8);
-    const railGeo = new THREE.CylinderGeometry(0.06, 0.06, 3.2, 6);
-    railGeo.rotateZ(Math.PI / 2);
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0x3d2714, roughness: 0.92 });
+    const postGeo = new THREE.CylinderGeometry(0.12, 0.16, 2.0, 8);
 
-    for (let s = 2; s < pathSegments - 4; s += 4) {
+    let prevPostPos = null;
+    for (let s = 2; s < pathSegments - 3; s += 4) {
       const t = s / pathSegments;
       const pt = pathSpline.getPoint(t);
       const tangent = pathSpline.getTangent(t);
       const normal = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize();
 
-      // Right-side fence posts
-      const postPos = pt.clone().addScaledVector(normal, 2.0);
+      // Right-side fence posts along the outer path boundary
+      const postPos = pt.clone().addScaledVector(normal, 2.3);
+      const postY = this.getTerrainHeight(postPos.x, postPos.z);
       const post = new THREE.Mesh(postGeo, woodMat);
-      post.position.set(postPos.x, postPos.y + 0.8, postPos.z);
+      post.position.set(postPos.x, postY + 0.9, postPos.z);
+      post.rotation.z = (Math.random() - 0.5) * 0.08;
       post.castShadow = true;
       fenceGroup.add(post);
 
-      // Horizontal rails
-      const rail1 = new THREE.Mesh(railGeo, woodMat);
-      rail1.position.set(postPos.x, postPos.y + 0.6, postPos.z);
-      rail1.rotation.y = Math.atan2(tangent.x, tangent.z);
-      fenceGroup.add(rail1);
+      // Connect rails to previous post
+      if (prevPostPos) {
+        const midX = (prevPostPos.x + postPos.x) / 2;
+        const midY = (prevPostPos.y + postY) / 2;
+        const midZ = (prevPostPos.z + postPos.z) / 2;
+        const dist = Math.hypot(postPos.x - prevPostPos.x, postPos.z - prevPostPos.z);
 
-      const rail2 = new THREE.Mesh(railGeo, woodMat);
-      rail2.position.set(postPos.x, postPos.y + 1.2, postPos.z);
-      rail2.rotation.y = Math.atan2(tangent.x, tangent.z);
-      fenceGroup.add(rail2);
+        const currentRailGeo = new THREE.CylinderGeometry(0.06, 0.06, dist + 0.2, 6);
+        currentRailGeo.rotateZ(Math.PI / 2);
+        const railAngle = Math.atan2(postPos.x - prevPostPos.x, postPos.z - prevPostPos.z);
+
+        // Lower rail
+        const rail1 = new THREE.Mesh(currentRailGeo, woodMat);
+        rail1.position.set(midX, midY + 0.45, midZ);
+        rail1.rotation.y = railAngle;
+        rail1.castShadow = true;
+        fenceGroup.add(rail1);
+
+        // Upper rail
+        const rail2 = new THREE.Mesh(currentRailGeo, woodMat);
+        rail2.position.set(midX, midY + 1.05, midZ);
+        rail2.rotation.y = railAngle;
+        rail2.castShadow = true;
+        fenceGroup.add(rail2);
+      }
+      prevPostPos = { x: postPos.x, y: postY, z: postPos.z };
     }
     this.scene.add(fenceGroup);
   }
@@ -400,45 +429,47 @@ class EnchantedGarden3D {
    * ---------------------------------------------------------------------------- */
   buildGrandTreeOfLight() {
     this.centralTreeGroup = new THREE.Group();
-    this.centralTreeGroup.position.set(0, 0, -10);
+    const treeBaseY = this.getTerrainHeight(0, -10);
+    this.centralTreeGroup.position.set(0, treeBaseY, -10);
 
     const barkMat = new THREE.MeshStandardMaterial({
-      color: 0x4e351d, // Gnarled warm bark
-      roughness: 0.92,
-      metalness: 0.08
+      color: 0x3d2714, // Deep organic gnarled bark
+      roughness: 0.95,
+      metalness: 0.05
     });
 
     // 1. Sprawling Root Buttresses (Reaching into the ground)
-    const rootGeo = new THREE.CylinderGeometry(0.8, 2.2, 4.5, 8);
-    for (let r = 0; r < 5; r++) {
-      const rAngle = (r / 5) * Math.PI * 2;
+    const rootGeo = new THREE.CylinderGeometry(1.0, 2.6, 5.0, 10);
+    for (let r = 0; r < 6; r++) {
+      const rAngle = (r / 6) * Math.PI * 2;
       const root = new THREE.Mesh(rootGeo, barkMat);
-      root.position.set(Math.cos(rAngle) * 3.2, 1.2, Math.sin(rAngle) * 3.2);
-      root.rotation.z = Math.sin(rAngle) * 0.45;
-      root.rotation.x = Math.cos(rAngle) * 0.45;
+      root.position.set(Math.cos(rAngle) * 3.6, 1.4, Math.sin(rAngle) * 3.6);
+      root.rotation.z = Math.sin(rAngle) * 0.48;
+      root.rotation.x = Math.cos(rAngle) * 0.48;
       root.castShadow = true;
       this.centralTreeGroup.add(root);
     }
 
     // 2. Colossal Twisted Trunk
-    const baseTrunk = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 4.8, 8, 14), barkMat);
-    baseTrunk.position.y = 4.0;
+    const baseTrunk = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 5.2, 8.5, 16), barkMat);
+    baseTrunk.position.y = 4.2;
     baseTrunk.castShadow = true;
     this.centralTreeGroup.add(baseTrunk);
 
-    const midTrunk = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 3.2, 7, 12), barkMat);
-    midTrunk.position.y = 10.5;
-    midTrunk.rotation.z = 0.09;
-    midTrunk.rotation.y = 0.4;
+    const midTrunk = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 3.6, 7.5, 14), barkMat);
+    midTrunk.position.y = 11.2;
+    midTrunk.rotation.z = 0.08;
+    midTrunk.rotation.y = 0.45;
     midTrunk.castShadow = true;
     this.centralTreeGroup.add(midTrunk);
 
     // 3. Sprawling Main Branches
     const branchConfigs = [
-      { pos: [-3.2, 15, 1.5], rotZ: -0.65, rotX: 0.25, len: 10, rT: 1.0, rB: 1.8 },
-      { pos: [3.5, 16, -1.8], rotZ: 0.70, rotX: -0.20, len: 11, rT: 1.1, rB: 1.9 },
-      { pos: [0.5, 16.5, 3.8], rotZ: 0.15, rotX: 0.65, len: 9, rT: 0.9, rB: 1.6 },
-      { pos: [-1.8, 17, -3.2], rotZ: -0.35, rotX: -0.55, len: 10, rT: 1.0, rB: 1.7 }
+      { pos: [-3.8, 15.5, 1.8], rotZ: -0.68, rotX: 0.22, len: 12, rT: 1.2, rB: 2.1 },
+      { pos: [4.2, 16.5, -2.0], rotZ: 0.72, rotX: -0.18, len: 13, rT: 1.3, rB: 2.2 },
+      { pos: [0.8, 17.0, 4.2], rotZ: 0.16, rotX: 0.68, len: 11, rT: 1.0, rB: 1.9 },
+      { pos: [-2.2, 17.5, -3.8], rotZ: -0.38, rotX: -0.58, len: 12, rT: 1.2, rB: 2.0 },
+      { pos: [2.8, 19.0, 3.2], rotZ: 0.45, rotX: 0.35, len: 9, rT: 0.9, rB: 1.5 }
     ];
 
     branchConfigs.forEach(bc => {
@@ -450,29 +481,35 @@ class EnchantedGarden3D {
       this.centralTreeGroup.add(bMesh);
     });
 
-    // 4. Volumetric Lush Foliage Canopy (Multi-tiered organic clusters)
-    const foliageColors = [0x0a5c4d, 0x087F78, 0x117a65, 0x1e824c, 0x064E46];
+    // 4. Volumetric Lush Foliage Canopy (Smooth-shaded painterly clusters)
+    // Rich gradient from deep emerald to vibrant sunlit gold-green
+    const foliageColors = [0x085446, 0x0a6b59, 0x0c7d68, 0x128a73, 0x1a9e84, 0x24b596];
     const canopyClusters = [
-      // Central dome
-      { pos: [0, 24, 0], scale: [14, 8, 14] },
-      { pos: [0, 27, 0], scale: [10, 6, 10] },
-      // Spreading outer foliage boughs
-      { pos: [-7, 20, 3], scale: [9, 6, 8] },
-      { pos: [8, 21, -3], scale: [10, 7, 9] },
-      { pos: [1, 21, 8], scale: [8, 6, 8] },
-      { pos: [-3, 22, -7], scale: [9, 6, 9] },
-      { pos: [5, 23, 5], scale: [7, 5, 7] }
+      // Central massive dome
+      { pos: [0, 25, 0], scale: [16, 9, 16] },
+      { pos: [0, 29, 0], scale: [12, 7, 12] },
+      { pos: [0, 32, -1], scale: [8, 5, 8] },
+      // Sprawling outer foliage boughs matching Ref 1
+      { pos: [-8, 21, 3], scale: [10, 7, 9] },
+      { pos: [9, 22, -3], scale: [11, 8, 10] },
+      { pos: [1, 22, 9], scale: [9, 7, 9] },
+      { pos: [-4, 23, -8], scale: [10, 7, 10] },
+      { pos: [6, 24, 6], scale: [8, 6, 8] },
+      { pos: [-6, 26, -3], scale: [9, 6, 9] },
+      { pos: [5, 27, -5], scale: [8, 6, 8] }
     ];
+
+    const folGeo = new THREE.IcosahedronGeometry(1.0, 2); // Smooth organic spheroids
 
     canopyClusters.forEach((cc, idx) => {
       const col = foliageColors[idx % foliageColors.length];
       const folMat = new THREE.MeshStandardMaterial({
         color: col,
-        roughness: 0.85,
-        metalness: 0.05,
-        flatShading: true
+        roughness: 0.88,
+        metalness: 0.04,
+        flatShading: false // Smooth organic canopy!
       });
-      const folMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.0, 2), folMat);
+      const folMesh = new THREE.Mesh(folGeo, folMat);
       folMesh.position.set(cc.pos[0], cc.pos[1], cc.pos[2]);
       folMesh.scale.set(cc.scale[0], cc.scale[1], cc.scale[2]);
       folMesh.castShadow = true;
@@ -480,17 +517,60 @@ class EnchantedGarden3D {
       this.centralTreeGroup.add(folMesh);
     });
 
-    // 5. Radiant Amber Heart of the Tree (Matches warm inner glow in Ref Image 1)
-    this.treeHeartLight = new THREE.PointLight(0xFFE082, 3.8, 48);
-    this.treeHeartLight.position.set(0, 13.5, 0);
+    // 5. Sunlit Golden Canopy Spores & Fairy Dust (Directly from Ref Image 1!)
+    // 650+ sparkling golden particles clinging to the foliage and boughs
+    const canopySporeCount = 650;
+    const sporeGeo = new THREE.BufferGeometry();
+    const sporePositions = new Float32Array(canopySporeCount * 3);
+    const sporeColors = new Float32Array(canopySporeCount * 3);
+
+    const c1 = new THREE.Color(0xFFE082); // Warm gold
+    const c2 = new THREE.Color(0xFFD54F); // Amber
+    const c3 = new THREE.Color(0xFFF9EF); // Starlight ivory
+
+    for (let i = 0; i < canopySporeCount; i++) {
+      const i3 = i * 3;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const rad = 6 + Math.random() * 11;
+
+      sporePositions[i3] = Math.sin(phi) * Math.cos(theta) * rad * 1.1;
+      sporePositions[i3 + 1] = 16 + Math.sin(phi) * Math.sin(theta) * (rad * 0.7) + (Math.random() - 0.5) * 6;
+      sporePositions[i3 + 2] = Math.cos(phi) * rad * 1.1;
+
+      const pickC = (i % 3 === 0) ? c1 : (i % 3 === 1 ? c2 : c3);
+      sporeColors[i3] = pickC.r;
+      sporeColors[i3 + 1] = pickC.g;
+      sporeColors[i3 + 2] = pickC.b;
+    }
+
+    sporeGeo.setAttribute("position", new THREE.BufferAttribute(sporePositions, 3));
+    sporeGeo.setAttribute("color", new THREE.BufferAttribute(sporeColors, 3));
+
+    const sporeMat = new THREE.PointsMaterial({
+      size: 2.4,
+      map: this.textures.firefly,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    this.canopySpores = new THREE.Points(sporeGeo, sporeMat);
+    this.centralTreeGroup.add(this.canopySpores);
+
+    // 6. Radiant Amber Heart of the Tree
+    this.treeHeartLight = new THREE.PointLight(0xFFE082, 4.2, 50);
+    this.treeHeartLight.position.set(0, 14, 0);
     this.centralTreeGroup.add(this.treeHeartLight);
 
     // Glowing Heart Crystal Sphere
     const heartSphere = new THREE.Mesh(
-      new THREE.SphereGeometry(1.2, 16, 16),
+      new THREE.SphereGeometry(1.4, 16, 16),
       new THREE.MeshBasicMaterial({ color: 0xFFF9EF })
     );
-    heartSphere.position.set(0, 13.5, 0);
+    heartSphere.position.set(0, 14, 0);
     this.centralTreeGroup.add(heartSphere);
 
     this.scene.add(this.centralTreeGroup);
@@ -599,13 +679,17 @@ class EnchantedGarden3D {
   }
 
   /* ----------------------------------------------------------------------------
-   * 8. BACKGROUND FOREST TREES & NATURAL FOLIAGE
+   * 8. BACKGROUND FAIRYTALE WOODLAND TREES & NATURAL FOLIAGE (Ref Images 1 & 3)
    * ---------------------------------------------------------------------------- */
   buildEnchantedForestFoliage() {
-    const pineMat = new THREE.MeshStandardMaterial({ color: 0x043d34, roughness: 0.9 });
     const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3d2714, roughness: 0.95 });
+    const leafMat1 = new THREE.MeshStandardMaterial({ color: 0x05483d, roughness: 0.88 });
+    const leafMat2 = new THREE.MeshStandardMaterial({ color: 0x075b4d, roughness: 0.85 });
+    const leafMat3 = new THREE.MeshStandardMaterial({ color: 0x0a6e5d, roughness: 0.82 });
+    const foliageMats = [leafMat1, leafMat2, leafMat3];
+    const canopyGeo = new THREE.IcosahedronGeometry(1.0, 2);
 
-    // Ring of 28 deep background trees enclosing the fairytale sanctuary
+    // Ring of 28 deep background fairytale broadleaf trees enclosing the sanctuary
     for (let i = 0; i < 28; i++) {
       const tree = new THREE.Group();
       const angle = (i / 28) * Math.PI * 2;
@@ -616,21 +700,34 @@ class EnchantedGarden3D {
 
       const tx = Math.cos(angle) * dist;
       const tz = Math.sin(angle) * dist;
+      const ty = this.getTerrainHeight(tx, tz);
 
-      // Trunk
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 1.0, 10, 8), trunkMat);
-      trunk.position.y = 5;
+      // Curved Gnarled Trunk
+      const trunkHeight = 9 + Math.random() * 4;
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 1.2, trunkHeight, 8), trunkMat);
+      trunk.position.y = trunkHeight / 2;
+      trunk.rotation.z = (Math.random() - 0.5) * 0.12;
+      trunk.castShadow = true;
       tree.add(trunk);
 
-      // 3 Tiers of Pine foliage cones
-      for (let t = 0; t < 3; t++) {
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(4.2 - t * 0.9, 6.5, 8), pineMat);
-        cone.position.y = 8 + t * 4.2;
-        tree.add(cone);
+      // 3 Overlapping Organic Canopy Domes (Lush fairytale silhouette)
+      const domeCount = 3;
+      for (let d = 0; d < domeCount; d++) {
+        const mat = foliageMats[(i + d) % foliageMats.length];
+        const dome = new THREE.Mesh(canopyGeo, mat);
+        const domeR = 4.2 + Math.random() * 1.5;
+        dome.scale.set(domeR * (0.9 + Math.random() * 0.2), domeR * 0.7, domeR * (0.9 + Math.random() * 0.2));
+        dome.position.set(
+          (Math.random() - 0.5) * 2.5,
+          trunkHeight + d * 2.8,
+          (Math.random() - 0.5) * 2.5
+        );
+        dome.castShadow = true;
+        tree.add(dome);
       }
 
-      tree.position.set(tx, 0, tz);
-      const sc = 0.8 + Math.random() * 0.5;
+      tree.position.set(tx, ty, tz);
+      const sc = 0.85 + Math.random() * 0.45;
       tree.scale.set(sc, sc, sc);
       this.scene.add(tree);
     }
@@ -643,8 +740,8 @@ class EnchantedGarden3D {
     const foxgloveColors = [0x9B5DE5, 0xBA68C8, 0xAB47BC, 0xD4A5FF, 0xE0AAFF];
     const stemMat = new THREE.MeshStandardMaterial({ color: 0x11664e, roughness: 0.8 });
 
-    // 24 Foxglove Flower Spires clustered along pathway and pond banks
-    for (let i = 0; i < 24; i++) {
+    // 28 Foxglove Flower Spires clustered along pathway and pond banks
+    for (let i = 0; i < 28; i++) {
       const spire = new THREE.Group();
       const col = foxgloveColors[i % foxgloveColors.length];
       const bellMat = new THREE.MeshStandardMaterial({
@@ -655,17 +752,17 @@ class EnchantedGarden3D {
       });
 
       // Tall curving stem
-      const height = 2.4 + Math.random() * 0.8;
+      const height = 2.6 + Math.random() * 0.8;
       const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, height, 6), stemMat);
       stem.position.y = height / 2;
       spire.add(stem);
 
       // Tiers of nodding bell flowers
-      const bellCount = 10;
+      const bellCount = 12;
       for (let b = 0; b < bellCount; b++) {
-        const by = height * 0.35 + (b / bellCount) * (height * 0.6);
+        const by = height * 0.32 + (b / bellCount) * (height * 0.62);
         const bAngle = b * 2.4;
-        const bell = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.32, 6), bellMat);
+        const bell = new THREE.Mesh(new THREE.ConeGeometry(0.15, 0.34, 6), bellMat);
         bell.rotation.x = Math.PI / 1.6;
         bell.rotation.y = bAngle;
         bell.position.set(Math.cos(bAngle) * 0.16, by, Math.sin(bAngle) * 0.16);
@@ -674,11 +771,13 @@ class EnchantedGarden3D {
 
       // Positions flanking the path and water
       const side = (i % 2 === 0 ? 1 : -1);
-      const zPos = 8 + (i * 1.3);
-      const xPos = side * (3.2 + Math.random() * 2.4);
+      const zPos = 6 + (i * 1.3);
+      const xPos = side * (3.4 + Math.random() * 2.2);
+      const yPos = this.getTerrainHeight(xPos, zPos);
 
-      spire.position.set(xPos, 0, zPos);
+      spire.position.set(xPos, yPos, zPos);
       spire.rotation.y = Math.random() * Math.PI * 2;
+      spire.rotation.z = (Math.random() - 0.5) * 0.15;
       this.scene.add(spire);
     }
   }
@@ -687,11 +786,11 @@ class EnchantedGarden3D {
    * 10. WILDFLOWER MEADOW & 12 HERO BLOSSOMS (Ref Images 1 & 3)
    * ---------------------------------------------------------------------------- */
   buildWildflowerMeadow() {
-    // 220 Ground Wildflowers (Yellow, Cream, Pink, Ivory - Matches Ref 1)
+    // 260 Ground Wildflowers (Yellow, Cream, Pink, Ivory - Matches Ref 1 & 3)
     const flowerColors = [0xF4E2BB, 0xFFF9EF, 0xE8D7B5, 0xC5A46D, 0xFFE082, 0xF8BBD0];
-    const flowerCount = 220;
+    const flowerCount = 260;
 
-    const petalGeo = new THREE.CircleGeometry(0.32, 6);
+    const petalGeo = new THREE.CircleGeometry(0.36, 6);
     petalGeo.rotateX(-Math.PI / 2);
 
     for (let i = 0; i < flowerCount; i++) {
@@ -712,7 +811,8 @@ class EnchantedGarden3D {
       // Keep out of pond basin
       if (Math.hypot(x - -15, z - 4) < 17) continue;
 
-      fl.position.set(x, 0.12, z);
+      const y = this.getTerrainHeight(x, z);
+      fl.position.set(x, y + 0.10, z);
       fl.rotation.y = Math.random() * Math.PI;
       this.scene.add(fl);
     }
@@ -788,7 +888,10 @@ class EnchantedGarden3D {
       flowerGroup.add(hitSphere);
       this.flowerHitMeshes.push(hitSphere);
 
-      flowerGroup.position.set(pos[0], pos[1], pos[2]);
+      const posX = pos[0];
+      const posZ = pos[2];
+      const posY = this.getTerrainHeight(posX, posZ);
+      flowerGroup.position.set(posX, posY, posZ);
       flowerGroup.userData = { isFlower: true, index: idx, data: flData, halo: halo };
 
       this.scene.add(flowerGroup);
@@ -896,16 +999,16 @@ class EnchantedGarden3D {
    * 13. DANCING GOLDEN SPORES & FIREFLIES (Ref Images 1 & 3)
    * ---------------------------------------------------------------------------- */
   createGoldenSporeParticles() {
-    const sporeCount = 160;
+    const sporeCount = 320;
     const geo = new THREE.BufferGeometry();
     this.fireflyPositions = new Float32Array(sporeCount * 3);
     this.fireflyBasePos = new Float32Array(sporeCount * 3);
 
     for (let i = 0; i < sporeCount; i++) {
       const i3 = i * 3;
-      const x = (Math.random() - 0.5) * 55;
-      const y = 1.0 + Math.random() * 20.0;
-      const z = (Math.random() - 0.5) * 55;
+      const x = (Math.random() - 0.5) * 60;
+      const y = 1.0 + Math.random() * 22.0;
+      const z = (Math.random() - 0.5) * 60;
 
       this.fireflyPositions[i3] = x;
       this.fireflyPositions[i3 + 1] = y;
@@ -919,11 +1022,11 @@ class EnchantedGarden3D {
     geo.setAttribute("position", new THREE.BufferAttribute(this.fireflyPositions, 3));
 
     const mat = new THREE.PointsMaterial({
-      size: 2.8,
+      size: 3.0,
       map: this.textures.firefly,
       color: 0xF4E2BB,
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.94,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -1204,7 +1307,12 @@ class EnchantedGarden3D {
       }
     });
 
-    // 8. Smooth Camera Inertia Interpolation
+    // 8. Swaying Grand Tree Canopy Spores (Ref Image 1 Sparkle Flow)
+    if (this.canopySpores) {
+      this.canopySpores.rotation.y = elapsedTime * 0.05;
+    }
+
+    // 9. Smooth Camera Inertia Interpolation
     this.camera.position.lerp(this.cameraTargetPos, 0.042);
     this.currentLookAt.lerp(this.cameraLookAt, 0.042);
     this.camera.lookAt(this.currentLookAt);

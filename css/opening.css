@@ -1,6 +1,7 @@
 /**
  * ==============================================================================
  * THE ART OF HER — SECTION 1: THE OPENING (A Universe of Her)
+ * Visual Direction: Private Exhibition Sanctuary & Celestial Prologue
  * ==============================================================================
  */
 
@@ -9,14 +10,14 @@
   width: 100vw;
   height: 100vh;
   min-height: 680px;
-  background: radial-gradient(circle at 50% 50%, #04352f 0%, #02221e 40%, #01120f 85%, #000a08 100%);
+  background: radial-gradient(ellipse at 50% 45%, #073A31 0%, #06251F 35%, #041713 80%, #020e0b 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   z-index: 10;
   padding: 0;
-  border-bottom: 1px solid rgba(197, 164, 109, 0.2);
+  border-bottom: 1px solid var(--border-gold-subtle);
 }
 
 /* Celestial Interactive Star Canvas */
@@ -37,8 +38,8 @@
   left: -20%;
   width: 140%;
   height: 140%;
-  background: radial-gradient(ellipse at 40% 60%, rgba(8, 127, 120, 0.18) 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 30%, rgba(197, 164, 109, 0.12) 0%, transparent 45%);
+  background: radial-gradient(ellipse at 40% 60%, rgba(19, 132, 119, 0.15) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(198, 168, 117, 0.10) 0%, transparent 45%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 2;
@@ -47,7 +48,7 @@
 
 @keyframes nebula-drift {
   0% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.08) translate(-2%, 3%); }
+  50% { transform: scale(1.06) translate(-2%, 2%); }
   100% { transform: scale(1) translate(2%, -2%); }
 }
 
@@ -56,7 +57,7 @@
   position: relative;
   z-index: 5;
   text-align: center;
-  max-width: 960px;
+  max-width: 900px;
   padding: 40px var(--container-padding);
   display: flex;
   flex-direction: column;
@@ -67,9 +68,9 @@
 /* Sequence Step 1: Celestial Constellation Monogram */
 .opening-celestial-badge {
   opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 2s var(--ease-celestial), transform 2s var(--ease-celestial);
-  margin-bottom: 24px;
+  transform: translateY(-16px);
+  transition: opacity 1.8s var(--ease-celestial), transform 1.8s var(--ease-celestial);
+  margin-bottom: 20px;
 }
 
 .opening-celestial-badge.revealed {
@@ -78,8 +79,8 @@
 }
 
 .constellation-monogram-ring {
-  width: 72px;
-  height: 72px;
+  width: 68px;
+  height: 68px;
   margin: 0 auto;
   border: 1px solid var(--border-gold-accent);
   border-radius: 50%;
@@ -87,16 +88,17 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 25px rgba(197, 164, 109, 0.2);
+  box-shadow: 0 0 25px rgba(198, 168, 117, 0.18);
+  background: radial-gradient(circle, rgba(7, 87, 71, 0.4) 0%, transparent 70%);
 }
 
 .constellation-monogram-ring::before {
   content: "";
   position: absolute;
-  inset: -6px;
-  border: 1px dashed rgba(197, 164, 109, 0.35);
+  inset: -5px;
+  border: 1px dashed rgba(198, 168, 117, 0.3);
   border-radius: 50%;
-  animation: spin-celestial 60s linear infinite;
+  animation: spin-celestial 70s linear infinite;
 }
 
 @keyframes spin-celestial {
@@ -105,22 +107,22 @@
 }
 
 .monogram-letter {
-  font-family: var(--font-serif-title);
-  font-size: 2rem;
+  font-family: var(--font-display-hero);
+  font-size: 1.85rem;
   color: var(--gold-bright);
 }
 
 /* Sequence Step 2: Name BHAVYA Constellation Text */
 .opening-recipient-name {
-  font-family: var(--font-mono-meta);
-  font-size: clamp(0.9rem, 1.8vw, 1.25rem);
-  letter-spacing: 0.65em;
+  font-family: var(--font-meta-label);
+  font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+  letter-spacing: 0.35em;
   color: var(--gold-antique);
   text-transform: uppercase;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
   opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 2.2s var(--ease-celestial) 0.5s, transform 2.2s var(--ease-celestial) 0.5s;
+  transform: scale(0.96);
+  transition: opacity 2s var(--ease-celestial) 0.4s, transform 2s var(--ease-celestial) 0.4s;
 }
 
 .opening-recipient-name.revealed {
@@ -130,16 +132,16 @@
 
 /* Sequence Step 3: Prelude quote */
 .opening-prelude-quote {
-  font-family: var(--font-serif-body);
-  font-size: clamp(1.2rem, 2.4vw, 1.75rem);
+  font-family: var(--font-editorial-heading);
+  font-size: clamp(1.2rem, 2.2vw, 1.65rem);
   font-style: italic;
   color: var(--gold-champagne);
-  line-height: 1.7;
-  max-width: 760px;
-  margin-bottom: 36px;
+  line-height: 1.65;
+  max-width: 720px;
+  margin-bottom: 28px;
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 2.4s var(--ease-celestial) 1.2s, transform 2.4s var(--ease-celestial) 1.2s;
+  transform: translateY(16px);
+  transition: opacity 2.2s var(--ease-celestial) 1s, transform 2.2s var(--ease-celestial) 1s;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
@@ -150,15 +152,17 @@
 
 /* Sequence Step 4: Exhibition Title */
 .opening-title {
-  font-size: clamp(2.8rem, 7.5vw, 5.8rem);
-  letter-spacing: 0.12em;
-  font-family: var(--font-serif-title);
-  font-weight: 400;
+  font-family: var(--font-display-hero);
+  font-size: clamp(2.5rem, 6.5vw, 4.8rem);
+  letter-spacing: 0.06em;
+  font-weight: 500;
   text-transform: uppercase;
+  color: var(--ivory-warm);
+  line-height: 1.12;
   margin-bottom: 12px;
   opacity: 0;
-  transform: translateY(25px);
-  transition: opacity 2.5s var(--ease-celestial) 2s, transform 2.5s var(--ease-celestial) 2s;
+  transform: translateY(20px);
+  transition: opacity 2.2s var(--ease-celestial) 1.8s, transform 2.2s var(--ease-celestial) 1.8s;
 }
 
 .opening-title.revealed {
@@ -168,14 +172,15 @@
 
 /* Sequence Step 5: Secondary Tagline */
 .opening-secondary-tagline {
-  font-family: var(--font-serif-body);
-  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
   color: var(--mint-soft);
-  letter-spacing: 0.08em;
-  margin-bottom: 48px;
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+  margin-bottom: 38px;
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 2.2s var(--ease-celestial) 2.6s, transform 2.2s var(--ease-celestial) 2.6s;
+  transform: translateY(12px);
+  transition: opacity 2s var(--ease-celestial) 2.4s, transform 2s var(--ease-celestial) 2.4s;
 }
 
 .opening-secondary-tagline.revealed {
@@ -186,12 +191,12 @@
 /* Sequence Step 6: Primary Button CTA */
 .opening-cta-group {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 2s var(--ease-celestial) 3.2s, transform 2s var(--ease-celestial) 3.2s;
+  transform: translateY(16px);
+  transition: opacity 1.8s var(--ease-celestial) 2.9s, transform 1.8s var(--ease-celestial) 2.9s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 }
 
 .opening-cta-group.revealed {
@@ -199,61 +204,28 @@
   transform: translateY(0);
 }
 
-.opening-scroll-hint {
-  font-family: var(--font-mono-meta);
-  font-size: 0.72rem;
-  letter-spacing: 0.25em;
-  color: var(--gold-muted);
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.opening-scroll-hint::after {
-  content: "↓";
-  font-size: 0.9rem;
-  color: var(--gold-antique);
-  animation: bounce-down 2s infinite ease-in-out;
-}
-
-@keyframes bounce-down {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
-}
-
-/* Responsive Opening */
+/* Responsive Opening Screen */
 @media (max-width: 768px) {
   .opening-section {
-    min-height: 100svh;
+    min-height: 580px;
   }
-  .opening-content-wrapper {
-    padding: 24px 16px;
+  .opening-title {
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+  }
+  .opening-prelude-quote {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+  .opening-secondary-tagline {
+    font-size: 0.92rem;
+    margin-bottom: 28px;
   }
   .constellation-monogram-ring {
     width: 58px;
     height: 58px;
   }
-  .opening-recipient-name {
-    font-size: 1.1rem;
-    letter-spacing: 0.35em;
-    margin-bottom: 14px;
-  }
-  .opening-prelude-quote {
-    font-size: 1.05rem;
-    margin-bottom: 20px;
-    padding: 0 10px;
-  }
-  .opening-title {
-    font-size: clamp(2.2rem, 9vw, 3.6rem);
-    margin-bottom: 14px;
-  }
-  .opening-secondary-tagline {
-    font-size: 0.95rem;
-    margin-bottom: 28px;
-  }
-  .opening-scroll-hint {
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
+  .monogram-letter {
+    font-size: 1.5rem;
   }
 }

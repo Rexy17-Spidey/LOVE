@@ -1,43 +1,47 @@
 /**
  * ==============================================================================
- * THE ART OF HER — 5 PERSONALIZED COLOUR THEMES & THEME SELECTION EXPERIENCE
- * 
+ * THE ART OF HER — 5 PERSONALIZED LUXURY COLOR THEMES
+ * Refined Visual Direction: Botanical Editorial & Private Exhibition
+ *
  * Themes:
- * 01. EMERALD ROYALE: Deep emerald, antique gold, elegant museum lighting (#032F2A, #064E46, #087F78, #C5A46D, #FFF9EF)
- * 02. OCEAN EMERALD: Deep ocean blue, emerald reflections, turquoise stars (#062F3A, #075B66, #0F8790, #9ED8D0, #E5F4F1)
- * 03. MIDNIGHT TEAL: Moonlit teal, midnight blue, luminous stars, silver-gold (#071F2C, #0B4F5C, #177E89, #A7DDE0, #E8F2F0)
- * 04. JADE AND SAGE: Jade leaves, sage green, soft daylight, peaceful garden (#183D35, #376B5B, #83A995, #DDE9D8, #D3B98B)
- * 05. SEA GLASS: Sea glass, aquamarine reflections, soft teal, bright highlights (#0E3B42, #2D7B7B, #83C5BE, #CDE9E3, #F4F8F2)
+ * 01. EMERALD ROYALE: Deepest forest emerald, antique champagne gold & warm ivory
+ * 02. OCEAN EMERALD: Deep ocean teal, cyan-emerald reflections & sea-foam highlights
+ * 03. MIDNIGHT TEAL: Moonlit deep midnight teal, luminous starlight & silver-gold
+ * 04. JADE AND SAGE: Botanical jade, soft sage leaves, peaceful garden daylight
+ * 05. SEA GLASS: Translucent sea glass, aquamarine reflections & dreamy starlight
  * ==============================================================================
  */
 
 /* -----------------------------------------------------------------------------
-   THEME 01: EMERALD ROYALE (Default)
+   THEME 01: EMERALD ROYALE (Default Exhibition Identity)
    ----------------------------------------------------------------------------- */
 :root,
 [data-theme="emerald-royale"] {
   --theme-id: "emerald-royale";
-  --midnight-abyss: #01110e;
-  --midnight-emerald: #021815;
-  --forest-dark: #032F2A;
-  --emerald-deep: #064E46;
-  --teal-rich: #087F78;
-  --teal-vibrant: #0cb3a7;
-  --teal-glow: rgba(8, 127, 120, 0.45);
-  
-  --gold-antique: #C5A46D;
-  --gold-bright: #F4E2BB;
-  --gold-champagne: #E8D7B5;
-  --gold-muted: #8C7348;
-  --gold-glow: rgba(197, 164, 109, 0.38);
-  
-  --ivory-warm: #FFF9EF;
-  --mint-soft: #DCEEE6;
-  --sage-muted: #95B0A6;
+  --bg-deepest: #041713;
+  --bg-secondary: #06251F;
+  --forest-dark: #073A31;
+  --emerald-deep: #075747;
+  --teal-rich: #138477;
+  --teal-vibrant: #179c8d;
+  --teal-glow: rgba(19, 132, 119, 0.32);
 
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #043831 0%, #02201b 45%, #01110e 100%);
-  --theme-card-bg: rgba(3, 47, 42, 0.65);
-  --theme-accent-color: #0cb3a7;
+  --midnight-abyss: #041713;
+  --midnight-emerald: #06251F;
+  
+  --gold-antique: #C6A875;
+  --gold-bright: #F7E7CD;
+  --gold-champagne: #DFCAA4;
+  --gold-muted: #8E774E;
+  --gold-glow: rgba(198, 168, 117, 0.28);
+  
+  --ivory-warm: #FFF8EC;
+  --mint-soft: #B8D8CC;
+  --sage-muted: #8AAEA1;
+
+  --theme-bg-gradient: radial-gradient(ellipse at 50% 15%, #073A31 0%, #06251F 40%, #041713 100%);
+  --theme-card-bg: rgba(6, 37, 31, 0.72);
+  --theme-accent-color: #138477;
 }
 
 /* -----------------------------------------------------------------------------
@@ -45,27 +49,30 @@
    ----------------------------------------------------------------------------- */
 [data-theme="ocean-emerald"] {
   --theme-id: "ocean-emerald";
-  --midnight-abyss: #021217;
-  --midnight-emerald: #041f27;
-  --forest-dark: #062F3A;
-  --emerald-deep: #075B66;
-  --teal-rich: #0F8790;
-  --teal-vibrant: #43B0AA;
-  --teal-glow: rgba(15, 135, 144, 0.45);
-  
-  --gold-antique: #78D6C6;
-  --gold-bright: #E5F4F1;
-  --gold-champagne: #B8E8E0;
-  --gold-muted: #529E94;
-  --gold-glow: rgba(120, 214, 198, 0.38);
-  
-  --ivory-warm: #E5F4F1;
-  --mint-soft: #9ED8D0;
-  --sage-muted: #7BAFA7;
+  --bg-deepest: #03141a;
+  --bg-secondary: #06242c;
+  --forest-dark: #07343e;
+  --emerald-deep: #0b515f;
+  --teal-rich: #127c8b;
+  --teal-vibrant: #4ab8b0;
+  --teal-glow: rgba(18, 124, 139, 0.35);
 
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #08434f 0%, #05262f 45%, #021217 100%);
-  --theme-card-bg: rgba(6, 47, 58, 0.65);
-  --theme-accent-color: #43B0AA;
+  --midnight-abyss: #03141a;
+  --midnight-emerald: #06242c;
+  
+  --gold-antique: #7ec5b9;
+  --gold-bright: #e5f5f2;
+  --gold-champagne: #b9e3dc;
+  --gold-muted: #569e94;
+  --gold-glow: rgba(126, 197, 185, 0.30);
+  
+  --ivory-warm: #f0f7f5;
+  --mint-soft: #a8dad2;
+  --sage-muted: #74a89f;
+
+  --theme-bg-gradient: radial-gradient(ellipse at 50% 15%, #0b515f 0%, #06242c 40%, #03141a 100%);
+  --theme-card-bg: rgba(6, 36, 44, 0.72);
+  --theme-accent-color: #4ab8b0;
 }
 
 /* -----------------------------------------------------------------------------
@@ -73,27 +80,30 @@
    ----------------------------------------------------------------------------- */
 [data-theme="midnight-teal"] {
   --theme-id: "midnight-teal";
-  --midnight-abyss: #030e16;
-  --midnight-emerald: #051823;
-  --forest-dark: #071F2C;
-  --emerald-deep: #0B4F5C;
-  --teal-rich: #177E89;
-  --teal-vibrant: #2AB7CA;
-  --teal-glow: rgba(23, 126, 137, 0.45);
-  
-  --gold-antique: #A7DDE0;
-  --gold-bright: #E8F2F0;
-  --gold-champagne: #C8E5E7;
-  --gold-muted: #6B9B9D;
-  --gold-glow: rgba(167, 221, 224, 0.38);
-  
-  --ivory-warm: #E8F2F0;
-  --mint-soft: #A7DDE0;
-  --sage-muted: #7EAFB2;
+  --bg-deepest: #03121b;
+  --bg-secondary: #06202c;
+  --forest-dark: #082d3d;
+  --emerald-deep: #0d465c;
+  --teal-rich: #187189;
+  --teal-vibrant: #38a3be;
+  --teal-glow: rgba(24, 113, 137, 0.35);
 
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #0b3c48 0%, #071f2c 45%, #030e16 100%);
-  --theme-card-bg: rgba(7, 31, 44, 0.65);
-  --theme-accent-color: #2AB7CA;
+  --midnight-abyss: #03121b;
+  --midnight-emerald: #06202c;
+  
+  --gold-antique: #9ec9d2;
+  --gold-bright: #ebf5f7;
+  --gold-champagne: #c5e3ea;
+  --gold-muted: #6698a3;
+  --gold-glow: rgba(158, 201, 210, 0.30);
+  
+  --ivory-warm: #f2f7f9;
+  --mint-soft: #b0dce6;
+  --sage-muted: #78a3af;
+
+  --theme-bg-gradient: radial-gradient(ellipse at 50% 15%, #0d465c 0%, #06202c 40%, #03121b 100%);
+  --theme-card-bg: rgba(6, 32, 44, 0.72);
+  --theme-accent-color: #38a3be;
 }
 
 /* -----------------------------------------------------------------------------
@@ -101,27 +111,30 @@
    ----------------------------------------------------------------------------- */
 [data-theme="jade-sage"] {
   --theme-id: "jade-sage";
-  --midnight-abyss: #0a1b17;
-  --midnight-emerald: #102621;
-  --forest-dark: #183D35;
-  --emerald-deep: #376B5B;
-  --teal-rich: #528975;
-  --teal-vibrant: #83A995;
-  --teal-glow: rgba(131, 169, 149, 0.45);
-  
-  --gold-antique: #D3B98B;
-  --gold-bright: #F5EBD7;
-  --gold-champagne: #E4D2B2;
-  --gold-muted: #9E8761;
-  --gold-glow: rgba(211, 185, 139, 0.38);
-  
-  --ivory-warm: #DDE9D8;
-  --mint-soft: #B8D4BE;
-  --sage-muted: #83A995;
+  --bg-deepest: #0a1814;
+  --bg-secondary: #122822;
+  --forest-dark: #1b3830;
+  --emerald-deep: #2c5449;
+  --teal-rich: #48796b;
+  --teal-vibrant: #72a392;
+  --teal-glow: rgba(72, 121, 107, 0.35);
 
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #204c43 0%, #15332c 45%, #0a1b17 100%);
-  --theme-card-bg: rgba(24, 61, 53, 0.65);
-  --theme-accent-color: #83A995;
+  --midnight-abyss: #0a1814;
+  --midnight-emerald: #122822;
+  
+  --gold-antique: #c7ad7f;
+  --gold-bright: #f5eedc;
+  --gold-champagne: #dfcfab;
+  --gold-muted: #947e58;
+  --gold-glow: rgba(199, 173, 127, 0.30);
+  
+  --ivory-warm: #faf7f0;
+  --mint-soft: #c4dcd3;
+  --sage-muted: #8ba99d;
+
+  --theme-bg-gradient: radial-gradient(ellipse at 50% 15%, #1b3830 0%, #122822 40%, #0a1814 100%);
+  --theme-card-bg: rgba(18, 40, 34, 0.72);
+  --theme-accent-color: #72a392;
 }
 
 /* -----------------------------------------------------------------------------
@@ -129,57 +142,61 @@
    ----------------------------------------------------------------------------- */
 [data-theme="sea-glass"] {
   --theme-id: "sea-glass";
-  --midnight-abyss: #05191d;
-  --midnight-emerald: #09282d;
-  --forest-dark: #0E3B42;
-  --emerald-deep: #2D7B7B;
-  --teal-rich: #4D9E9B;
-  --teal-vibrant: #83C5BE;
-  --teal-glow: rgba(131, 197, 190, 0.45);
-  
-  --gold-antique: #83C5BE;
-  --gold-bright: #F4F8F2;
-  --gold-champagne: #CDE9E3;
-  --gold-muted: #5B958F;
-  --gold-glow: rgba(131, 197, 190, 0.38);
-  
-  --ivory-warm: #F4F8F2;
-  --mint-soft: #CDE9E3;
-  --sage-muted: #8FBDB6;
+  --bg-deepest: #05161a;
+  --bg-secondary: #0b252b;
+  --forest-dark: #11363e;
+  --emerald-deep: #1d5660;
+  --teal-rich: #39818b;
+  --teal-vibrant: #6db6be;
+  --teal-glow: rgba(57, 129, 139, 0.35);
 
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #19525c 0%, #0d363c 45%, #05191d 100%);
-  --theme-card-bg: rgba(14, 59, 66, 0.65);
-  --theme-accent-color: #83C5BE;
+  --midnight-abyss: #05161a;
+  --midnight-emerald: #0b252b;
+  
+  --gold-antique: #82bcc0;
+  --gold-bright: #ebf7f7;
+  --gold-champagne: #c2e5e7;
+  --gold-muted: #5e9296;
+  --gold-glow: rgba(130, 188, 192, 0.30);
+  
+  --ivory-warm: #f5fbf9;
+  --mint-soft: #bde0e3;
+  --sage-muted: #82a8ab;
+
+  --theme-bg-gradient: radial-gradient(ellipse at 50% 15%, #1d5660 0%, #0b252b 40%, #05161a 100%);
+  --theme-card-bg: rgba(11, 37, 43, 0.72);
+  --theme-accent-color: #6db6be;
 }
 
-/* Ensure body background gradient transitions smoothly when theme switches */
+/* Smooth background transition when theme switches */
 body::after {
   background: var(--theme-bg-gradient) !important;
   transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =============================================================================
-   THEME SELECTION MODAL / SCREEN
+   THEME SELECTION MODAL (LUXURY SWATCH EXHIBITION PALETTE)
    ============================================================================= */
 .theme-selector-overlay {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(1, 14, 12, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex;
+  background: rgba(3, 17, 14, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: none;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease;
+  transition: opacity 0.45s var(--ease-cinematic), visibility 0.45s ease;
   overflow-y: auto;
-  padding: 2rem 1.25rem;
+  padding: clamp(1.2rem, 3vw, 2.5rem);
 }
 
 .theme-selector-overlay.active {
+  display: flex;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -187,69 +204,69 @@ body::after {
 
 .theme-selector-dialog {
   width: 100%;
-  max-width: 1080px;
-  background: linear-gradient(180deg, rgba(6, 78, 70, 0.28) 0%, rgba(1, 20, 17, 0.96) 100%);
-  border: 1px solid rgba(197, 164, 109, 0.35);
-  border-radius: 12px;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(197, 164, 109, 0.06);
+  max-width: 1060px;
+  background: linear-gradient(180deg, rgba(7, 45, 38, 0.85) 0%, rgba(4, 23, 19, 0.98) 100%);
+  border: 1px solid var(--border-gold-accent);
+  border-radius: 8px;
+  padding: clamp(1.8rem, 3.5vw, 3rem);
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.85), inset 0 0 60px rgba(7, 87, 71, 0.15);
   position: relative;
   margin: auto;
 }
 
 .theme-selector-close-btn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 40px;
-  height: 40px;
+  top: 1.4rem;
+  right: 1.4rem;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(3, 47, 42, 0.6);
-  border: 1px solid rgba(197, 164, 109, 0.3);
+  background: rgba(6, 37, 31, 0.8);
+  border: 1px solid var(--border-gold-subtle);
   color: var(--gold-antique);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all var(--duration-fast) ease;
 }
 
 .theme-selector-close-btn:hover {
   background: var(--teal-rich);
   color: var(--ivory-warm);
   border-color: var(--gold-bright);
-  transform: rotate(90deg);
 }
 
 .theme-selector-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .theme-selector-eyebrow {
-  font-family: var(--font-mono-meta);
-  font-size: 0.74rem;
-  letter-spacing: 0.28em;
+  font-family: var(--font-meta-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
   color: var(--gold-antique);
   text-transform: uppercase;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.75rem;
 }
 
 .theme-selector-title {
-  font-family: var(--font-serif-title);
-  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  font-family: var(--font-editorial-heading);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 500;
   color: var(--ivory-warm);
-  margin-bottom: 0.8rem;
-  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.01em;
 }
 
 .theme-selector-subtitle {
-  font-family: var(--font-serif-body);
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-family: var(--font-editorial-heading);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   font-style: italic;
   color: var(--gold-champagne);
-  max-width: 620px;
+  max-width: 580px;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -258,17 +275,17 @@ body::after {
 .theme-cards-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.9rem;
-  margin-bottom: 1.8rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .theme-option-card {
-  background: rgba(3, 47, 42, 0.4);
-  border: 1px solid rgba(197, 164, 109, 0.25);
-  border-radius: 10px;
-  padding: 1.4rem 1.1rem;
+  background: rgba(4, 27, 22, 0.65);
+  border: 1px solid var(--border-gold-subtle);
+  border-radius: 6px;
+  padding: 1.3rem 1.0rem;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s var(--ease-cinematic);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -278,100 +295,102 @@ body::after {
 }
 
 .theme-option-card:hover {
-  border-color: rgba(197, 164, 109, 0.7);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(197, 164, 109, 0.15);
+  border-color: var(--border-gold-accent);
+  transform: translateY(-3px);
+  background: rgba(6, 37, 31, 0.75);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
 .theme-option-card.selected {
   border-color: var(--gold-bright);
-  background: linear-gradient(180deg, rgba(8, 127, 120, 0.35) 0%, rgba(3, 47, 42, 0.6) 100%);
-  box-shadow: 0 0 0 2px var(--gold-bright), 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--gold-glow);
-  transform: translateY(-4px);
+  background: linear-gradient(180deg, rgba(7, 58, 49, 0.7) 0%, rgba(4, 27, 22, 0.85) 100%);
+  box-shadow: 0 0 0 1px var(--gold-bright), 0 16px 40px rgba(0, 0, 0, 0.65);
+  transform: translateY(-3px);
 }
 
 .theme-card-roman {
-  font-family: var(--font-mono-meta);
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
+  font-family: var(--font-meta-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
   color: var(--gold-antique);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.35rem;
 }
 
 .theme-card-name {
-  font-family: var(--font-serif-title);
-  font-size: 1.15rem;
+  font-family: var(--font-editorial-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   color: var(--ivory-warm);
   margin-bottom: 0.75rem;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
-/* Live Miniature Preview Box */
+/* Miniature Preview Box */
 .theme-card-preview-box {
   width: 100%;
-  height: 80px;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  height: 72px;
+  border-radius: 4px;
+  margin-bottom: 0.9rem;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .theme-card-preview-star {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   position: absolute;
   animation: themeStarTwinkle 2.5s infinite ease-in-out;
 }
 
 @keyframes themeStarTwinkle {
-  0%, 100% { transform: scale(0.8); opacity: 0.4; }
-  50% { transform: scale(1.3); opacity: 1; }
+  0%, 100% { transform: scale(0.8); opacity: 0.45; }
+  50% { transform: scale(1.25); opacity: 1; }
 }
 
 .theme-card-preview-botanical {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   opacity: 0.65;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 /* Swatches Row */
 .theme-swatches-row {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   margin-bottom: 0.85rem;
 }
 
 .theme-swatch-circle {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .theme-card-desc {
-  font-size: 0.82rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
   color: var(--mint-soft);
-  line-height: 1.45;
-  margin-bottom: 0.6rem;
-  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  font-weight: 350;
 }
 
 .theme-card-check-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 22px;
-  height: 22px;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--gold-bright);
-  color: #032F2A;
-  font-size: 0.75rem;
+  color: #041713;
+  font-size: 0.72rem;
   display: none;
   align-items: center;
   justify-content: center;
@@ -382,98 +401,51 @@ body::after {
   display: flex;
 }
 
-/* Action Area with Primary Confirm Button */
+/* Actions Footer */
 .theme-selector-actions {
   text-align: center;
 }
 
 .theme-confirm-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px 42px;
-  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-antique) 50%, var(--gold-muted) 100%);
-  color: #032F2A;
-  font-family: var(--font-mono-meta);
-  font-size: 0.88rem;
-  letter-spacing: 0.24em;
-  font-weight: 700;
+  background: var(--gold-foil);
+  color: #041713;
+  border: 1px solid var(--gold-bright);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: none;
-  border-radius: 4px;
+  padding: 13px 32px;
+  border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 25px var(--gold-glow);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all var(--duration-fast) ease;
 }
 
 .theme-confirm-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), 0 0 35px var(--gold-glow);
-  background: linear-gradient(135deg, #FFF9EF 0%, var(--gold-bright) 50%, var(--gold-antique) 100%);
-}
-
-.theme-confirm-btn:active {
-  transform: translateY(0) scale(1);
-}
-
-/* Header Palette Switcher Button */
-.theme-picker-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(3, 47, 42, 0.6);
-  border: 1px solid rgba(197, 164, 109, 0.4);
-  color: var(--gold-bright);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-size: 1.1rem;
-}
-
-.theme-picker-btn:hover {
-  background: var(--teal-rich);
-  border-color: var(--gold-bright);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(8, 127, 120, 0.4);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 20px var(--gold-glow);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .theme-selector-dialog {
-    padding: 1.8rem 1.1rem;
+/* Responsive Theme Grid */
+@media (max-width: 992px) {
+  .theme-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
+
+@media (max-width: 680px) {
+  .theme-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .theme-selector-dialog {
+    padding: 1.5rem 1.1rem;
+  }
+}
+
+@media (max-width: 440px) {
   .theme-cards-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    max-height: 52vh;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
-  .theme-option-card {
-    padding: 1.1rem 0.9rem;
-    flex-direction: row;
-    text-align: left;
-    align-items: center;
-    gap: 1rem;
-  }
-  .theme-card-preview-box {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 0;
-    flex-shrink: 0;
-  }
-  .theme-swatches-row {
-    margin-bottom: 0.3rem;
-  }
-  .theme-card-desc {
-    display: none;
-  }
-  .theme-confirm-btn {
-    width: 100%;
-    padding: 15px 20px;
-    font-size: 0.8rem;
   }
 }

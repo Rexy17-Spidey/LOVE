@@ -1,78 +1,97 @@
 /**
  * ==============================================================================
  * THE ART OF HER — DESIGN SYSTEM TOKENS & VARIABLES
- * Visual Direction: Emerald Celestial Luxury
+ * Visual Direction: Luxury Botanical Editorial & Private Exhibition
+ * Palette: Deep Emerald, Forest Green, Oceanic Teal, Champagne Gold & Warm Ivory
  * ==============================================================================
  */
 
 :root {
-  /* --- Primary Color Palette --- */
-  --emerald-deep: #064E46;
-  --forest-dark: #032F2A;
-  --midnight-emerald: #021815;
-  --midnight-abyss: #01110e;
-  --teal-rich: #087F78;
-  --teal-vibrant: #0cb3a7;
-  --teal-glow: rgba(8, 127, 120, 0.4);
+  /* --- Primary Color Palette (Refined Luxury Emerald Royale) --- */
+  --bg-deepest: #041713;
+  --bg-secondary: #06251F;
+  --forest-dark: #073A31;
+  --emerald-deep: #075747;
+  --teal-rich: #138477;
+  --teal-vibrant: #179c8d;
+  --teal-glow: rgba(19, 132, 119, 0.32);
 
-  /* --- Luxury Gold Palette --- */
-  --gold-antique: #C5A46D;
-  --gold-bright: #F4E2BB;
-  --gold-champagne: #E8D7B5;
-  --gold-muted: #8C7348;
-  --gold-foil: linear-gradient(135deg, #F4E2BB 0%, #C5A46D 50%, #8C7348 100%);
-  --gold-glow: rgba(197, 164, 109, 0.35);
+  /* Legacy Color Aliases (for backward compatibility) */
+  --midnight-abyss: var(--bg-deepest);
+  --midnight-emerald: var(--bg-secondary);
 
-  /* --- Atmosphere & Parchment --- */
-  --ivory-warm: #FFF9EF;
-  --mint-soft: #DCEEE6;
-  --sage-muted: #95B0A6;
-  --parchment-base: #FAF5EB;
-  --parchment-shadow: rgba(4, 30, 26, 0.12);
+  /* --- Luxury Champagne Gold & Antique Accents --- */
+  --gold-antique: #C6A875;
+  --gold-bright: #F7E7CD;
+  --gold-champagne: #DFCAA4;
+  --gold-muted: #8E774E;
+  --gold-foil: linear-gradient(135deg, #F7E7CD 0%, #C6A875 50%, #8E774E 100%);
+  --gold-glow: rgba(198, 168, 117, 0.28);
 
-  /* --- Opacity Overlays --- */
-  --bg-card-glass: rgba(3, 47, 42, 0.65);
-  --bg-card-hover: rgba(6, 78, 70, 0.85);
-  --border-gold-subtle: rgba(197, 164, 109, 0.28);
-  --border-gold-accent: rgba(197, 164, 109, 0.65);
-  --border-gold-highlight: rgba(244, 226, 187, 0.9);
+  /* --- Atmosphere, Parchment & Tonal Highlights --- */
+  --ivory-warm: #FFF8EC;
+  --mint-soft: #B8D8CC;
+  --sage-muted: #8AAEA1;
+  --parchment-base: #F8F3E8;
+  --parchment-shadow: rgba(4, 23, 19, 0.2);
 
-  /* --- Typography Families --- */
-  --font-serif-title: 'Playfair Display', 'Italiana', Georgia, serif;
-  --font-serif-body: 'Cormorant Garamond', 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-script: 'Pinyon Script', 'Alex Brush', 'Parisienne', cursive;
-  --font-mono-meta: 'Cinzel', 'Playfair Display', Georgia, serif;
+  /* --- Surfaces & Glassmorphism (Restrained & Tasteful) --- */
+  --bg-card-glass: rgba(6, 37, 31, 0.72);
+  --bg-card-hover: rgba(7, 58, 49, 0.82);
+  --bg-card-solid: #062620;
+  --border-gold-subtle: rgba(198, 168, 117, 0.20);
+  --border-gold-accent: rgba(198, 168, 117, 0.45);
+  --border-gold-highlight: rgba(247, 231, 205, 0.85);
+
+  /* --- Four-Tier Typography System --- */
+  /* Tier 1: Primary Display — Editorial headings, chapter titles, emotional quotes */
+  --font-editorial-heading: 'Cormorant Garamond', Georgia, serif;
+  
+  /* Tier 2: Secondary Editorial — Selected hero titles, feature mastheads */
+  --font-display-hero: 'Playfair Display', Georgia, serif;
+  
+  /* Tier 3: Body Typography — Paragraphs, descriptions, buttons, navigation, UI */
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Tier 4: Decorative Typography */
+  --font-script: 'Pinyon Script', cursive; /* Personal notes, signatures, romantic whispers */
+  --font-meta-label: 'Cinzel', serif;      /* Small exhibition labels, dates, Roman numerals */
+
+  /* Legacy Typography Aliases */
+  --font-serif-title: var(--font-editorial-heading);
+  --font-serif-body: var(--font-editorial-heading);
+  --font-sans: var(--font-body);
+  --font-mono-meta: var(--font-meta-label);
 
   /* --- Spacing System --- */
   --space-2xs: 4px;
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
-  --space-lg: 40px;
-  --space-xl: 64px;
-  --space-2xl: 96px;
-  --space-3xl: 140px;
+  --space-lg: 36px;
+  --space-xl: 56px;
+  --space-2xl: 84px;
+  --space-3xl: 128px;
 
-  /* --- Shadows & Atmospheric Glows --- */
-  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.5);
-  --shadow-spotlight: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(197, 164, 109, 0.15);
-  --shadow-gold-flare: 0 0 35px rgba(197, 164, 109, 0.45);
-  --shadow-museum-frame: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(197, 164, 109, 0.4);
+  /* --- Refined Shadows & Atmospheric Lighting --- */
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-spotlight: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(19, 132, 119, 0.12);
+  --shadow-gold-flare: 0 0 25px rgba(198, 168, 117, 0.28);
+  --shadow-museum-frame: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(198, 168, 117, 0.35);
 
   /* --- Transitions --- */
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-celestial: cubic-bezier(0.25, 1, 0.5, 1);
-  --duration-fast: 0.25s;
-  --duration-normal: 0.45s;
-  --duration-slow: 0.9s;
-  --duration-cinematic: 1.6s;
+  --duration-fast: 0.22s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.8s;
+  --duration-cinematic: 1.4s;
 
   /* --- Header & Layout Dimensions --- */
-  --header-height: 72px;
-  --max-content-width: 1240px;
-  --container-padding: clamp(16px, 4.5vw, 60px);
+  --header-height: 70px;
+  --max-content-width: 1200px;
+  --container-padding: clamp(16px, 4vw, 56px);
 }
 
 /* Reduced Motion preferences */

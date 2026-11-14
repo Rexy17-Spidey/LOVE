@@ -100,7 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Viewport Section Isolation (Guarantees perfect rendering & headless screenshot fidelity)
   const hashIsolateMatch = window.location.hash.match(/^#isolate-([a-zA-Z0-9_-]+)/);
-  const isolateSectionId = (new URLSearchParams(window.location.search).get("isolate")) || (hashIsolateMatch ? hashIsolateMatch[1] : null);
+  let isolateSectionId = (new URLSearchParams(window.location.search).get("isolate")) || (hashIsolateMatch ? hashIsolateMatch[1] : null);
+  if (isolateSectionId === "story") isolateSectionId = "timeline";
   if (isolateSectionId) {
     document.querySelectorAll("section").forEach(sec => {
       if (sec.id !== isolateSectionId) {

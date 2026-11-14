@@ -17,14 +17,22 @@
   top: 8%;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-serif-title);
+  font-family: var(--font-display-hero);
   font-size: clamp(6rem, 16vw, 15rem);
   font-weight: 700;
-  color: rgba(197, 164, 109, 0.03);
+  color: rgba(198, 168, 117, 0.03);
   letter-spacing: 0.15em;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .editorial-watermark {
+    display: none;
+  }
 }
 
 /* Magazine Showcase Grid */
@@ -46,10 +54,13 @@
 
 .magazine-cover {
   position: relative;
-  background: #021a17;
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-gold-accent);
   padding: 24px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(8, 127, 120, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(19, 132, 119, 0.15);
   transition: transform var(--duration-slow) var(--ease-cinematic);
 }
 
@@ -65,20 +76,22 @@
   border-bottom: 1px solid var(--border-gold-subtle);
   padding-bottom: 8px;
   margin-bottom: 12px;
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   color: var(--gold-antique);
 }
 
 .masthead-title {
-  font-family: var(--font-serif-title);
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-family: var(--font-display-hero);
+  font-size: clamp(1.3rem, 4.8vw, 3.2rem);
   text-align: center;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 14px;
   color: var(--ivory-warm);
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 /* Cover Image Frame */
@@ -106,7 +119,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 24px;
-  background: linear-gradient(180deg, rgba(2, 26, 23, 0.6) 0%, transparent 40%, rgba(1, 16, 14, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(4, 23, 19, 0.6) 0%, transparent 40%, rgba(4, 23, 19, 0.88) 100%);
   pointer-events: none;
 }
 
@@ -116,7 +129,7 @@
 }
 
 .cover-headline-top .tag {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.68rem;
   letter-spacing: 0.25em;
   color: var(--gold-bright);
@@ -124,7 +137,7 @@
 }
 
 .cover-headline-top h4 {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.1rem, 2vw, 1.5rem);
   line-height: 1.25;
   color: var(--ivory-warm);
@@ -138,7 +151,7 @@
 }
 
 .cover-headline-bottom h3 {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.2rem, 2.2vw, 1.7rem);
   line-height: 1.2;
   color: var(--gold-bright);
@@ -147,7 +160,12 @@
 }
 
 .cover-headline-bottom p {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
+  font-size: 0.95rem;
+  color: var(--mint-soft);
+  font-style: italic;
+  margin: 0;
+}
   font-size: 0.95rem;
   color: var(--mint-soft);
   font-style: italic;
@@ -189,7 +207,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.3em;
   color: var(--gold-antique);
@@ -199,33 +217,36 @@
 .editorial-lead-title {
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   line-height: 1.18;
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
 }
 
 .editorial-lead-text {
-  font-family: var(--font-serif-body);
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
   line-height: 1.8;
   color: var(--mint-soft);
+  max-width: 68ch;
 }
 
 /* Table of Contents List */
 .magazine-contents-box {
-  background: rgba(3, 38, 33, 0.5);
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-gold-subtle);
   padding: 24px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .contents-box-title {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.78rem;
   letter-spacing: 0.25em;
   color: var(--gold-bright);
   text-transform: uppercase;
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(197, 164, 109, 0.2);
+  border-bottom: 1px solid rgba(198, 168, 117, 0.2);
 }
 
 .contents-list {
@@ -243,22 +264,21 @@
 }
 
 .contents-item .item-title {
-  font-family: var(--font-serif-title);
-  font-size: 1.1rem;
+  font-family: var(--font-editorial-heading);
+  font-size: 1.15rem;
   color: var(--ivory-warm);
 }
 
 .contents-item .item-desc {
-  font-family: var(--font-serif-body);
-  font-size: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
   color: var(--sage-muted);
-  font-style: italic;
   display: block;
 }
 
 .contents-item .item-page {
-  font-family: var(--font-mono-meta);
-  font-size: 0.85rem;
+  font-family: var(--font-meta-label);
+  font-size: 0.82rem;
   color: var(--gold-antique);
 }
 
@@ -271,9 +291,12 @@
 }
 
 .spread-card {
-  background: rgba(2, 26, 23, 0.7);
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-gold-subtle);
   padding: 20px;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   transition: all var(--duration-normal) var(--ease-cinematic);
@@ -282,7 +305,7 @@
 .spread-card:hover {
   transform: translateY(-6px);
   border-color: var(--gold-antique);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(19, 132, 119, 0.15);
 }
 
 .spread-image-wrapper {
@@ -290,7 +313,7 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border: 1px solid rgba(197, 164, 109, 0.2);
+  border: 1px solid rgba(198, 168, 117, 0.2);
   margin-bottom: 18px;
 }
 
@@ -306,7 +329,7 @@
 }
 
 .spread-meta-tag {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.68rem;
   letter-spacing: 0.25em;
   color: var(--gold-antique);
@@ -315,7 +338,7 @@
 }
 
 .spread-headline {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: 1.45rem;
   line-height: 1.3;
   color: var(--ivory-warm);
@@ -323,7 +346,7 @@
 }
 
 .spread-quote {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
   font-size: 1.05rem;
   font-style: italic;
   color: var(--gold-champagne);
@@ -334,22 +357,23 @@
 }
 
 .spread-text {
+  font-family: var(--font-body);
   font-size: 0.92rem;
   color: var(--mint-soft);
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 16px;
 }
 
 .spread-caption {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.72rem;
   letter-spacing: 0.15em;
   color: var(--sage-muted);
   text-transform: uppercase;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px solid rgba(197, 164, 109, 0.15);
+  border-top: 1px solid rgba(198, 168, 117, 0.15);
 }
 
 /* ----------------------------------------------------------------------------
@@ -362,12 +386,13 @@
 }
 
 .messi-highlight-card {
-  background: radial-gradient(circle at 50% 30%, rgba(8, 127, 120, 0.25) 0%, rgba(2, 26, 23, 0.95) 70%);
-  border: 2px solid var(--gold-bright);
+  background: radial-gradient(circle at 50% 30%, rgba(19, 132, 119, 0.25) 0%, rgba(4, 23, 19, 0.95) 70%);
+  border: 1px solid var(--border-gold-accent);
   padding: clamp(32px, 5vw, 56px);
   text-align: center;
   position: relative;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 45px rgba(197, 164, 109, 0.3);
+  border-radius: 4px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 45px rgba(198, 168, 117, 0.25);
   max-width: 960px;
   margin: 0 auto;
 }
@@ -381,7 +406,7 @@
 }
 
 .messi-quote-primary {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(2rem, 4vw, 3.2rem);
   color: var(--gold-bright);
   line-height: 1.25;
@@ -390,7 +415,7 @@
 }
 
 .messi-quote-secondary {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
   font-size: clamp(1.35rem, 2.5vw, 1.85rem);
   font-style: italic;
   color: var(--ivory-warm);
@@ -404,18 +429,18 @@
   align-items: center;
   gap: 8px;
   padding: 8px 18px;
-  background: rgba(3, 40, 35, 0.6);
+  background: rgba(6, 37, 31, 0.6);
   border: 1px dashed var(--border-gold-accent);
   border-radius: 2px;
-  font-family: var(--font-serif-body);
+  font-family: var(--font-body);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: var(--gold-champagne);
   margin-bottom: 12px;
 }
 
 .messi-author-mark {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   color: var(--sage-muted);
@@ -440,9 +465,12 @@
 }
 
 .observation-card {
-  background: rgba(2, 24, 21, 0.8);
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-gold-subtle);
   padding: 24px 20px;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   transition: all var(--duration-normal) var(--ease-cinematic);
@@ -452,16 +480,16 @@
 .observation-card:hover {
   transform: translateY(-6px);
   border-color: var(--gold-bright);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(197, 164, 109, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(198, 168, 117, 0.2);
 }
 
 .observation-card.highlight-card {
   border-color: var(--gold-bright);
-  background: radial-gradient(circle at 50% 20%, rgba(8, 127, 120, 0.2) 0%, rgba(2, 26, 23, 0.9) 80%);
+  background: radial-gradient(circle at 50% 20%, rgba(19, 132, 119, 0.2) 0%, rgba(6, 37, 31, 0.9) 80%);
 }
 
 .observation-badge {
-  font-family: var(--font-mono-meta);
+  font-family: var(--font-meta-label);
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   color: var(--gold-antique);
@@ -474,14 +502,14 @@
 }
 
 .observation-feature {
-  font-family: var(--font-serif-title);
+  font-family: var(--font-editorial-heading);
   font-size: 1.4rem;
   color: var(--ivory-warm);
   margin-bottom: 4px;
 }
 
 .observation-headline {
-  font-family: var(--font-serif-body);
+  font-family: var(--font-editorial-heading);
   font-size: 1.05rem;
   font-style: italic;
   color: var(--gold-champagne);
@@ -489,7 +517,10 @@
 }
 
 .observation-desc {
-  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  color: var(--mint-soft);
+  line-height: 1.68;
   color: var(--mint-soft);
   line-height: 1.7;
   font-weight: 300;
@@ -522,6 +553,10 @@
   .magazine-cover {
     padding: 16px;
     border-radius: 8px;
+  }
+  .masthead-title {
+    font-size: 1.35rem;
+    letter-spacing: 0.04em;
   }
   .magazine-contents-box {
     padding: 18px 16px;
