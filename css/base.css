@@ -1,0 +1,366 @@
+/**
+ * ==============================================================================
+ * THE ART OF HER — BASE STYLES & GLOBAL TYPOGRAPHY
+ * ==============================================================================
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  background-color: var(--midnight-abyss);
+  color: var(--ivory-warm);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--ivory-warm);
+  line-height: 1.7;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hardware-accelerated fixed atmospheric background (Smooth 60/120fps on mobile) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #043831 0%, #02201b 45%, #01110e 100%);
+  pointer-events: none;
+  z-index: -2;
+  transform: translateZ(0);
+}
+
+/* Atmospheric subtle vignette overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(1, 14, 12, 0.75) 100%);
+  z-index: -1;
+  transform: translateZ(0);
+}
+
+/* Custom Gilded Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--midnight-abyss);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--emerald-deep), var(--gold-antique));
+  border-radius: 4px;
+  border: 1px solid rgba(197, 164, 109, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-antique);
+}
+
+/* Text Selection */
+::selection {
+  background-color: var(--teal-rich);
+  color: var(--gold-bright);
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif-title);
+  color: var(--ivory-warm);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+p {
+  color: var(--mint-soft);
+  font-size: 1.05rem;
+  font-weight: 300;
+  margin-bottom: 1.25rem;
+}
+
+p.lead {
+  font-size: 1.25rem;
+  font-family: var(--font-serif-body);
+  color: var(--gold-champagne);
+  line-height: 1.8;
+  font-style: italic;
+}
+
+a {
+  color: var(--gold-antique);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-cinematic);
+}
+
+a:hover, a:focus-visible {
+  color: var(--gold-bright);
+}
+
+/* Gold Gradient Text */
+.gold-text {
+  background: linear-gradient(135deg, #FFF9EF 0%, #F4E2BB 30%, #C5A46D 70%, #E8D7B5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #C5A46D 0%, #FFF9EF 50%, #C5A46D 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Layout Containers */
+.container {
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.section {
+  position: relative;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid rgba(197, 164, 109, 0.12);
+}
+
+/* Standard Section Header Presentation */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  position: relative;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-number {
+  font-family: var(--font-mono-meta);
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: var(--gold-antique);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--space-xs);
+}
+
+.section-number::before,
+.section-number::after {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-antique));
+}
+.section-number::after {
+  background: linear-gradient(90deg, var(--gold-antique), transparent);
+}
+
+.section-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-family: var(--font-serif-title);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+}
+
+.section-tagline {
+  font-family: var(--font-serif-body);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-style: italic;
+  color: var(--gold-champagne);
+  line-height: 1.6;
+}
+
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: var(--space-md) auto;
+  width: 100%;
+  max-width: 220px;
+}
+
+.gold-divider::before,
+.gold-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-antique));
+}
+.gold-divider::after {
+  background: linear-gradient(90deg, var(--gold-antique), transparent);
+}
+
+.gold-divider span {
+  color: var(--gold-antique);
+  font-size: 0.9rem;
+}
+
+/* Buttons and Interactive Controls */
+.btn-luxury {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 36px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--midnight-emerald);
+  background: var(--gold-foil);
+  border: 1px solid var(--gold-bright);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-spotlight);
+  transition: all var(--duration-normal) var(--ease-cinematic);
+  z-index: 1;
+}
+
+.btn-luxury::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.75s ease;
+  z-index: -1;
+}
+
+.btn-luxury:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(244, 226, 187, 0.6);
+  color: #01110e;
+}
+
+.btn-luxury:hover::before {
+  left: 100%;
+}
+
+.btn-ghost-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--font-mono-meta);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-champagne);
+  background: rgba(4, 49, 44, 0.4);
+  border: 1px solid var(--border-gold-subtle);
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-cinematic);
+}
+
+.btn-ghost-gold:hover {
+  background: rgba(8, 127, 120, 0.3);
+  border-color: var(--gold-antique);
+  color: var(--ivory-warm);
+  transform: translateY(-2px);
+}
+
+/* Badges */
+.badge-gold {
+  font-family: var(--font-mono-meta);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--border-gold-subtle);
+  background: rgba(3, 47, 42, 0.5);
+  color: var(--gold-champagne);
+  border-radius: 1px;
+}
+
+/* ----------------------------------------------------------------------------
+ * SMOOTH SCROLLING & SCROLL-TRIGGERED REVEAL SYSTEM (Requirement 2)
+ * ---------------------------------------------------------------------------- */
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+/* Lenis Recommended Root Styling */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Scroll-triggered graceful reveal (Subtle, swift, zero blank lag) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.42s var(--ease-cinematic), transform 0.42s var(--ease-cinematic);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.reveal-delay-1 { transition-delay: 0.06s; }
+.reveal-delay-2 { transition-delay: 0.12s; }
+.reveal-delay-3 { transition-delay: 0.18s; }
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

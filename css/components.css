@@ -1,0 +1,590 @@
+/**
+ * ==============================================================================
+ * THE ART OF HER — GLOBAL COMPONENTS & NAVIGATION
+ * ==============================================================================
+ */
+
+/* ----------------------------------------------------------------------------
+ * 1. HEADER & GLOBAL NAVIGATION BAR
+ * ---------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--container-padding);
+  background: rgba(2, 24, 21, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(197, 164, 109, 0.15);
+  transition: all var(--duration-normal) var(--ease-cinematic);
+}
+
+.site-header.scrolled {
+  background: rgba(1, 17, 14, 0.92);
+  border-bottom-color: rgba(197, 164, 109, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Brand Monogram & Title */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.brand-monogram {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gold-antique);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif-title);
+  font-size: 1.2rem;
+  color: var(--gold-bright);
+  background: radial-gradient(circle, #087F78 0%, #032F2A 100%);
+  position: relative;
+  border-radius: 1px;
+  transition: transform var(--duration-fast) var(--ease-cinematic);
+}
+
+.brand-monogram::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 1px solid rgba(197, 164, 109, 0.3);
+  pointer-events: none;
+}
+
+.header-brand:hover .brand-monogram {
+  transform: rotate(45deg);
+}
+
+.brand-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-family: var(--font-mono-meta);
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  color: var(--ivory-warm);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.brand-sub {
+  font-family: var(--font-serif-body);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--gold-champagne);
+  letter-spacing: 0.05em;
+}
+
+/* Desktop Navigation Menu */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+}
+
+.nav-link {
+  font-family: var(--font-mono-meta);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mint-soft);
+  position: relative;
+  padding: 8px 4px;
+  opacity: 0.8;
+  transition: all var(--duration-fast) var(--ease-cinematic);
+}
+
+.nav-link span.roman {
+  color: var(--gold-antique);
+  margin-right: 4px;
+  font-size: 0.65rem;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--gold-bright);
+  transition: width var(--duration-normal) var(--ease-cinematic);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--gold-bright);
+  opacity: 1;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Header Action Controls (Audio & Mobile Burger) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.audio-toggle-btn {
+  background: rgba(6, 78, 70, 0.4);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-champagne);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-cinematic);
+  position: relative;
+}
+
+.audio-toggle-btn:hover {
+  border-color: var(--gold-antique);
+  color: var(--gold-bright);
+  background: rgba(8, 127, 120, 0.5);
+  box-shadow: 0 0 15px rgba(197, 164, 109, 0.3);
+}
+
+.audio-toggle-btn.playing {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  animation: pulse-gold 2.5s infinite;
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 10px rgba(197, 164, 109, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(197, 164, 109, 0.5); }
+}
+
+/* Mobile Hamburger Button */
+.mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  position: relative;
+  padding: 8px 4px;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--gold-antique);
+  transition: all var(--duration-fast) var(--ease-cinematic);
+  margin: 5px 0;
+}
+
+/* Mobile Navigation Drawer */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 82%;
+  max-width: 380px;
+  height: 100vh;
+  background: rgba(2, 20, 18, 0.98);
+  backdrop-filter: blur(24px);
+  border-left: 1px solid var(--border-gold-accent);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px;
+  transition: right var(--duration-normal) var(--ease-cinematic);
+  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.mobile-drawer.open {
+  right: 0;
+}
+
+.mobile-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-gold-subtle);
+}
+
+.mobile-drawer-close {
+  background: none;
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-antique);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobile-drawer-links a {
+  font-family: var(--font-serif-title);
+  font-size: 1.35rem;
+  color: var(--ivory-warm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-drawer-links a span.num {
+  font-family: var(--font-mono-meta);
+  font-size: 0.8rem;
+  color: var(--gold-antique);
+}
+
+.mobile-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-normal) ease;
+}
+
+.mobile-drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ----------------------------------------------------------------------------
+ * 2. GILDED IMAGE FRAME COMPONENT (Museum Quality)
+ * ---------------------------------------------------------------------------- */
+.gilded-frame {
+  position: relative;
+  background: #021a17;
+  padding: 12px;
+  border: 1px solid var(--gold-antique);
+  box-shadow: var(--shadow-museum-frame);
+  transition: all var(--duration-normal) var(--ease-cinematic);
+  overflow: hidden;
+}
+
+.gilded-frame::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 1px solid rgba(197, 164, 109, 0.35);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Gold Corner Fleurons */
+.frame-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--gold-bright);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+}
+.frame-corner.top-left { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.frame-corner.top-right { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.frame-corner.bottom-left { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.frame-corner.bottom-right { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.frame-media {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.frame-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-cinematic), filter var(--duration-slow) ease;
+}
+
+.gilded-frame:hover .frame-media img {
+  transform: scale(1.03);
+}
+
+/* Brass Exhibition Plaque below frame */
+.museum-plaque {
+  margin-top: 18px;
+  background: linear-gradient(180deg, #162422 0%, #0d1715 100%);
+  border: 1px solid var(--border-gold-accent);
+  padding: 12px 18px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.museum-plaque::before,
+.museum-plaque::after {
+  content: "\2022";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold-antique);
+  font-size: 0.8rem;
+}
+.museum-plaque::before { left: 8px; }
+.museum-plaque::after { right: 8px; }
+
+.plaque-title {
+  font-family: var(--font-mono-meta);
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.plaque-meta {
+  font-family: var(--font-serif-body);
+  font-size: 0.85rem;
+  color: var(--sage-muted);
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------------------------
+ * 3. GLOBAL MODAL / ARTWORK LIGHTBOX
+ * ---------------------------------------------------------------------------- */
+.lightbox-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(1, 14, 12, 0.94);
+  backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-cinematic);
+}
+
+.lightbox-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #021e1a;
+  border: 1px solid var(--gold-antique);
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-antique);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all var(--duration-fast) ease;
+}
+
+.lightbox-close:hover {
+  background: var(--gold-antique);
+  color: #021a17;
+}
+
+/* Responsive Navigation & Mobile Optimizations */
+@media (max-width: 992px) {
+  .site-header {
+    height: 64px;
+    padding: 0 16px;
+  }
+  .brand-monogram {
+    width: 34px;
+    height: 34px;
+    font-size: 1.05rem;
+  }
+  .brand-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+  }
+  .brand-sub {
+    font-size: 0.7rem;
+  }
+  .header-nav {
+    display: none;
+  }
+  .mobile-nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+  }
+  .mobile-drawer {
+    width: 86%;
+    max-width: 320px;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .mobile-drawer-header {
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+  }
+  .mobile-drawer-links {
+    gap: 14px;
+  }
+  .mobile-drawer-links a {
+    font-size: 1.15rem;
+    padding: 6px 0;
+  }
+  .lightbox-modal {
+    padding: 16px;
+  }
+  .lightbox-content {
+    padding: 20px 16px;
+    border-radius: 8px;
+  }
+  .lightbox-close {
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+ * 10. ARCHIVAL IMAGE FALLBACK PLACEHOLDER (Tier 3 Zero-Broken-Image Safety)
+ * ---------------------------------------------------------------------------- */
+.img-fallback-placeholder {
+  width: 100%;
+  min-height: 280px;
+  aspect-ratio: 4 / 5;
+  background: radial-gradient(circle at 50% 40%, #085a51 0%, #04352f 45%, #021d18 80%, #01100e 100%);
+  border: 1px solid rgba(197, 164, 109, 0.45);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 20px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.img-fallback-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(197, 164, 109, 0.25);
+  pointer-events: none;
+}
+
+.placeholder-monogram {
+  font-family: var(--font-serif-title);
+  font-size: 1.8rem;
+  letter-spacing: 0.25em;
+  color: var(--gold-bright);
+  margin-bottom: 12px;
+  text-shadow: 0 0 16px rgba(244, 226, 187, 0.4);
+}
+
+.placeholder-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  color: var(--warm-ivory);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  max-width: 90%;
+}
+
+.placeholder-caption {
+  font-family: var(--font-mono-meta);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-antique);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+/* ----------------------------------------------------------------------------
+ * 11. ACCESSIBILITY FOCUS-VISIBLE & TOUCH TARGET RIGOR
+ * ---------------------------------------------------------------------------- */
+button:focus-visible,
+a:focus-visible,
+.quick-star-pill:focus-visible,
+.garden-viewpoint-pill:focus-visible,
+.chapter-jump-btn:focus-visible,
+.flower-card:focus-visible,
+.tree-leaf-item:focus-visible {
+  outline: 2px solid var(--gold-bright) !important;
+  outline-offset: 3px !important;
+}
+
+button,
+.btn-luxury,
+.btn-ghost-gold,
+.mobile-nav-toggle,
+.star-card-close,
+.flower-modal-close,
+.quick-star-pill,
+.garden-viewpoint-pill {
+  min-height: 44px;
+  touch-action: manipulation;
+}

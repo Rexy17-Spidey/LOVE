@@ -1,0 +1,65 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <radialGradient id="grad-THEBHAVYAEDITION" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#085a51"/>
+      <stop offset="45%" stop-color="#04352f"/>
+      <stop offset="80%" stop-color="#021d18"/>
+      <stop offset="100%" stop-color="#01100e"/>
+    </radialGradient>
+    <linearGradient id="gold-gilt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4E2BB"/>
+      <stop offset="35%" stop-color="#C5A46D"/>
+      <stop offset="70%" stop-color="#9A7B4A"/>
+      <stop offset="100%" stop-color="#E8D7B5"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Canvas background -->
+  <rect width="800" height="1000" fill="url(#grad-THEBHAVYAEDITION)" />
+  
+  <!-- Subtle celestial star dust -->
+  <g opacity="0.12" fill="#E8D7B5">
+    <circle cx="160" cy="250" r="1.5"/>
+    <circle cx="640" cy="200" r="1.2"/>
+    <circle cx="120" cy="750" r="1.4"/>
+    <circle cx="680" cy="800" r="1.6"/>
+    <circle cx="400" cy="150" r="1.8"/>
+  </g>
+
+  <!-- Astrological concentric rings -->
+  <g opacity="0.08" stroke="#C5A46D" stroke-width="0.75">
+    <circle cx="400" cy="480" r="256" fill="none" stroke-dasharray="6 8"/>
+    <circle cx="400" cy="480" r="144" fill="none"/>
+  </g>
+
+  <!-- Ornate Gilded Double Border -->
+  <rect x="22" y="22" width="756" height="956" fill="none" stroke="url(#gold-gilt)" stroke-width="1.5" opacity="0.8"/>
+  <rect x="32" y="32" width="736" height="936" fill="none" stroke="url(#gold-gilt)" stroke-width="0.75" opacity="0.35" stroke-dasharray="10 5"/>
+
+  <!-- Gold Corner Fleurons -->
+  <path d="M 18 38 L 38 18 M 18 18 L 48 18 M 18 18 L 18 48" stroke="#F4E2BB" stroke-width="2" fill="none"/>
+  <path d="M 782 38 L 762 18 M 782 18 L 752 18 M 782 18 L 782 48" stroke="#F4E2BB" stroke-width="2" fill="none"/>
+  <path d="M 18 962 L 38 982 M 18 982 L 48 982 M 18 982 L 18 952" stroke="#F4E2BB" stroke-width="2" fill="none"/>
+  <path d="M 782 962 L 762 982 M 782 982 L 752 982 M 782 982 L 782 952" stroke="#F4E2BB" stroke-width="2" fill="none"/>
+
+  <!-- Central Gilded Monogram Medallion -->
+  <g transform="translate(400, 445)">
+    <circle r="46" fill="#021c18" stroke="url(#gold-gilt)" stroke-width="1.2" opacity="0.9"/>
+    <circle r="54" fill="none" stroke="#C5A46D" stroke-width="0.5" opacity="0.4" stroke-dasharray="3 4"/>
+    <!-- 8-point gold star -->
+    <path d="M 0 -30 L 7 -9 L 28 -3 L 11 11 L 15 32 L 0 19 L -15 32 L -11 11 L -28 -3 L -7 -9 Z" fill="url(#gold-gilt)" opacity="0.9"/>
+    <text y="7" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="16" fill="#021613" font-weight="bold">B</text>
+  </g>
+
+  <!-- Typography Plaque -->
+  <text x="400" y="535" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="19" letter-spacing="4" fill="#F4E2BB" font-weight="600">THE BHAVYA EDITION</text>
+  <text x="400" y="565" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="16" font-style="italic" fill="#FFF9EF" opacity="0.9">Editorial Magazine Portrait · Cover Plate</text>
+  
+  <!-- Subtle line divider -->
+  <line x1="330" y1="588" x2="470" y2="588" stroke="#C5A46D" stroke-width="1" opacity="0.5"/>
+
+  <!-- Archival Curator Mark -->
+  <text x="400" y="615" text-anchor="middle" font-family="'Cinzel', monospace" font-size="11" letter-spacing="3" fill="#C5A46D" opacity="0.95">VOL. I · SPECIAL ARCHIVE</text>
+
+  <text x="400" y="956" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" letter-spacing="3" fill="#8C7348">THE ART OF HER · CURATED BY RAHUL FOR BHAVYA</text>
+</svg>

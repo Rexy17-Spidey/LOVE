@@ -1,0 +1,124 @@
+/**
+ * ==============================================================================
+ * THE ART OF HER — SECTION 4: THINGS YOU PROBABLY DON'T KNOW I NOTICE (Part 5)
+ * Visual Style: Intimate Archival Discovery, Playful Gold Accents & Affectionate Notes
+ * ==============================================================================
+ */
+
+.noticing-section {
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, #04352e 0%, #02221d 45%, #01120f 90%, #000a08 100%);
+  overflow: hidden;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.noticing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  position: relative;
+  z-index: 5;
+  margin-top: var(--space-xl);
+}
+
+.notice-card {
+  background: rgba(2, 26, 23, 0.78);
+  border: 1px solid var(--border-gold-subtle);
+  padding: 24px 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--duration-normal) var(--ease-cinematic);
+  position: relative;
+  cursor: pointer;
+}
+
+.notice-card:hover,
+.notice-card.active {
+  transform: translateY(-8px);
+  border-color: var(--gold-bright);
+  background: rgba(3, 47, 42, 0.88);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(197, 164, 109, 0.25);
+}
+
+/* Special treatment for Rahul's absolute favourite feature (Her Nose) */
+.notice-card.favourite-feature {
+  border-color: var(--gold-bright);
+  background: radial-gradient(circle at 50% 20%, rgba(8, 127, 120, 0.28) 0%, rgba(2, 28, 25, 0.92) 80%);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(197, 164, 109, 0.25);
+}
+
+.notice-badge {
+  font-family: var(--font-mono-meta);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-antique);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.notice-card.favourite-feature .notice-badge {
+  color: var(--gold-bright);
+}
+
+.notice-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-gold-accent);
+  background: rgba(8, 127, 120, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: var(--gold-bright);
+  margin-bottom: 16px;
+  transition: transform var(--duration-fast) ease;
+}
+
+.notice-card:hover .notice-icon-circle {
+  transform: scale(1.1) rotate(10deg);
+  border-color: var(--gold-bright);
+}
+
+.notice-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.35rem;
+  color: var(--ivory-warm);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.notice-text {
+  font-family: var(--font-serif-body);
+  font-size: 1.05rem;
+  color: var(--mint-soft);
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 300;
+}
+
+/* Responsive Noticing Grid */
+@media (max-width: 1100px) {
+  .noticing-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .noticing-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .notice-card {
+    padding: 18px 16px;
+  }
+  .notice-title {
+    font-size: 1.25rem;
+  }
+  .notice-text {
+    font-size: 1rem;
+  }
+}
